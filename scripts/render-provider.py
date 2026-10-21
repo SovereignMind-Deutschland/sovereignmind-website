@@ -2,7 +2,7 @@
 """Setzt die Anbieterdaten in Textdateien ein (Phase 7.2, Abschnitt C).
 
 Die Quellen im Repo tragen nur Platzhalter ({{PROVIDER_NAME}} usw.); die Anschrift steht nicht im Repo.
-Der Build (GitHub Actions) setzt die Werte aus den Organisations-Variablen ein, in der Kopie auf dem Runner.
+Der Build (GitHub Actions) setzt die Werte aus den Organisations-Secrets ein, in der Kopie auf dem Runner.
 
   render-provider.py [--test-values] DATEI...
 
@@ -49,7 +49,7 @@ def main(argv):
             if not values[name]:
                 if name in OPTIONAL:
                     return "nicht angegeben"
-                problems.append(f"{path}: {name} ist nicht gesetzt (Organisations-Variable fehlt)")
+                problems.append(f"{path}: {name} ist nicht gesetzt (Organisations-Secret fehlt)")
                 return match.group(0)
             return values[name]
 

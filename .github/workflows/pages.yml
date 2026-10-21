@@ -23,16 +23,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      # Anbieterdaten stehen nicht im Repo: Kopie der Seite bauen und die Platzhalter aus den Organisations-Variablen einsetzen.
+      # Anbieterdaten stehen nicht im Repo: Kopie der Seite bauen und die Platzhalter aus den Organisations-Secrets einsetzen.
       # Fehlt ein Pflichtwert, bricht der Lauf ab (keine Seite mit Platzhaltern online).
       - name: Anbieterdaten einsetzen
         env:
-          PROVIDER_NAME: ${{ vars.PROVIDER_NAME }}
-          PROVIDER_STREET: ${{ vars.PROVIDER_STREET }}
-          PROVIDER_CITY: ${{ vars.PROVIDER_CITY }}
-          PROVIDER_EMAIL: ${{ vars.PROVIDER_EMAIL }}
-          PROVIDER_PHONE: ${{ vars.PROVIDER_PHONE }}
-          PROVIDER_VAT_ID: ${{ vars.PROVIDER_VAT_ID }}
+          PROVIDER_NAME: ${{ secrets.PROVIDER_NAME }}
+          PROVIDER_STREET: ${{ secrets.PROVIDER_STREET }}
+          PROVIDER_CITY: ${{ secrets.PROVIDER_CITY }}
+          PROVIDER_EMAIL: ${{ secrets.PROVIDER_EMAIL }}
+          PROVIDER_PHONE: ${{ secrets.PROVIDER_PHONE }}
+          PROVIDER_VAT_ID: ${{ secrets.PROVIDER_VAT_ID }}
         run: |
           mkdir _site
           tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts -cf - . | tar -xf - -C _site
