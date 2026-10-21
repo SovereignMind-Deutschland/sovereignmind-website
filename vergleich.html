@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vergleich – SovereignMind</title>
+  <meta name="description" content="Sachlicher Vergleich: lokaler KI-Assistent gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, mit Kostenbeispiel, Annahmen und Quellen.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <nav class="main" aria-label="Hauptnavigation">
+        <a href="index.html#funktionen">Funktionen</a>
+        <a href="index.html#assistenten">Assistenten</a>
+        <a href="index.html#architektur">Architektur</a>
+        <a href="index.html#betrieb">Betrieb</a>
+        <a href="index.html#kontakt">Kontakt</a>
+        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+        <a href="wissenspakete.html">Wissenspakete</a>
+        <a aria-current="page" href="vergleich.html">Vergleich</a>
+        <a class="btn" href="download.html">Herunterladen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 style="margin-top:40px">Lokal oder Cloud? Ein sachlicher Vergleich</h1>
+    <p>Diese Seite stellt einen lokal betriebenen KI-Assistenten (SovereignMind) drei Anbietertypen gegenüber: Cloud-Assistenten mit Lizenz je Nutzer, ein selbstgebauter Cloud-Chat und frei verfügbare Oberflächen zum Selbsthosten. Stand der Zahlen: <strong data-stand>–</strong>.</p>
+    <div class="note warn"><strong>Wichtig:</strong> Die Kostenzahlen sind ein <em>Rechenbeispiel mit offenen Annahmen</em>, keine Preisliste und kein Angebot. SovereignMind wird derzeit nur als Demo bereitgestellt; ein Lizenzpreis steht nicht fest, deshalb sind die SovereignMind-Zeilen ohne Lizenzgebühr gerechnet. Maßgeblich sind immer die aktuellen Angaben der Hersteller. Preise Dritter stammen teils aus Übersichten Dritter und sind vor einer Entscheidung zu prüfen (siehe Quellen).</div>
+
+    <h2>Wann passt was?</h2>
+    <div class="grid">
+      <div class="card"><h3>Lokal passt, wenn …</h3><p>Dokumente das Haus nicht verlassen sollen (Berufsgeheimnis, Personal-, Patienten- oder Konstruktionsdaten), viele Nutzer dieselbe Installation teilen und feste statt nutzungsabhängiger Kosten gewünscht sind.</p></div>
+      <div class="card"><h3>Cloud passt, wenn …</h3><p>die stärksten verfügbaren Sprachmodelle gebraucht werden, kein eigener Betrieb und keine Hardware gewünscht sind, oder die Nutzerzahl stark schwankt. Bei wenigen Nutzern ist eine Lizenz je Nutzer meist günstiger (siehe Kostenbeispiel).</p></div>
+      <div class="card"><h3>Beides kombinieren</h3><p>Viele Organisationen trennen: Hochsensible Dokumente laufen lokal, weniger sensible Aufgaben mit hohem Anspruch an das Modell in einem kontrollierten Cloud-Zugang. Die Entscheidung trifft der Datenschutzbeauftragte, nicht diese Seite.</p></div>
+    </div>
+
+    <h2>Merkmale im Überblick</h2>
+    <p class="muted">Spalten sind Typen, keine Produkte. Aussagen zu Dritten sind allgemein gehalten und gelten je Produkt unterschiedlich; Aussagen zu SovereignMind beziehen sich auf die ausgelieferte Version.</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Merkmalstabelle, horizontal scrollbar">
+      <table>
+        <caption>Merkmalsvergleich nach Anbietertyp</caption>
+        <thead><tr><th scope="col">Merkmal</th><th scope="col">SovereignMind (lokal)</th><th scope="col">Cloud-Assistent mit Lizenz</th><th scope="col">Selbstgebauter Cloud-Chat</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Wo laufen Modell und Dokumente?</th><td class="ja">Auf eigener Hardware; keine Anbindung an Cloud-KI-Dienste</td><td>Beim Anbieter, Region je nach Vertrag</td><td>Im eigenen Cloud-Konto beim Anbieter</td></tr>
+          <tr><th scope="row">Betrieb ohne Internet</th><td class="teils">Teils: Offline-Installer und Lizenz ohne Lizenzserver; ein vollständiger Nachweis steht noch aus</td><td class="nein">Nein</td><td class="nein">Nein</td></tr>
+          <tr><th scope="row">Antworten mit Quellenbeleg</th><td class="ja">Ja, Verweis ins Originaldokument mit Vorschau</td><td>je Produkt verschieden</td><td>Muss gebaut werden</td></tr>
+          <tr><th scope="row">Deutsche Gesetze als Wissenspaket</th><td class="ja">Ja, Katalog zum Download</td><td>je Produkt verschieden</td><td>Muss gebaut werden</td></tr>
+          <tr><th scope="row">Nutzer, Rollen, Kategorien</th><td class="ja">Admin und Member, Kategorien</td><td>meist vorhanden</td><td>Muss gebaut werden</td></tr>
+          <tr><th scope="row">Anbindung interner Systeme</th><td class="ja">HTTP-Schnittstellen als Werkzeuge, Vorlagen</td><td>je Produkt verschieden</td><td>Muss gebaut werden</td></tr>
+          <tr><th scope="row">Sprache (Eingabe und Ausgabe)</th><td class="ja">Ja, lokal</td><td>je Produkt verschieden</td><td>Muss gebaut werden</td></tr>
+          <tr><th scope="row">Abrechnung</th><td>Hardware und Betrieb; Lizenzmodell offen</td><td>Je Nutzer und Monat</td><td>Dienstkosten, teils nach Verbrauch</td></tr>
+          <tr><th scope="row">Stärkste Sprachmodelle</th><td class="nein">Nein: lokale Open-Weight-Modelle, in Qualität und Tempo von der Hardware begrenzt</td><td class="ja">Ja</td><td class="ja">Ja</td></tr>
+          <tr><th scope="row">Eigener Betriebsaufwand</th><td class="teils">Ja: Hardware, Updates, Sicherung</td><td class="ja">Gering</td><td class="nein">Hoch: Bau und Wartung</td></tr>
+          <tr><th scope="row">Skalierung bei vielen gleichzeitigen Nutzern</th><td class="teils">An Hardware gebunden</td><td class="ja">Elastisch</td><td class="ja">Elastisch</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Kostenbeispiel</h2>
+    <p>Netto in Euro, einschließlich aller Einmalkosten (Hardware, Einrichtung), für das <strong>erste Jahr</strong> und über <strong>36 Monate</strong>. Annahmen: 20 Fragen je Nutzer und Arbeitstag, 220 Arbeitstage im Jahr, rund 6.000 Eingabe- und 500 Ausgabe-Tokens je Frage, Stundensatz 90 €, 1 US-Dollar = 0,90 €. Hardware und Strom für SovereignMind sind Schätzungen (eine Workstation mit Grafikkarte, bei 200 Nutzern mehrere Geräte), keine Messwerte. <strong>Arbeitszeit</strong> ist interne Zeit Ihrer Mitarbeiter (Einrichtung, Betrieb), bewertet mit dem Stundensatz, und steht bei jeder Zeile gesondert; für Cloud-Lizenzen sind 4 Stunden Einrichtung und 1 Stunde je Monat angesetzt (Nutzer, Rechte, Prüfungen). <strong>Eigenbetrieb</strong> rechnet Einrichtungs- und Betriebsstunden der eigenen IT; <strong>mit Dienstleister</strong> eine Spanne für Einrichtung und Wartungsvertrag.</p>
+    <div id="kosten-tabelle"><noscript><div class="note warn">Für das Kostenbeispiel wird JavaScript benötigt. Die Rohdaten stehen in der <a href="assets/kosten.json">kosten.json</a>.</div></noscript></div>
+    <p><strong>So lesen:</strong> Bei wenigen Nutzern ist eine Cloud-Lizenz günstiger; im ersten Jahr kommen bei SovereignMind Hardware und Einrichtung komplett dazu, deshalb ist lokal in diesem Beispiel erst ab etwa 100 Nutzern günstiger; über 36 Monate, in denen die Hardware genutzt wird, schon ab etwa 27 bis 36 Nutzern (jeweils ohne Lizenzgebühr für SovereignMind). Nicht in Geld umgerechnet sind Modellqualität, Support und der Aufwand für Datenschutz-Prüfungen. Bei den Büro-Suite-Zeilen fehlt die vorausgesetzte Basislizenz.</p>
+
+    <h3 class="sub">Eigene Rechnung</h3>
+    <form class="calc-form" id="calc-form" aria-label="Kostenrechner">
+      <div class="field"><label for="calc-n">Nutzer</label><input id="calc-n" type="number" inputmode="numeric" min="1" max="5000" step="1" value="25"></div>
+      <div class="field"><label for="calc-q">Fragen je Nutzer und Tag</label><input id="calc-q" type="number" inputmode="decimal" min="0" max="500" step="1" value="20"></div>
+      <div class="field"><label for="calc-l">Angenommene Lizenz je Nutzer und Monat (€)</label><input id="calc-l" type="number" inputmode="decimal" min="0" max="500" step="0.5" value="0"></div>
+    </form>
+    <div id="calc-out" role="status" aria-live="polite"></div>
+
+    <h2>Quellen und Stand</h2>
+    <p>Stand: <strong data-stand>–</strong>. Preise ändern sich; die Angaben der Hersteller gehen vor. Namen von Produkten werden hier bewusst nur als Typ geführt.</p>
+    <ul id="quellen-liste"></ul>
+    <p class="muted" style="margin-bottom:48px">Dies ist keine Rechts-, Steuer- oder Einkaufsberatung. Ob ein Cloud-Dienst für bestimmte Daten zulässig ist, klären Sie mit Ihrem Datenschutzbeauftragten.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span>
+      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+    </div>
+  </footer>
+  <script src="assets/vergleich.js" defer></script>
+</body>
+</html>

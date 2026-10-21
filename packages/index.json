@@ -1,0 +1,34 @@
+{
+  "packages": [
+    {
+      "slug": "bgb",
+      "version": "2026.10.16",
+      "name": "B\u00FCrgerliches Gesetzbuch",
+      "category": "Gesetze",
+      "sizeBytes": 17020175,
+      "sha256": "ed6c533ad8907324df644e2a0006f1d15d56663c5c23f2612c17739cdfd1b6b0",
+      "url": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/download/pkg-bgb-2026.10.16/bgb-2026.10.16.smpack",
+      "requiredFeature": null,
+      "description": "B\u00FCrgerliches Gesetzbuch (BGB) in der aktuellen amtlichen Fassung als durchsuchbares Wissenspaket.",
+      "source": "Bundesministerium der Justiz (gesetze-im-internet.de)",
+      "license": "amtliches Werk, gemeinfrei (\u00A7 5 UrhG)",
+      "priceText": null,
+      "withdrawn": false
+    },
+    {
+      "slug": "stvo",
+      "version": "2026.10.16",
+      "name": "Stra\u00DFenverkehrs-Ordnung",
+      "category": "Verordnungen",
+      "sizeBytes": 2052704,
+      "sha256": "cd5345255a0041f52dbdb0479648136fe4d849de9fe3fb38c450614bc7d3c9bb",
+      "url": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/download/pkg-stvo-2026.10.16/stvo-2026.10.16.smpack",
+      "requiredFeature": null,
+      "description": "Stra\u00DFenverkehrs-Ordnung (StVO) in der aktuellen amtlichen Fassung als durchsuchbares Wissenspaket.",
+      "source": "Bundesministerium der Justiz (gesetze-im-internet.de)",
+      "license": "amtliches Werk, gemeinfrei (\u00A7 5 UrhG)",
+      "priceText": null,
+      "withdrawn": false
+    }
+  ]
+}

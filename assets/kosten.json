@@ -1,0 +1,134 @@
+{
+  "stand": "2026-10-21",
+  "hinweis": "Alle Beträge in Euro, netto (ohne MwSt.), über die Zeiträume in 'zeitraeume'. Annahmen und Quellen stehen in Support/docs/vergleich/phase-6-quellen.md (Hauptrepo).",
+  "zeitraeume": [
+    12,
+    36
+  ],
+  "usd_eur": 0.9,
+  "nutzung": {
+    "fragen_pro_tag": 20,
+    "arbeitstage_jahr": 220,
+    "tokens_ein": 6000,
+    "tokens_aus": 500
+  },
+  "stundensatz": 90,
+  "hardware": [
+    {
+      "bis_nutzer": 5,
+      "euro": 1800
+    },
+    {
+      "bis_nutzer": 10,
+      "euro": 2500
+    },
+    {
+      "bis_nutzer": 50,
+      "euro": 6000
+    },
+    {
+      "bis_nutzer": 200,
+      "euro": 15000
+    }
+  ],
+  "szenarien": [
+    5,
+    10,
+    50,
+    200
+  ],
+  "sovereignmind": {
+    "strom_jahr": 400,
+    "eigenbetrieb": {
+      "einrichtung_stunden": 16,
+      "betrieb_stunden_monat": 3
+    },
+    "dienstleister": {
+      "einrichtung": [
+        3500,
+        9000
+      ],
+      "wartung_monat": [
+        350,
+        900
+      ]
+    },
+    "lizenz_nutzer_monat": 0
+  },
+  "anbieter": [
+    {
+      "id": "cloud-lizenz",
+      "typ": "US-Cloud-Assistent, Lizenz je Nutzer",
+      "preis_nutzer_monat": [
+        18,
+        22.5
+      ],
+      "quelle": "Q1",
+      "hinweis": "20 bis 25 US-Dollar je Nutzer und Monat (Jahres- bzw. Monatszahlung), umgerechnet."
+    },
+    {
+      "id": "copilot",
+      "typ": "Büro-Suite-Zusatz (Copilot-Typ), Lizenz je Nutzer",
+      "preis_nutzer_monat": [
+        15.6,
+        18.2
+      ],
+      "quelle": "Q2",
+      "hinweis": "Nur das KI-Zusatzpaket; eine passende Basislizenz der Büro-Suite wird vorausgesetzt und ist nicht eingerechnet."
+    },
+    {
+      "id": "eu-plattform",
+      "typ": "EU-Plattform, Lizenz je Nutzer",
+      "preis_nutzer_monat": [
+        20,
+        25
+      ],
+      "quelle": "Q3",
+      "hinweis": "Preis laut Anbieterseite, netto; Jahreszahlung 20 % günstiger."
+    }
+  ],
+  "azure_selbstbau": {
+    "typ": "Selbstgebauter Cloud-Chat (Azure OpenAI und Suchdienst)",
+    "suche_monat_usd": [
+      75,
+      250
+    ],
+    "hosting_monat_eur": [
+      50,
+      100
+    ],
+    "token_usd_je_million": {
+      "ein": 2,
+      "aus": 8
+    },
+    "einrichtung_stunden": 40,
+    "betrieb_stunden_monat": 3,
+    "quelle": "Q4"
+  },
+  "quellen": [
+    {
+      "id": "Q1",
+      "text": "Preisübersichten zu ChatGPT Business (Drittseiten, Oktober 2026); Anbieterseite war nicht abrufbar (HTTP 403).",
+      "belegt": "teilweise"
+    },
+    {
+      "id": "Q2",
+      "text": "Preisübersichten zu Microsoft 365 Copilot Business (Drittseiten, Oktober 2026); Anbieterseite nicht abrufbar. Aktionspreis befristet.",
+      "belegt": "teilweise"
+    },
+    {
+      "id": "Q3",
+      "text": "Langdock-Preisseite (langdock.com/de/pricing), abgerufen am 21.10.2026: Business 25 € je Nutzer, netto.",
+      "belegt": "ja"
+    },
+    {
+      "id": "Q4",
+      "text": "Azure-Preisseite zeigt keine Beträge; Stundensätze aus Drittseiten (Basic ca. 0,10 $/h, S1 ca. 0,34 $/h), Token-Preise GPT-4.1 (2 $/8 $ je Million) aus Drittseiten.",
+      "belegt": "teilweise"
+    }
+  ],
+  "verwaltung_lizenz": {
+    "einrichtung_stunden": 4,
+    "betrieb_stunden_monat": 1
+  }
+}

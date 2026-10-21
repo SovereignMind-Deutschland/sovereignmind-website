@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wissenspakete – SovereignMind</title>
+  <meta name="description" content="Katalog der SovereignMind-Wissenspakete: durchsuchen, filtern und herunterladen.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <nav class="main" aria-label="Hauptnavigation">
+        <a href="index.html#funktionen">Funktionen</a>
+        <a href="index.html#assistenten">Assistenten</a>
+        <a href="index.html#architektur">Architektur</a>
+        <a href="index.html#betrieb">Betrieb</a>
+        <a href="index.html#kontakt">Kontakt</a>
+        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+        <a aria-current="page" href="wissenspakete.html">Wissenspakete</a>
+        <a href="vergleich.html">Vergleich</a>
+        <a class="btn" href="download.html">Herunterladen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 style="margin-top:40px">Wissenspakete</h1>
+    <p>Fertige Wissensbestände für Ihre SovereignMind-Installation, zum Beispiel Gesetze und Verordnungen. Jedes Paket wird vor dem Import per Prüfsumme geprüft.</p>
+
+    <noscript>
+      <div class="note warn">Für den Katalog wird JavaScript benötigt. Die Rohdaten stehen in der <a href="packages/index.json">index.json</a>.</div>
+    </noscript>
+
+    <form class="pkg-controls" id="pkg-form" role="search" aria-label="Pakete durchsuchen" onsubmit="return false">
+      <div class="field">
+        <label for="pkg-q">Suche</label>
+        <input type="search" id="pkg-q" autocomplete="off" placeholder="Name, Kategorie oder Stichwort">
+      </div>
+      <div class="field">
+        <label for="pkg-cat">Kategorie</label>
+        <select id="pkg-cat"><option value="">Alle</option></select>
+      </div>
+      <div class="field">
+        <label for="pkg-sort">Sortierung</label>
+        <select id="pkg-sort">
+          <option value="name">Name</option>
+          <option value="version">Neueste Version</option>
+          <option value="size">Größe</option>
+        </select>
+      </div>
+    </form>
+
+    <p class="pkg-count" id="pkg-count" role="status" aria-live="polite"></p>
+    <div class="pkg-error note warn" id="pkg-error" role="alert" hidden>
+      Der Katalog konnte nicht geladen werden. Bitte Seite neu laden oder später erneut versuchen. Die Rohdaten stehen in der <a href="packages/index.json">index.json</a>.
+    </div>
+    <div class="pkg-empty" id="pkg-empty" hidden>
+      <p>Keine Pakete gefunden.</p>
+      <button type="button" class="btn secondary" id="pkg-reset">Filter zurücksetzen</button>
+    </div>
+    <div class="pkg-list" id="pkg-list"></div>
+
+    <h2>Paket in der App installieren</h2>
+    <p>Als Admin öffnen Sie <em>Admin &gt; Wissenspakete &gt; Paketkatalog</em>, wählen das Paket und klicken auf „Installieren“. Signatur und Prüfsumme werden automatisch kontrolliert.</p>
+
+    <h2>Datei manuell importieren (ohne Internet)</h2>
+    <p>Laden Sie die <code>.smpack</code>-Datei hier herunter, übertragen Sie sie auf den Server und importieren Sie sie unter <em>Admin &gt; Wissenspakete</em> per Dateiauswahl. Vergleichen Sie vorher die SHA-256-Prüfsumme aus der Paketkarte.</p>
+
+    <p class="muted" style="margin-bottom:48px">Hinweis: Der Katalog selbst kommt von dieser Seite. Die Paketdateien lädt Ihr Browser von GitHub (Release-Downloads); dabei wird Ihre IP-Adresse an GitHub übermittelt.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span>
+      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+    </div>
+  </footer>
+  <script src="assets/packages.js" defer></script>
+</body>
+</html>

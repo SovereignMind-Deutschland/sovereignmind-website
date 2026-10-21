@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Herunterladen – SovereignMind</title>
+  <meta name="description" content="SovereignMind installieren: Nativer Installer für Windows und Linux, ohne Docker.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <nav class="main" aria-label="Hauptnavigation">
+        <a href="index.html#funktionen">Funktionen</a>
+        <a href="index.html#assistenten">Assistenten</a>
+        <a href="index.html#architektur">Architektur</a>
+        <a href="index.html#betrieb">Betrieb</a>
+        <a href="index.html#kontakt">Kontakt</a>
+        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+        <a href="wissenspakete.html">Wissenspakete</a>
+        <a href="vergleich.html">Vergleich</a>
+        <a class="btn" aria-current="page" href="download.html">Herunterladen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 style="margin-top:40px">SovereignMind installieren</h1>
+    <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
+    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem.</p>
+    <p class="version" data-version hidden></p>
+    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Sobald er veröffentlicht ist, erscheinen hier der Link und die Prüfsummen.</p>
+
+    <div class="tabs" role="tablist" aria-label="Betriebssystem">
+      <button class="tab" role="tab" id="tab-windows" data-os="windows" aria-controls="panel-windows" aria-selected="false">Windows</button>
+      <button class="tab" role="tab" id="tab-linux" data-os="linux" aria-controls="panel-linux" aria-selected="false">Linux</button>
+    </div>
+
+    <!-- Windows -->
+    <div class="panel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
+      <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
+      <p>Die Datei <code>SovereignMind-Setup-&lt;Version&gt;.exe</code> (oder die Minimal-Variante, siehe unten) samt allen zugehörigen <code>…-N.bin</code>-Teilen aus dem Download-Ordner in einen Ordner laden und die <code>.exe</code> als Administrator ausführen.</p>
+      <h2 id="windows-variante">Welche Datei: voll oder minimal?</h2>
+      <div class="overflow">
+        <table>
+          <thead><tr><th></th><th>Voll</th><th>Minimal</th></tr></thead>
+          <tbody>
+            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td></tr>
+            <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td></tr>
+            <tr><td>Internet</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td></tr>
+            <tr><td>Wann</td><td>abgeschottete Netze</td><td>Rechner mit Internet, kleinerer Download</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Fehlt beim minimalen Installer das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich einen Hinweis mit der Schaltfläche „Jetzt laden“. Das größere 14B-Chat-Modell lädt der Admin bei Bedarf selbst (Admin-Bereich, Lokale Modelle).</p>
+      <h2 id="windows-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
+      <p>Die <strong>API-Variante</strong> (<code>SovereignMind-Setup-Api-&lt;Version&gt;.exe</code>) enthält Backend, Datenbank, Qdrant, Dokumenten- und Sprach-Worker und Ollama, aber <strong>keine Weboberfläche</strong>.
+        Sie ist für eigene Oberflächen und die Anbindung an Fachsysteme gedacht und lädt die Modelle wie der minimale Installer beim Installieren nach. Statt eines Browserlinks nennt das Setup die API-Adresse und legt
+        die Dokumentation der Endpunkte im Startmenü ab. Für Browser-Oberflächen auf anderer Adresse gibt es <code>/CORS=https://app.example</code>; Mandant und Admin lassen sich still mit
+        <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> anlegen. Beschreibung aller Endpunkte, Anmeldung und Beispiele:
+        <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
+      <h2>Voraussetzungen</h2>
+      <ul class="req">
+        <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
+        <li>Administratorrechte</li>
+        <li>Voller Installer: Ollama und die KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: Ollama ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
+        <li>Empfohlen: GPU mit ausreichend VRAM; ohne GPU läuft alles auf der CPU, deutlich langsamer.</li>
+        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+      </ul>
+      <div class="note">Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Hardware-Dashboard) ist im Setup als Aufgabe wählbar.</div>
+      <p>Bedienung nach der Installation: Die <strong>Tray-App „SovereignMind Control“</strong> im Infobereich der Taskleiste startet und stoppt alle Dienste,
+        zeigt den Status und öffnet die Weboberfläche. Sie startet auf Wunsch mit Windows.</p>
+    </div>
+
+    <!-- Linux -->
+    <div class="panel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux" hidden>
+      <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
+      <p>Der Linux-Installer ist <strong>eine Datei, ein Befehl</strong>: ein selbstentpackendes Bundle, das alle Pakete nacheinander installiert
+        und alles Entpackte am Ende wieder löscht. Das volle Bundle ist sehr groß und liegt deshalb im Download-Ordner in Teilen
+        (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile samt <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
+      <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
+      <h2 id="linux-variante">Minimal: kleiner Download, Modelle werden geladen</h2>
+      <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält Ollama, aber keine KI-Modelle.
+        Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>registry.ollama.ai</code> und <code>huggingface.co</code> müssen erreichbar sein) und zeigt dabei im Terminal den Fortschritt
+        („Modell 2 von 4: … 63&nbsp;%“). Für Rechner ohne Internet nehmen Sie das volle Bundle.</p>
+      <div class="cmd"><pre><code data-cmd="linux-minimal"></code></pre><button type="button" data-copy="linux-minimal">Kopieren</button></div>
+      <h2 id="linux-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
+      <p>Das <strong>API-Bundle</strong> (<code>sovereignmind-installer-api_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB) enthält alles wie das minimale Bundle, aber <strong>keine Weboberfläche</strong>: Es stellt nur die API bereit,
+        für eigene Oberflächen und die Anbindung an Fachsysteme. Die Modelle werden wie beim minimalen Bundle geladen. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
+        <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
+        <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online im Repository: <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
+      <div class="cmd"><pre><code data-cmd="linux-api"></code></pre><button type="button" data-copy="linux-api">Kopieren</button></div>
+      <p>Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.
+        <code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen.</p>
+      <p>Jede Zeile der Prüfsummen-Ausgabe muss auf <code>OK</code> enden. Wird ein USB-Stick oder ein eigener Download-Server genutzt, entfällt das Zusammenfügen.
+        Optionen wie <code>--accept-eula</code>, <code>--yes</code> oder <code>--port</code> zeigt <code>bash &lt;datei&gt;.run --help</code>.</p>
+      <h2>Voraussetzungen</h2>
+      <ul class="req">
+        <li>Ubuntu 24.04 oder Debian 12 (x64)</li>
+        <li><code>sudo</code>-Rechte</li>
+        <li>Platz, volles Bundle: ca. 13&nbsp;GB Download, 7,7&nbsp;GB (beim Update 13&nbsp;GB) vorübergehend unter <code>/var/tmp</code>, ca. 26&nbsp;GB installiert. Minimales Bundle: ca. 3&nbsp;GB Download, 2,3&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
+        <li>Ollama liefert der Installer mit, die KI-Modelle nur das volle Bundle; ein vorhandenes, älteres Ollama wird auf die mitgelieferte Version angehoben</li>
+        <li>Empfohlen: GPU mit ausreichend VRAM (NVIDIA oder AMD); sonst CPU, deutlich langsamer.</li>
+        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+      </ul>
+      <div class="note">Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</div>
+
+      <h2 id="kommando">Bedienung auf der Kommandozeile</h2>
+      <p>Unter Linux gibt es keine Tray-App. Stattdessen installiert das Paket das Kommando <code>sovereignmind</code> für die Alltagsaufgaben.
+        Befehle, die Rechte brauchen, rufen selbst <code>sudo</code> auf. Beispielausgabe: <a href="index.html#betrieb">Startseite</a>.</p>
+      <div class="overflow">
+        <table>
+          <thead><tr><th>Befehl</th><th>Wirkung</th></tr></thead>
+          <tbody>
+            <tr><td><code>sovereignmind open</code></td><td>Weboberfläche im Browser öffnen (ohne Desktop nur die Adresse)</td></tr>
+            <tr><td><code>sovereignmind status</code></td><td>Version, Adressen, Gesundheit, Dienste, Autostart, Ollama, Ordner; ohne root</td></tr>
+            <tr><td><code>sovereignmind url</code></td><td>Adresse lokal und im Netzwerk</td></tr>
+            <tr><td><code>sovereignmind start</code> / <code>stop</code></td><td>Alle Dienste starten bzw. stoppen</td></tr>
+            <tr><td><code>sovereignmind restart [backend]</code></td><td>Alle Dienste oder nur das Backend neu starten</td></tr>
+            <tr><td><code>sovereignmind autostart on|off</code></td><td>Start beim Hochfahren des Rechners</td></tr>
+            <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Protokoll von backend, postgres, qdrant, ingestion, voice oder ollama</td></tr>
+            <tr><td><code>sovereignmind lan on|off [IP]</code></td><td>Zugriff aus dem Netzwerk ein- bzw. ausschalten</td></tr>
+            <tr><td><code>sovereignmind backup</code></td><td>Sicherung jetzt starten</td></tr>
+            <tr><td><code>sovereignmind models [status|load]</code></td><td>Stand der KI-Modelle zeigen bzw. fehlende Modelle laden (minimale und API-Variante)</td></tr>
+            <tr><td><code>sovereignmind docs</code></td><td>Ort der Endpunkt-Dokumentation (API-Variante)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 id="demo">Demo (ohne Lizenz, 24 Stunden)</h2>
+    <p>Zum Ausprobieren braucht es <strong>keinen eigenen Installer</strong>. Nach der Installation fragt die App beim ersten Aufruf:
+      <strong>„Demo starten“</strong> oder <strong>„Mit Lizenz einrichten“</strong>. Die Demo läuft ohne Lizenzschlüssel, ist dieselbe Software mit festen
+      Einschränkungen und löscht sich selbst:</p>
+    <ul class="req">
+      <li><strong>24 Stunden:</strong> Es zählt die Betriebszeit der Dienste, spätestens 24 Stunden nach dem Start ist Schluss. Danach werden alle Daten gelöscht, auch die, die Sie in der Demo angelegt haben. Das Zurückstellen der Uhr verlängert die Frist nicht. Danach lässt sich eine neue Demo starten.</li>
+      <li><strong>Nur auf dem eigenen Rechner:</strong> Die Software erzwingt, dass die Demo ausschließlich über <code>http://localhost:5043</code> erreichbar ist, nicht im Netzwerk. Installieren Sie sie auf dem Rechner, an dem Sie sie ausprobieren.</li>
+      <li><strong>Zugangsdaten:</strong> Admin mit Passwort <code>sovereignmind</code>, Nutzer <code>test@sovereignmind.de</code> mit Passwort <code>sovereignmind</code>. Beide stehen auch auf der Anmeldeseite.</li>
+      <li><strong>Eingeschränkt:</strong> ein Sitzplatz (keine weiteren Nutzer), Passwörter und Lizenz nicht änderbar, Schnittstellen gesperrt, höchstens 50 Dokumente und 200&nbsp;MB, keine Sicherungen.</li>
+      <li><strong>Mit Schlüssel freischalten:</strong> Hat Ihnen der Anbieter ausdrücklich einen Lizenzschlüssel ausgestellt, schaltet er die Demo-Installation frei. Dabei wählen Sie, ob die Daten der Demo übernommen oder gelöscht werden. Eine zweite Installation oder ein Deinstallieren ist nicht nötig.</li>
+      <li>Gleiche Größe und gleiche Voraussetzungen wie oben (beim vollen Installer sind die Modelle enthalten, beim minimalen werden sie geladen).</li>
+    </ul>
+    <p>Installation und Download wie oben unter Windows bzw. Linux. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie zweimal: im Installer und in der App, beim Start der Demo bzw. bei der Einrichtung.</p>
+    <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
+
+    <h2 id="eula">Endnutzer-Lizenzvertrag</h2>
+    <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
+
+    <h2>Prüfsummen</h2>
+    <p>Neben den Downloads liegt <code>SHA256SUMS.txt</code>. Es gibt keine Code-Signatur; die Prüfsumme ist der einzige Echtheitsnachweis. Damit sie nicht nur im selben Ordner steht, nennt diese Seite die Summen der aktuellen Version:</p>
+    <div class="overflow" data-checksums hidden>
+      <table>
+        <thead><tr><th>Datei</th><th>SHA-256</th></tr></thead>
+        <tbody data-checksums-body></tbody>
+      </table>
+    </div>
+    <p data-checksums-link hidden><a href="#" rel="noopener" target="_blank">SHA256SUMS.txt öffnen</a></p>
+    <p>Vor der Installation vergleichen:</p>
+    <div class="cmd"><pre><code># Windows (PowerShell)
+(Get-FileHash .\SovereignMind-Setup-&lt;Version&gt;.exe -Algorithm SHA256).Hash   # bzw. SovereignMind-Setup-Minimal-&lt;Version&gt;.exe oder SovereignMind-Setup-Api-&lt;Version&gt;.exe
+# Linux (nach dem Zusammenfügen der Teile, prüft Teile und fertiges .run)
+sha256sum -c --ignore-missing SHA256SUMS.txt</code></pre></div>
+
+    <h2>Nach der Installation</h2>
+    <ol>
+      <li>App öffnen: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (der Port ist bei der Installation wählbar)</li>
+      <li>Beim ersten Aufruf zeigt die App eine Willkommensseite: <strong>„Demo starten“</strong> (ohne Schlüssel, 24 Stunden) oder <strong>„Mit Lizenz einrichten“</strong> (Lizenzschlüssel, Unternehmen und Admin-Passwort; die Aktivierung läuft offline).</li>
+      <li>Alles läuft als Dienst im Hintergrund und startet mit dem Rechner. Status und Steuerung: Tray-App (Windows) bzw. <code>sovereignmind status</code> (Linux).</li>
+    </ol>
+
+    <h2>Lizenz und Wissenspakete</h2>
+    <p>Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden; bitte nicht weitergeben.
+      Wissenspakete lädt der Admin direkt in der App unter „Wissenspakete“ herunter. Pakete mit Zusatzfunktion setzen eine passende Lizenz voraus.</p>
+
+    <h2>Update und Datensicherung</h2>
+    <p><strong>Update:</strong> neue Version des Installers ausführen: unter Windows das neue Setup, unter Linux das neue Bundle mit demselben Befehl wie bei der Installation (Teile vorher zusammenfügen). Daten, Schlüssel und Lizenz bleiben erhalten; vor dem Update wird ein Datenbank-Dump angelegt.</p>
+    <p><strong>Sicherung:</strong> Die tägliche Sicherung läuft automatisch. Wiederherstellung und Deinstallation beschreibt das Betreiber-Handbuch, das mit dem Anbieter-Support ausgeliefert wird.</p>
+
+    <p style="margin-bottom:48px">Bei Problemen bitte beim Anbieter melden und die Ausgabe des Installers mitschicken.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span>
+      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+    </div>
+  </footer>
+  <script src="assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SovereignMind – Präsentation</title>
+<meta name="description" content="Kurzvorstellung von SovereignMind: Problem, Lösung, Architektur, Funktionen, Tech-Stack und Geschäftsmodell.">
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<main id="stage">
+
+<!-- 1 Titel -->
+<section class="slide cover" data-title="SovereignMind">
+  <p class="eyebrow">On-Premise KI-Gateway für den DACH-Mittelstand</p>
+  <div class="cover-main">
+    <img src="../assets/logo-outline.svg" alt="SovereignMind Logo">
+    <div>
+      <h1>SovereignMind</h1>
+      <p class="lead">DSGVO-konformer RAG-Chat-Assistent, der komplett lokal beim Kunden läuft.</p>
+    </div>
+  </div>
+  <div class="pills"><span class="pill">Keine Cloud-API</span><span class="pill">Quellenbelege im Chat</span><span class="pill">Multi-Tenant</span></div>
+</section>
+
+<!-- 2 Problem -->
+<section class="slide" data-title="Ausgangslage">
+  <div class="head"><p class="eyebrow">Ausgangslage</p><h2>Sensible Dokumente gehören nicht in die US-Cloud</h2></div>
+  <p class="lead">Verträge, Handbücher, Personalakten: Firmen dürfen sie nicht an OpenAI oder Google geben. Ohne Alternative nutzen Mitarbeiter heimlich private ChatGPT-Accounts.</p>
+  <div class="row">
+    <div class="card"><h3>Kanzleien</h3><p>Mandantenakten unterliegen dem Berufsgeheimnis.</p></div>
+    <div class="card"><h3>Personal</h3><p>Bewerber- und Mitarbeiterdaten sind besonders sensibel.</p></div>
+    <div class="card"><h3>Gesundheit</h3><p>Patientendaten unterliegen strengen Schutzpflichten.</p></div>
+    <div class="card"><h3>Industrie</h3><p>Fertigungspläne und Betriebsgeheimnisse dürfen nicht abfließen.</p></div>
+  </div>
+</section>
+
+<!-- 3 Lösung -->
+<section class="slide statement" data-title="Die Lösung">
+  <p class="eyebrow">Die Lösung</p>
+  <h2>Kein Dokument, keine Anfrage verlässt das lokale Netz.</h2>
+  <p class="sub">Schlüsselfertig, selbst gehostet, auf der Hardware des Kunden.</p>
+</section>
+
+<!-- 4 Architektur -->
+<section class="slide" data-title="Architektur" style="gap:28px">
+  <div class="head"><p class="eyebrow">Architektur</p><h2>Ein Gateway, fünf lokale Dienste</h2></div>
+  <div class="stackcol">
+    <div class="box"><h3>Next.js Frontend</h3><p>Chat-UI mit Streaming (HTTP/SSE)</p></div>
+    <div class="arrow">↓</div>
+    <div class="box hi"><h3>C# Backend (Gateway)</h3><p>Auth/RBAC, Lizenz, Tenants, RAG-Orchestrierung</p></div>
+    <div class="arrow">↓</div>
+  </div>
+  <div class="row">
+    <div class="card tight"><h3>Inferenz</h3><p>Ollama, nativ auf dem Host</p></div>
+    <div class="card tight"><h3>Qdrant</h3><p>Vektorsuche</p></div>
+    <div class="card tight"><h3>Ingestion</h3><p>Docling (Python)</p></div>
+    <div class="card tight"><h3>Voice</h3><p>faster-whisper, Qwen3-TTS</p></div>
+    <div class="card tight"><h3>PostgreSQL</h3><p>Tenants, Nutzer, Dokumente, Lizenz</p></div>
+  </div>
+</section>
+
+<!-- 5 Datenflüsse -->
+<section class="slide alt" data-title="Datenflüsse">
+  <div class="head"><p class="eyebrow">Datenflüsse</p><h2>Vom Dokument zur belegten Antwort</h2></div>
+  <div class="row">
+    <div class="card"><p class="num sm">1</p><h3 class="w">Ingestion</h3><p>Upload, Parsing mit Docling, Chunking, Embedding, Speichern in Qdrant. Duplikate erkennt ein Inhalts-Hash.</p></div>
+    <div class="card"><p class="num sm">2</p><h3 class="w">Query</h3><p>Frage embedden, Qdrant-Suche, Prompt mit Treffern, Streaming-Antwort auf Deutsch mit klickbaren Quellenzitaten.</p></div>
+    <div class="card"><p class="num sm">3</p><h3 class="w">Sprache</h3><p>Diktat per faster-whisper ins Eingabefeld, Antworten per Qwen3-TTS vorlesen.</p></div>
+  </div>
+</section>
+
+<!-- 6 Funktionen -->
+<section class="slide" data-title="Funktionen" style="gap:32px">
+  <div class="head"><p class="eyebrow">Funktionen</p><h2>Mehr als ein Chatfenster</h2></div>
+  <div class="row">
+    <div class="card"><h3>Gesprächsverlauf</h3><p>Folgefragen werden vor der Suche zu eigenständigen Anfragen umformuliert.</p></div>
+    <div class="card"><h3>Assistenten</h3><p>Rolle, Persönlichkeit, Avatar, Stimme, Kategorie-Filter und Schnittstellen pro Assistent.</p></div>
+    <div class="card"><h3>Prompt-Bibliothek</h3><p>Wiederverwendbare Vorlagen, direkt im Chat wählbar.</p></div>
+  </div>
+  <div class="row">
+    <div class="card"><h3>Schnittstellen</h3><p>Das Modell ruft interne HTTP-Systeme und Anbieter-APIs selbst auf.</p></div>
+    <div class="card"><h3>Chat-Uploads</h3><p>Dateien in einer Konversation durchsuchen, ohne sie dauerhaft abzulegen.</p></div>
+    <div class="card"><h3>Sprache</h3><p>Diktat und Vorlesen mit mehreren Stimmen, pro Tenant freigeschaltet.</p></div>
+  </div>
+</section>
+
+<!-- 7 Assistenten -->
+<section class="slide alt" data-title="Assistenten">
+  <div class="head"><p class="eyebrow">Assistenten</p><h2>Jeder Assistent mit Rolle, Charakter und Gesicht</h2></div>
+  <div class="row">
+    <div class="card"><h3>Rolle</h3><p>Die Fachanweisung, z. B. „Vertragsprüfer“. Ein Assistent hat höchstens eine Rolle.</p></div>
+    <div class="card"><h3>Persönlichkeit</h3><p>Ton und Charakter, Anzeigename und Zusatzanweisung. Mitgeliefert: Clara, Jonas, Sam, Robin.</p></div>
+    <div class="card"><h3>Avatar</h3><p>20 Vorlagen oder eigenes Bild, im Chat mit Hinweis „KI-Assistent“.</p></div>
+    <div class="card"><h3>Wissen &amp; Werkzeuge</h3><p>Kategorien als Wissensbasis, Schnittstellen als Werkzeuge, eigene Stimme.</p></div>
+  </div>
+</section>
+
+<!-- 8 Schnittstellen -->
+<section class="slide" data-title="Schnittstellen">
+  <div class="head"><p class="eyebrow">Schnittstellen</p><h2>Anbindung per API, vom Modell selbst aufgerufen</h2></div>
+  <div class="row">
+    <div class="card" style="gap:20px;padding:48px"><p class="tag">Anbieter-Vorlagen</p><h3 class="big">Fertig konfiguriert</h3>
+      <ul><li>HubSpot, Zendesk, Stripe, Notion, Jira Cloud</li><li>Hero (Handwerkersoftware)</li><li>Microsoft 365 mit OAuth2</li><li>Alle nur lesend</li></ul></div>
+    <div class="card" style="gap:20px;padding:48px"><p class="tag">Eigene Systeme</p><h3 class="big">DMS, ERP, Fachdatenbanken</h3>
+      <ul><li>Generische Gerüste für Suche, Termine, Tickets</li><li>Aufrufe als aufklappbare Karte im Chat</li><li>Secrets verschlüsselt, Ziel-Hosts per Allowlist</li></ul></div>
+  </div>
+</section>
+
+<!-- 9 Stimmen -->
+<section class="slide alt" data-title="Stimmen">
+  <div class="head"><p class="eyebrow">Stimmen</p><h2>Vorlesen und Diktat, komplett lokal</h2></div>
+  <div class="row">
+    <div class="card"><p class="num sm">3</p><h3 class="w">Stimmen</h3><p>Ramona (Standard), Karlsson und Thorsten. Neue Stimmen sind kleine Artefakte von ca. 45 KB.</p></div>
+    <div class="card"><p class="num sm">GPU</p><h3 class="w">Qwen3-TTS</h3><p>Natürliche Stimmen, mit GPU zügig, ohne GPU langsamer auf der CPU.</p></div>
+    <div class="card"><h3>Pro Assistent</h3><p>Der Admin weist jedem Assistenten eine Stimme zu. Mitglieder wählen Standard, Assistent oder eigene Stimme.</p></div>
+    <div class="card"><h3>Diktat</h3><p>faster-whisper schreibt die Sprache direkt ins Eingabefeld.</p></div>
+  </div>
+</section>
+
+<!-- Erweiterungen -->
+<section class="slide alt" data-title="Erweiterungen">
+  <div class="head"><p class="eyebrow">Erweiterungen</p><h2>Wissenspakete, Themes und Support</h2></div>
+  <div class="row">
+    <div class="card"><h3>Wissenspakete</h3><p>Vorverarbeitete Gesetze und Regelwerke als Pakete. Der Admin installiert sie aus dem Katalog oder importiert eine Datei.</p></div>
+    <div class="card"><h3>Themes</h3><p>Jeder Nutzer wählt Stil, Hell oder Dunkel und Akzentfarbe. Das Unternehmen kann eine Akzentfarbe vorgeben.</p></div>
+    <div class="card"><h3>Support</h3><p>Nutzer schreiben dem Admin über ein Kontaktformular, der Admin sieht Posteingang und Diagnose.</p></div>
+  </div>
+</section>
+
+<!-- 8 Betrieb -->
+<section class="slide" data-title="Betrieb">
+  <div class="head"><p class="eyebrow">Betrieb</p><h2>Verwaltung für Admins</h2></div>
+  <div class="row">
+    <div class="card"><h3>Multi-Tenant</h3><p>Eigenes Branding je Unternehmen, Rollen Admin und Member, Lizenz als signiertes Token.</p></div>
+    <div class="card"><h3>Dokumente</h3><p>Kategorien und Verarbeitungsstatus pro Dokument, Sprung vom Fehler zum Log-Eintrag.</p></div>
+    <div class="card"><h3>Hardware</h3><p>Dashboard für CPU, RAM, GPU und Temperatur; unter Windows mit Companion-Agent.</p></div>
+    <div class="card"><h3>Statistik</h3><p>Anonyme Nutzungsdaten mit CSV-Export, Log-Ansicht mit Aufbewahrung.</p></div>
+  </div>
+</section>
+
+<!-- 9 Tech-Stack -->
+<section class="slide alt" data-title="Tech-Stack" style="gap:36px">
+  <div class="head"><p class="eyebrow">Tech-Stack</p><h2>Bewährte Bausteine</h2></div>
+  <table class="t">
+    <tr><th>Layer</th><th>Wahl</th><th>Warum</th></tr>
+    <tr><td>Frontend</td><td>Next.js / React</td><td>Chat-UI mit Streaming</td></tr>
+    <tr><td>Backend</td><td>C# ASP.NET Core, MediatR</td><td>Gateway, Auth/RBAC, Multi-Tenant</td></tr>
+    <tr><td>Persistenz</td><td>PostgreSQL (EF Core)</td><td>Zugangsdaten werden automatisch erzeugt</td></tr>
+    <tr><td>Vektor-DB</td><td>Qdrant</td><td>Guter .NET-Client, REST/gRPC</td></tr>
+    <tr><td>Parsing</td><td>Docling (Python)</td><td>Air-Gapped-fähig, Modelle vorgeladen</td></tr>
+    <tr><td>Inferenz</td><td>Ollama (nativ)</td><td>Nutzt die GPU über den Host-Treiber</td></tr>
+    <tr><td>Voice</td><td>faster-whisper, Qwen3-TTS</td><td>Diktat und Vorlesen lokal, Freigabe pro Tenant</td></tr>
+    <tr><td>Lizenz</td><td>Signierte JWE-Tokens</td><td>Offline-Prüfung, kein Lizenzserver</td></tr>
+    <tr><td>Deployment</td><td>Nativer Installer</td><td>Windows-Setup und Linux-.deb, kein Docker</td></tr>
+  </table>
+</section>
+
+<!-- 10 Inferenz -->
+<section class="slide" data-title="Inferenz">
+  <div class="head"><p class="eyebrow">Inferenz</p><h2>Ollama läuft nativ auf dem Host</h2></div>
+  <div class="row">
+    <div class="card" style="gap:20px;padding:48px"><p class="tag">Warum nativ</p><h3 class="big">Direkt auf der GPU</h3>
+      <ul><li>Kein Container, kein GPU-Passthrough</li><li>NVIDIA und AMD über den Host-Treiber</li><li>Ohne GPU läuft alles auf der CPU</li></ul></div>
+    <div class="card" style="gap:20px;padding:48px"><p class="tag">Im Betrieb</p><h3 class="big">Modelle im Griff</h3>
+      <ul><li>Der Installer liefert Ollama und die Modelle mit</li><li>Mehrere Modelle vorhalten, Live-Modellwechsel</li><li>Auswahl nach VRAM, Wechsel durch den Admin</li></ul></div>
+  </div>
+</section>
+
+<!-- 11 Modelle -->
+<section class="slide alt" data-title="Modelle">
+  <div class="head"><p class="eyebrow">Modelle</p><h2>Die Modellwahl richtet sich nach dem VRAM</h2></div>
+  <div class="row">
+    <div class="card" style="gap:12px"><p class="num">14B</p><h3 class="w">Qwen2.5-Instruct</h3><p>Bei ausreichend VRAM, Q4_K_M, gutes Deutsch.</p></div>
+    <div class="card" style="gap:12px"><p class="num">7B</p><h3 class="w">Qwen2.5-Instruct</h3><p>Bei wenig VRAM, gleiche Quantisierung.</p></div>
+    <div class="card" style="gap:12px"><p class="num">bge-m3</p><h3 class="w">Embeddings</h3><p>Multilingual, eigener Tokenizer fürs Chunking.</p></div>
+  </div>
+  <p class="lead" style="font-size:32px">Der Katalog liegt in <b style="color:var(--accent-hi)">models.json</b>. Neue Modelle kommen ohne Image-Rebuild dazu, der Admin lädt sie im Tab „Lokale Modelle“.</p>
+</section>
+
+<!-- 12 Qualität -->
+<section class="slide" data-title="Qualität">
+  <div class="head"><p class="eyebrow">Qualität</p><h2>Prüfung bei jedem Push</h2></div>
+  <div class="row">
+    <div class="card"><h3>Quality Gate</h3><p>Bei Pull Request und Push auf main laufen Backend-Tests mit Coverage-Gate, beide Frontends und die Python-Worker.</p></div>
+    <div class="card"><h3>E2E-Tests</h3><p>Playwright-Tests gegen den vollständigen Stack, lokal ausgeführt.</p></div>
+    <div class="card"><h3>Releases</h3><p>Windows-Setup und Linux-.deb entstehen per Workflow als Release-Assets. Es werden keine Docker-Images veröffentlicht.</p></div>
+  </div>
+</section>
+
+<!-- 13 Geschäftsmodell -->
+<section class="slide alt" data-title="Geschäftsmodell">
+  <div class="head"><p class="eyebrow">Geschäftsmodell</p><h2>Als Produkt für KMUs mit Datenschutzauflagen</h2></div>
+  <div class="row">
+    <div class="card"><h3>Einrichtung</h3><p>Einmalige Gebühr für Installation und Anbindung beim Kunden.</p></div>
+    <div class="card"><h3>Wartung</h3><p>Monatlicher Wartungsvertrag, gesteuert über die Laufzeit der Lizenz.</p></div>
+    <div class="card"><h3>Installer</h3><p>Nativer Installer für Windows und Linux, ohne Docker. Aktivierung offline per E-Mail und Token.</p></div>
+  </div>
+</section>
+
+<!-- 14 Ausprobieren -->
+<section class="slide" data-title="Ausprobieren">
+  <div class="head"><p class="eyebrow">Ausprobieren</p><h2>Demo per Klick, ohne Lizenzschlüssel</h2></div>
+  <div class="row">
+    <div class="card"><h3>Eine Software</h3><p>Beim ersten Start wählen: „Demo starten“ oder „Mit Lizenz einrichten“. Ein Schlüssel schaltet die Demo später frei.</p></div>
+    <div class="card"><h3>24 Stunden, lokal</h3><p>Ein Sitzplatz, nur auf dem eigenen Rechner (von der Software erzwungen). Danach werden alle Daten gelöscht; eine neue Demo ist möglich.</p></div>
+    <div class="card"><h3>Stand</h3><p>Entwurf: derzeit ausschließlich als Demo bereitgestellt. Ob und wann offizielle Lizenzen angeboten werden, ist offen.</p></div>
+  </div>
+</section>
+
+<!-- 15 Abschluss -->
+<section class="slide statement split" data-title="Zusammenfassung">
+  <p class="eyebrow">Zusammenfassung</p>
+  <div class="stmt-body">
+    <h2>Datenhoheit als Produkt</h2>
+    <ul><li>RAG-Chat mit Quellenbelegen, komplett lokal</li><li>Konfigurierbare Assistenten mit Avatar und Stimme, API-Anbindung</li><li>Multi-Tenant, Rollen, Offline-Lizenz, Admin-Bereich</li><li>Funktional umgesetzt, nativer Installer für Windows und Linux</li></ul>
+  </div>
+  <div class="end-foot"><span>SovereignMind · On-Premise KI-Gateway für den DACH-Mittelstand</span><img src="../assets/logo.svg" alt=""></div>
+</section>
+
+</main>
+<nav class="ctl" aria-label="Foliensteuerung">
+  <a id="exit" href="../index.html">← Zur Seite</a>
+  <button id="prev" type="button">← Zurück</button>
+  <span id="status" aria-live="polite"></span>
+  <button id="next" type="button">Weiter →</button>
+  <select id="picker" aria-label="Folie wählen"></select>
+  <button id="full" type="button">Vollbild</button>
+</nav>
+<script src="site.js"></script>
+</body>
+</html>
