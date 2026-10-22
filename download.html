@@ -42,23 +42,28 @@
     <!-- Windows -->
     <div class="panel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
       <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
-      <p>Die Datei <code>SovereignMind-Setup-&lt;Version&gt;.exe</code> (oder die Minimal-Variante, siehe unten) samt allen zugehörigen <code>…-N.bin</code>-Teilen aus dem Download-Ordner in einen Ordner laden und die <code>.exe</code> als Administrator ausführen.</p>
-      <h2 id="windows-variante">Welche Datei: voll oder minimal?</h2>
+      <p>Die Datei <code>SovereignMind-Setup-&lt;Version&gt;.exe</code> (oder eine der anderen Varianten, siehe unten) samt allen zugehörigen <code>…-N.bin</code>-Teilen aus dem Download-Ordner in einen Ordner laden und die <code>.exe</code> als Administrator ausführen.</p>
+      <h2 id="windows-variante">Welche Datei?</h2>
+      <p>Zwei Fragen entscheiden: <strong>Müssen die KI-Modelle offline im Installer sein?</strong> (abgeschottetes Netz: ja) und <strong>Brauchen Sie die Weboberfläche?</strong>
+        (eigenes Frontend oder reine Anbindung an Fachsysteme: nein).</p>
       <div class="overflow">
         <table>
-          <thead><tr><th></th><th>Voll</th><th>Minimal</th></tr></thead>
+          <thead><tr><th></th><th>Voll</th><th>Voll ohne Oberfläche</th><th>Minimal</th><th>API (minimal ohne Oberfläche)</th></tr></thead>
           <tbody>
-            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td></tr>
-            <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td></tr>
-            <tr><td>Internet</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td></tr>
-            <tr><td>Wann</td><td>abgeschottete Netze</td><td>Rechner mit Internet, kleinerer Download</td></tr>
+            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Api-&lt;Version&gt;.exe</code></td></tr>
+            <tr><td>Weboberfläche</td><td>ja</td><td>nein</td><td>ja</td><td>nein</td></tr>
+            <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td><td>wie Minimal</td></tr>
+            <tr><td>Internet</td><td>nicht nötig</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td><td>wie Minimal</td></tr>
+            <tr><td>Wann</td><td>abgeschottete Netze, Arbeit im Browser</td><td>abgeschottete Netze, eigene Oberfläche oder Fachsystem-Anbindung</td><td>Rechner mit Internet, kleinerer Download</td><td>Rechner mit Internet, eigene Oberfläche oder Fachsystem-Anbindung</td></tr>
           </tbody>
         </table>
       </div>
+      <p>Die Varianten mit Modellen (Voll, Voll ohne Oberfläche) setzen die Hugging-Face-Zugriffe der Worker auf „offline“: Die Dokumenten- und Sprachmodelle kommen aus dem Installer, die Worker brauchen im Betrieb keine Verbindung nach außen.
+        Die Sprachausgabe läuft standardmäßig auf der CPU. Wer sie auf der Grafikkarte betreiben möchte, wählt das im Admin-Bereich unter „Voice“; die dafür nötige GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf aus dem Internet nach.</p>
       <p>Fehlt beim minimalen Installer das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich einen Hinweis mit der Schaltfläche „Jetzt laden“. Das größere 14B-Chat-Modell lädt der Admin bei Bedarf selbst (Admin-Bereich, Lokale Modelle).</p>
       <h2 id="windows-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
       <p>Die <strong>API-Variante</strong> (<code>SovereignMind-Setup-Api-&lt;Version&gt;.exe</code>) enthält Backend, Datenbank, Qdrant, Dokumenten- und Sprach-Worker und Ollama, aber <strong>keine Weboberfläche</strong>.
-        Sie ist für eigene Oberflächen und die Anbindung an Fachsysteme gedacht und lädt die Modelle wie der minimale Installer beim Installieren nach. Statt eines Browserlinks nennt das Setup die API-Adresse und legt
+        Sie ist für eigene Oberflächen und die Anbindung an Fachsysteme gedacht und lädt die Modelle wie der minimale Installer beim Installieren nach. Wer die Modelle im Installer braucht, nimmt <code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code> (gleiche Ausstattung, aber alle Modelle enthalten, kein Internet nötig). Statt eines Browserlinks nennt das Setup die API-Adresse und legt
         die Dokumentation der Endpunkte im Startmenü ab. Für Browser-Oberflächen auf anderer Adresse gibt es <code>/CORS=https://app.example</code>; Mandant und Admin lassen sich still mit
         <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> anlegen. Beschreibung aller Endpunkte, Anmeldung und Beispiele:
         <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
@@ -66,8 +71,8 @@
       <ul class="req">
         <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
         <li>Administratorrechte</li>
-        <li>Voller Installer: Ollama und die KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: Ollama ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
-        <li>Empfohlen: GPU mit ausreichend VRAM; ohne GPU läuft alles auf der CPU, deutlich langsamer.</li>
+        <li>Voller Installer (auch ohne Oberfläche): Ollama und die KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: Ollama ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
+        <li>Mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM; ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Hardware-Dashboard) ist im Setup als Aufgabe wählbar.</div>
@@ -82,6 +87,9 @@
         und alles Entpackte am Ende wieder löscht. Das volle Bundle ist sehr groß und liegt deshalb im Download-Ordner in Teilen
         (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile samt <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
       <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
+      <p>Vier Bundles, zwei Fragen: Modelle offline im Bundle (<code>sovereignmind-installer_…</code> und <code>sovereignmind-installer-full-api_…</code>) oder beim Installieren geladen
+        (<code>…-minimal_…</code> und <code>…-api_…</code>); mit Weboberfläche (<code>sovereignmind-installer_…</code>, <code>…-minimal_…</code>) oder ohne (<code>…-full-api_…</code>, <code>…-api_…</code>).
+        Die Varianten mit Modellen setzen <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
       <h2 id="linux-variante">Minimal: kleiner Download, Modelle werden geladen</h2>
       <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält Ollama, aber keine KI-Modelle.
         Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>registry.ollama.ai</code> und <code>huggingface.co</code> müssen erreichbar sein) und zeigt dabei im Terminal den Fortschritt
@@ -93,6 +101,10 @@
         <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
         <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online im Repository: <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
       <div class="cmd"><pre><code data-cmd="linux-api"></code></pre><button type="button" data-copy="linux-api">Kopieren</button></div>
+      <h2 id="linux-full-api">Voll ohne Weboberfläche: alle Modelle im Bundle, nur API</h2>
+      <p>Das Bundle <code>sovereignmind-installer-full-api_&lt;Version&gt;_amd64.run</code> enthält alle KI-Modelle wie das volle Bundle, aber <strong>keine Weboberfläche</strong>. Es ist für abgeschottete Netze gedacht, in denen
+        eigene Oberflächen oder Fachsysteme die API nutzen. Optionen und Dokumentation wie beim API-Bundle; <code>--no-models</code> und <code>--strict</code> gelten hier nicht, weil nichts nachgeladen wird.</p>
+      <div class="cmd"><pre><code data-cmd="linux-full-api"></code></pre><button type="button" data-copy="linux-full-api">Kopieren</button></div>
       <p>Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.
         <code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen.</p>
       <p>Jede Zeile der Prüfsummen-Ausgabe muss auf <code>OK</code> enden. Wird ein USB-Stick oder ein eigener Download-Server genutzt, entfällt das Zusammenfügen.
@@ -103,7 +115,7 @@
         <li><code>sudo</code>-Rechte</li>
         <li>Platz, volles Bundle: ca. 13&nbsp;GB Download, 7,7&nbsp;GB (beim Update 13&nbsp;GB) vorübergehend unter <code>/var/tmp</code>, ca. 26&nbsp;GB installiert. Minimales Bundle: ca. 3&nbsp;GB Download, 2,3&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
         <li>Ollama liefert der Installer mit, die KI-Modelle nur das volle Bundle; ein vorhandenes, älteres Ollama wird auf die mitgelieferte Version angehoben</li>
-        <li>Empfohlen: GPU mit ausreichend VRAM (NVIDIA oder AMD); sonst CPU, deutlich langsamer.</li>
+        <li>Mindestens 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM; sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</div>
@@ -160,7 +172,7 @@
     <p data-checksums-link hidden><a href="#" rel="noopener" target="_blank">SHA256SUMS.txt öffnen</a></p>
     <p>Vor der Installation vergleichen:</p>
     <div class="cmd"><pre><code># Windows (PowerShell)
-(Get-FileHash .\SovereignMind-Setup-&lt;Version&gt;.exe -Algorithm SHA256).Hash   # bzw. SovereignMind-Setup-Minimal-&lt;Version&gt;.exe oder SovereignMind-Setup-Api-&lt;Version&gt;.exe
+(Get-FileHash .\SovereignMind-Setup-&lt;Version&gt;.exe -Algorithm SHA256).Hash   # bzw. SovereignMind-Setup-Full-Api-, -Minimal- oder -Api-&lt;Version&gt;.exe
 # Linux (nach dem Zusammenfügen der Teile, prüft Teile und fertiges .run)
 sha256sum -c --ignore-missing SHA256SUMS.txt</code></pre></div>
 

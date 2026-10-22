@@ -18,7 +18,7 @@ python3 -m http.server 8080   # im Repo-Ordner, dann http://localhost:8080
 
 ## Impressum und Datenschutz (Anbieterdaten)
 
-`impressum.html` und `datenschutz.html` enthalten nur Platzhalter (`{{PROVIDER_NAME}}`, `{{PROVIDER_STREET}}`, `{{PROVIDER_CITY}}`, `{{PROVIDER_EMAIL}}`, `{{PROVIDER_PHONE}}`, `{{PROVIDER_VAT_ID}}`). Die Anschrift steht nicht im Repo: `pages.yml` setzt sie mit `scripts/render-provider.py` aus den Actions-**Variablen** der Organisation (nicht Secrets) in eine Kopie ein und bricht ab, wenn ein Pflichtwert (Name, Straße, Ort, E-Mail) fehlt. Lokal zeigt die Seite die Platzhalter; für eine Vorschau mit Testwerten in einer Kopie: `python3 scripts/render-provider.py --test-values <kopie>/impressum.html <kopie>/datenschutz.html`.
+`index.html` (Kontakt), `impressum.html` und `datenschutz.html` enthalten nur Platzhalter (`{{PROVIDER_NAME}}`, `{{PROVIDER_STREET}}`, `{{PROVIDER_CITY}}`, `{{PROVIDER_EMAIL}}`, `{{PROVIDER_PHONE}}`, `{{PROVIDER_VAT_ID}}`). Die Anschrift steht nicht im Repo: `pages.yml` setzt sie mit `scripts/render-provider.py` aus den Actions-**Variablen** der Organisation (nicht Secrets) in eine Kopie ein und bricht ab, wenn ein Pflichtwert (Name, Straße, Ort, E-Mail) fehlt. Lokal zeigt die Seite die Platzhalter; für eine Vorschau mit Testwerten in einer Kopie: `python3 scripts/render-provider.py --test-values <kopie>/index.html <kopie>/impressum.html <kopie>/datenschutz.html`.
 
 ## Pflege
 

@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir _site
           tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts -cf - . | tar -xf - -C _site
-          python3 scripts/render-provider.py _site/impressum.html _site/datenschutz.html
+          python3 scripts/render-provider.py _site/index.html _site/impressum.html _site/datenschutz.html
           if grep -rn '{{' _site/*.html; then echo "Platzhalter-Reste auf der Seite" >&2; exit 1; fi
       - uses: actions/upload-pages-artifact@v3
         with:
