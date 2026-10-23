@@ -33,12 +33,11 @@ node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeit
 
 - **Vergleichsseite:** Preise und Annahmen nur in `assets/kosten.json` (Stand-Datum wird daraus angezeigt), quartalsweise gegen die Anbieterseiten prüfen; danach im Hauptprojekt `python3 Support/docs/vergleich/kostenmodell.py` und `node Support/docs/vergleich/test-vergleich.mjs` ausführen.
 
-- **Version, Download-Ordner, Prüfsummen:** nur in `assets/downloads.json` (von Hand pflegen, sonst zeigt die Seite die alte Version):
-  `version`, `driveFolderUrl` (Freigabe „Jeder mit dem Link“, nur ansehen; muss mit `https://` beginnen), `checksumsUrl` (Link auf
-  `SHA256SUMS.txt` im Ordner, optional) und `sha256` (Objekt Dateiname → SHA-256 der aktuellen Version, werden als Tabelle gezeigt).
+- **Version, Download-Ordner:** nur in `assets/downloads.json` (von Hand pflegen, sonst zeigt die Seite die alte Version; Prüfsummen werden derzeit bewusst nicht veröffentlicht):
+  `version`, `driveFolderUrl` (Freigabe „Jeder mit dem Link“, nur ansehen; muss mit `https://` beginnen).
   Fehlt die Datei oder der Ordner-Link, blenden die Knöpfe sich aus und ein Hinweis steht da. Das ist der letzte Schritt des
   Release-Ablaufs (`docs/installer-lokal-bauen.md` im Hauptprojekt). Dort liegen auch die Dateien: Windows-Setup (`.exe` plus `-N.bin`),
-  Linux-Bundle (`sovereignmind-installer_<Version>_amd64.run.partNN`), `SHA256SUMS.txt`. Der Linux-Befehl steht in `assets/app.js`
+  Linux-Bundle (`sovereignmind-installer_<Version>_amd64.run.partNN`). Der Linux-Befehl steht in `assets/app.js`
   (`COMMANDS`, `<Version>` wird aus `downloads.json` eingesetzt); mit dem README des Installer-Repos abgleichen.
 - **Demo:** Es gibt nur **eine** Software und einen Installer. Der Abschnitt `#demo` in `download.html` beschreibt, was beim ersten Start
   zur Wahl steht („Demo starten“ oder „Mit Lizenz einrichten“), die Grenzen (24 Stunden, ein Sitzplatz, nur localhost, Löschung, Neustart

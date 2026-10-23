@@ -33,7 +33,7 @@
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
     <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem.</p>
     <p class="version" data-version hidden></p>
-    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Sobald er veröffentlicht ist, erscheinen hier der Link und die Prüfsummen.</p>
+    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Sobald er veröffentlicht ist, erscheint hier der Link.</p>
 
     <div class="tabs" role="tablist" aria-label="Betriebssystem">
       <button class="tab" role="tab" id="tab-windows" data-os="windows" aria-controls="panel-windows" aria-selected="false">Windows</button>
@@ -86,7 +86,7 @@
       <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
       <p>Der Linux-Installer ist <strong>eine Datei, ein Befehl</strong>: ein selbstentpackendes Bundle, das alle Pakete nacheinander installiert
         und alles Entpackte am Ende wieder löscht. Das volle Bundle ist sehr groß und liegt deshalb im Download-Ordner in Teilen
-        (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile samt <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
+        (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile in einen Ordner laden und dort ausführen:</p>
       <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
       <p>Vier Bundles, zwei Fragen: Modelle offline im Bundle (<code>sovereignmind-installer_…</code> und <code>sovereignmind-installer-full-api_…</code>) oder beim Installieren geladen
         (<code>…-minimal_…</code> und <code>…-api_…</code>); mit Weboberfläche (<code>sovereignmind-installer_…</code>, <code>…-minimal_…</code>) oder ohne (<code>…-full-api_…</code>, <code>…-api_…</code>).
@@ -108,7 +108,7 @@
       <div class="cmd"><pre><code data-cmd="linux-full-api"></code></pre><button type="button" data-copy="linux-full-api">Kopieren</button></div>
       <p>Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.
         <code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen.</p>
-      <p>Jede Zeile der Prüfsummen-Ausgabe muss auf <code>OK</code> enden. Wird ein USB-Stick oder ein eigener Download-Server genutzt, entfällt das Zusammenfügen.
+      <p>Wird ein USB-Stick oder ein eigener Download-Server genutzt, entfällt das Zusammenfügen.
         Optionen wie <code>--accept-eula</code>, <code>--yes</code> oder <code>--port</code> zeigt <code>bash &lt;datei&gt;.run --help</code>.</p>
       <h2>Voraussetzungen</h2>
       <ul class="req">
@@ -161,21 +161,6 @@
 
     <h2 id="eula">Endnutzer-Lizenzvertrag</h2>
     <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
-
-    <h2>Prüfsummen</h2>
-    <p>Neben den Downloads liegt <code>SHA256SUMS.txt</code>. Es gibt keine Code-Signatur; die Prüfsumme ist der einzige Echtheitsnachweis. Damit sie nicht nur im selben Ordner steht, nennt diese Seite die Summen der aktuellen Version:</p>
-    <div class="overflow" data-checksums hidden>
-      <table>
-        <thead><tr><th>Datei</th><th>SHA-256</th></tr></thead>
-        <tbody data-checksums-body></tbody>
-      </table>
-    </div>
-    <p data-checksums-link hidden><a href="#" rel="noopener" target="_blank">SHA256SUMS.txt öffnen</a></p>
-    <p>Vor der Installation vergleichen:</p>
-    <div class="cmd"><pre><code># Windows (PowerShell)
-(Get-FileHash .\SovereignMind-Setup-&lt;Version&gt;.exe -Algorithm SHA256).Hash   # bzw. SovereignMind-Setup-Full-Api-, -Minimal- oder -Api-&lt;Version&gt;.exe
-# Linux (nach dem Zusammenfügen der Teile, prüft Teile und fertiges .run)
-sha256sum -c --ignore-missing SHA256SUMS.txt</code></pre></div>
 
     <h2>Nach der Installation</h2>
     <ol>

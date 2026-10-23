@@ -1,13 +1,12 @@
 (function () {
   'use strict';
 
-  // Zentrale Konfiguration: Befehle hier, Version/Download-Ordner/Prüfsummen in assets/downloads.json (von Hand pflegen).
+  // Zentrale Konfiguration: Befehle hier, Version/Download-Ordner in assets/downloads.json (von Hand pflegen).
   var DOWNLOADS_JSON = 'assets/downloads.json';
   var COMMANDS = {
     windows: '',
     linux: [
       'cat sovereignmind-installer_<Version>_amd64.run.part* > sovereignmind-installer_<Version>_amd64.run',
-      'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer_<Version>_amd64.run'
     ].join('\n')
   };
@@ -16,17 +15,14 @@
   var EXTRA_COMMANDS = {
     'linux-minimal': [
       'cat sovereignmind-installer-minimal_<Version>_amd64.run.part* > sovereignmind-installer-minimal_<Version>_amd64.run',
-      'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-minimal_<Version>_amd64.run'
     ].join('\n'),
     'linux-full-api': [
       'cat sovereignmind-installer-full-api_<Version>_amd64.run.part* > sovereignmind-installer-full-api_<Version>_amd64.run',
-      'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-full-api_<Version>_amd64.run --cors https://app.example'
     ].join('\n'),
     'linux-minimal-api': [
       'cat sovereignmind-installer-minimal-api_<Version>_amd64.run.part* > sovereignmind-installer-minimal-api_<Version>_amd64.run',
-      'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-minimal-api_<Version>_amd64.run --cors https://app.example'
     ].join('\n')
   };
@@ -42,13 +38,13 @@
   }
   renderCommands('');
 
-  // Download-Ordner, Version und Prüfsummen aus downloads.json. Fehlt die Datei oder der Ordner-Link, bleibt alles ausgeblendet
+  // Download-Ordner und Version aus downloads.json. Fehlt die Datei oder der Ordner-Link, bleibt alles ausgeblendet
   // und ein Hinweis steht da (kein toter Link).
   function isHttpUrl(u) { return typeof u === 'string' && /^https:\/\//i.test(u); }
   function showMissing() {
     document.querySelectorAll('[data-download-missing]').forEach(function (el) { el.hidden = false; });
   }
-  var hasDownloadUi = document.querySelector('[data-release], [data-version], [data-checksums]');
+  var hasDownloadUi = document.querySelector('[data-release], [data-version]');
   if (hasDownloadUi && window.fetch) {
     fetch(DOWNLOADS_JSON, { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
@@ -70,32 +66,6 @@
           });
         } else {
           showMissing();
-        }
-        var box = document.querySelector('[data-checksums]');
-        var body = document.querySelector('[data-checksums-body]');
-        var sums = d.sha256 && typeof d.sha256 === 'object' ? d.sha256 : {};
-        var names = Object.keys(sums).filter(function (n) { return /^[0-9a-f]{64}$/i.test(String(sums[n])); });
-        if (box && body && names.length) {
-          names.forEach(function (n) {
-            var tr = document.createElement('tr');
-            var td1 = document.createElement('td');
-            var c1 = document.createElement('code');
-            c1.textContent = n;
-            td1.appendChild(c1);
-            var td2 = document.createElement('td');
-            var c2 = document.createElement('code');
-            c2.textContent = sums[n];
-            td2.appendChild(c2);
-            tr.appendChild(td1);
-            tr.appendChild(td2);
-            body.appendChild(tr);
-          });
-          box.hidden = false;
-        }
-        var link = document.querySelector('[data-checksums-link]');
-        if (link && isHttpUrl(d.checksumsUrl)) {
-          link.querySelector('a').href = d.checksumsUrl;
-          link.hidden = false;
         }
       })
       .catch(showMissing);
