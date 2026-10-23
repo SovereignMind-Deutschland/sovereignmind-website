@@ -12,7 +12,7 @@
     ].join('\n')
   };
 
-  // Weitere Befehle ohne eigenen Reiter (Varianten minimal, api und full-api); sie zählen nicht für die Reiterauswahl (COMMANDS).
+  // Weitere Befehle ohne eigenen Reiter (Varianten minimal, minimal-api und full-api); sie zählen nicht für die Reiterauswahl (COMMANDS).
   var EXTRA_COMMANDS = {
     'linux-minimal': [
       'cat sovereignmind-installer-minimal_<Version>_amd64.run.part* > sovereignmind-installer-minimal_<Version>_amd64.run',
@@ -24,10 +24,10 @@
       'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-full-api_<Version>_amd64.run --cors https://app.example'
     ].join('\n'),
-    'linux-api': [
-      'cat sovereignmind-installer-api_<Version>_amd64.run.part* > sovereignmind-installer-api_<Version>_amd64.run',
+    'linux-minimal-api': [
+      'cat sovereignmind-installer-minimal-api_<Version>_amd64.run.part* > sovereignmind-installer-minimal-api_<Version>_amd64.run',
       'sha256sum -c --ignore-missing SHA256SUMS.txt',
-      'sudo bash sovereignmind-installer-api_<Version>_amd64.run --cors https://app.example'
+      'sudo bash sovereignmind-installer-minimal-api_<Version>_amd64.run --cors https://app.example'
     ].join('\n')
   };
 

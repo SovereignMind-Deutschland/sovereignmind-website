@@ -50,7 +50,7 @@
         <table>
           <thead><tr><th></th><th>Voll</th><th>Voll ohne Oberfläche</th><th>Minimal</th><th>API (minimal ohne Oberfläche)</th></tr></thead>
           <tbody>
-            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Api-&lt;Version&gt;.exe</code></td></tr>
+            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-Api-&lt;Version&gt;.exe</code></td></tr>
             <tr><td>Weboberfläche</td><td>ja</td><td>nein</td><td>ja</td><td>nein</td></tr>
             <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td><td>wie Minimal</td></tr>
             <tr><td>Internet</td><td>nicht nötig</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td><td>wie Minimal</td></tr>
@@ -62,7 +62,7 @@
         Die Sprachausgabe läuft standardmäßig auf der CPU. Wer sie auf der Grafikkarte betreiben möchte, wählt das im Admin-Bereich unter „Voice“; die dafür nötige GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf aus dem Internet nach.</p>
       <p>Fehlt beim minimalen Installer das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich einen Hinweis mit der Schaltfläche „Jetzt laden“. Das größere 14B-Chat-Modell lädt der Admin bei Bedarf selbst (Admin-Bereich, Lokale Modelle).</p>
       <h2 id="windows-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
-      <p>Die <strong>API-Variante</strong> (<code>SovereignMind-Setup-Api-&lt;Version&gt;.exe</code>) enthält Backend, Datenbank, Qdrant, Dokumenten- und Sprach-Worker und Ollama, aber <strong>keine Weboberfläche</strong>.
+      <p>Die <strong>API-Variante</strong> (<code>SovereignMind-Setup-Minimal-Api-&lt;Version&gt;.exe</code>) enthält Backend, Datenbank, Qdrant, Dokumenten- und Sprach-Worker und Ollama, aber <strong>keine Weboberfläche</strong>.
         Sie ist für eigene Oberflächen und die Anbindung an Fachsysteme gedacht und lädt die Modelle wie der minimale Installer beim Installieren nach. Wer die Modelle im Installer braucht, nimmt <code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code> (gleiche Ausstattung, aber alle Modelle enthalten, kein Internet nötig). Statt eines Browserlinks nennt das Setup die API-Adresse und legt
         die Dokumentation der Endpunkte im Startmenü ab. Für Browser-Oberflächen auf anderer Adresse gibt es <code>/CORS=https://app.example</code>; Mandant und Admin lassen sich still mit
         <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> anlegen. Beschreibung aller Endpunkte, Anmeldung und Beispiele:
@@ -95,12 +95,12 @@
         Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>registry.ollama.ai</code> und <code>huggingface.co</code> müssen erreichbar sein) und zeigt dabei im Terminal den Fortschritt
         („Modell 2 von 4: … 63&nbsp;%“). Für Rechner ohne Internet nehmen Sie das volle Bundle.</p>
       <div class="cmd"><pre><code data-cmd="linux-minimal"></code></pre><button type="button" data-copy="linux-minimal">Kopieren</button></div>
-      <h2 id="linux-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
-      <p>Das <strong>API-Bundle</strong> (<code>sovereignmind-installer-api_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB) enthält alles wie das minimale Bundle, aber <strong>keine Weboberfläche</strong>: Es stellt nur die API bereit,
+      <h2 id="linux-minimal-api">API: nur Backend, ohne Weboberfläche (für Entwickler und Integratoren)</h2>
+      <p>Das <strong>API-Bundle</strong> (<code>sovereignmind-installer-minimal-api_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB) enthält alles wie das minimale Bundle, aber <strong>keine Weboberfläche</strong>: Es stellt nur die API bereit,
         für eigene Oberflächen und die Anbindung an Fachsysteme. Die Modelle werden wie beim minimalen Bundle geladen. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
         <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
         <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online im Repository: <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
-      <div class="cmd"><pre><code data-cmd="linux-api"></code></pre><button type="button" data-copy="linux-api">Kopieren</button></div>
+      <div class="cmd"><pre><code data-cmd="linux-minimal-api"></code></pre><button type="button" data-copy="linux-minimal-api">Kopieren</button></div>
       <h2 id="linux-full-api">Voll ohne Weboberfläche: alle Modelle im Bundle, nur API</h2>
       <p>Das Bundle <code>sovereignmind-installer-full-api_&lt;Version&gt;_amd64.run</code> enthält alle KI-Modelle wie das volle Bundle, aber <strong>keine Weboberfläche</strong>. Es ist für abgeschottete Netze gedacht, in denen
         eigene Oberflächen oder Fachsysteme die API nutzen. Optionen und Dokumentation wie beim API-Bundle; <code>--no-models</code> und <code>--strict</code> gelten hier nicht, weil nichts nachgeladen wird.</p>
