@@ -8,6 +8,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | `download.html` | Installation für Windows (Setup) und Linux (Ein-Befehl-Bundle) aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
 | `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste im Hauptprojekt: `Support/docs/vergleich/`) |
+| `api.html` | API-Dokumentation aus `assets/api/openapi.json`: Einleitung, Ablauf, Endpunkte mit Parametern, Antworten und Codebeispielen (curl, C#, Python, JavaScript), Datentypen; Renderer `assets/api-doku.js`, Stile `assets/api-doku.css` |
 | `praesentation/` | Präsentation (18 Folien, mit „Ausprobieren“) |
 
 ## Lokal ansehen
@@ -15,6 +16,14 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 ```bash
 python3 -m http.server 8080   # im Repo-Ordner, dann http://localhost:8080
 ```
+
+## Tests
+
+```bash
+node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeiten
+```
+
+`tests/api-doku.test.mjs` prüft den Renderer der API-Seite ohne Browser (Schein-DOM): Markdown-Teilsatz (kein HTML-Durchlass, nur `http(s)`-Links), `$ref`-Auflösung mit Zyklenschutz, Beispiel-Generator und Codebeispiele (curl, C#, Python, JavaScript) für alle Endpunkte der committeten `assets/api/openapi.json`. `tests/` und `scripts/` gelangen nicht auf die veröffentlichte Seite (`pages.yml`). Vor dem Push nach Änderungen an `api-doku.js` oder `openapi.json` ausführen; `assets/api-doku.js`/`.css` danach mit `sync-app-api-doku.py` in die App kopieren (Hauptprojekt).
 
 ## Impressum und Datenschutz (Anbieterdaten)
 
@@ -44,6 +53,7 @@ python3 -m http.server 8080   # im Repo-Ordner, dann http://localhost:8080
   (`Support/installer/linux/bin/sovereignmind`), den Mock anpassen.
 - **Screenshots:** nach `assets/screenshots/` legen (nur Testdaten); die Liste der Bilder steht in `assets/app.js` (`SHOTS`).
 - **Offen vor Veröffentlichung:** Kontaktweg (`index.html`, Abschnitt Kontakt), Impressum und Datenschutz (Platzhalter).
+- **API-Seite:** `assets/api/openapi.json` nur über das Sync-Skript des Hauptprojekts ändern (`Support/scripts/sync-website-api.py`, prüft vor dem Kopieren auf interne Pfade und Zugangsdaten), nie von Hand. Die Seite zeigt Version aus `downloads.json` und das Datum der Datei. Basis-URL und Sprache der Codebeispiele merkt sich der Browser (`localStorage`). `pages.yml` kopiert `assets/api/` automatisch mit.
 - Keine Inhalte aus dem privaten Hauptrepo ungeprüft übernehmen.
 
 ## Veröffentlichung

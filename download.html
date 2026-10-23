@@ -22,6 +22,7 @@
         <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
         <a href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
+        <a href="api.html">API</a>
         <a class="btn" aria-current="page" href="download.html">Herunterladen</a>
       </nav>
     </div>
@@ -66,7 +67,7 @@
         Sie ist für eigene Oberflächen und die Anbindung an Fachsysteme gedacht und lädt die Modelle wie der minimale Installer beim Installieren nach. Wer die Modelle im Installer braucht, nimmt <code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code> (gleiche Ausstattung, aber alle Modelle enthalten, kein Internet nötig). Statt eines Browserlinks nennt das Setup die API-Adresse und legt
         die Dokumentation der Endpunkte im Startmenü ab. Für Browser-Oberflächen auf anderer Adresse gibt es <code>/CORS=https://app.example</code>; Mandant und Admin lassen sich still mit
         <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> anlegen. Beschreibung aller Endpunkte, Anmeldung und Beispiele:
-        <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
+        <a href="api.html">API-Dokumentation auf dieser Webseite</a> (Endpunkte, Anmeldung, Codebeispiele).</p>
       <h2>Voraussetzungen</h2>
       <ul class="req">
         <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
@@ -99,7 +100,7 @@
       <p>Das <strong>API-Bundle</strong> (<code>sovereignmind-installer-minimal-api_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB) enthält alles wie das minimale Bundle, aber <strong>keine Weboberfläche</strong>: Es stellt nur die API bereit,
         für eigene Oberflächen und die Anbindung an Fachsysteme. Die Modelle werden wie beim minimalen Bundle geladen. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
         <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
-        <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online im Repository: <a href="https://github.com/SovereignMind-Deutschland/sovereignmind/tree/main/Support/docs/api" rel="noopener">Dokumentation der API</a>.</p>
+        <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online im Repository: <a href="api.html">API-Dokumentation auf dieser Webseite</a> (Endpunkte, Anmeldung, Codebeispiele).</p>
       <div class="cmd"><pre><code data-cmd="linux-minimal-api"></code></pre><button type="button" data-copy="linux-minimal-api">Kopieren</button></div>
       <h2 id="linux-full-api">Voll ohne Weboberfläche: alle Modelle im Bundle, nur API</h2>
       <p>Das Bundle <code>sovereignmind-installer-full-api_&lt;Version&gt;_amd64.run</code> enthält alle KI-Modelle wie das volle Bundle, aber <strong>keine Weboberfläche</strong>. Es ist für abgeschottete Netze gedacht, in denen

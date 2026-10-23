@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API – SovereignMind</title>
+  <meta name="description" content="Dokumentation der SovereignMind-Schnittstelle: Bereiche und Endpunkte zum Nachlesen, ohne Installation.">
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/api-doku.css">
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <nav class="main" aria-label="Hauptnavigation">
+        <a href="index.html#funktionen">Funktionen</a>
+        <a href="index.html#assistenten">Assistenten</a>
+        <a href="index.html#architektur">Architektur</a>
+        <a href="index.html#betrieb">Betrieb</a>
+        <a href="index.html#kontakt">Kontakt</a>
+        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+        <a href="wissenspakete.html">Wissenspakete</a>
+        <a href="vergleich.html">Vergleich</a>
+        <a aria-current="page" href="api.html">API</a>
+        <a class="btn" href="download.html">Herunterladen</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap api-wrap">
+    <h1 class="api-title">API-Dokumentation</h1>
+    <p class="muted api-meta" id="api-meta" aria-live="polite">Wird geladen …</p>
+    <noscript><div class="note warn">Für die API-Dokumentation wird JavaScript benötigt. Die Rohdaten stehen in der <a href="assets/api/openapi.json">openapi.json</a>.</div></noscript>
+
+    <div class="api-layout" id="api-layout" hidden>
+      <button class="btn secondary api-toggle" id="api-toggle" type="button" aria-expanded="false" aria-controls="api-side">Bereiche und Suche</button>
+      <aside class="api-side" id="api-side" aria-label="Endpunkte">
+        <div class="api-controls">
+          <label for="api-base">Basis-URL der Beispiele</label>
+          <input id="api-base" type="url" autocomplete="off" spellcheck="false" value="http://localhost:5043">
+          <label for="api-q">Suche</label>
+          <input id="api-q" type="search" autocomplete="off" placeholder="Pfad, Titel oder Text  ( / )">
+          <div class="seg" role="group" aria-label="Nach Methode filtern" id="api-methods"></div>
+          <label class="api-check"><input type="checkbox" id="api-open"> Nur ohne Anmeldung</label>
+          <p class="pkg-count" id="api-count" role="status" aria-live="polite"></p>
+        </div>
+        <nav id="api-nav" aria-label="Bereiche und Endpunkte"><a class="api-typesnav" href="#einleitung">Einleitung</a></nav>
+      </aside>
+      <div class="api-content" id="api-content">
+        <section class="api-sec" id="einleitung" aria-labelledby="einleitung-h">
+          <h2 id="einleitung-h">Einleitung</h2>
+          <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
+          <p class="muted" id="api-stand"></p>
+          <div id="api-intro-desc"></div>
+          <h3 class="api-h3">Basis-URL</h3>
+          <p>Die API läuft auf Ihrem eigenen Rechner. Standardmäßig ist sie unter <code>http://&lt;Rechner&gt;:5043</code> erreichbar, auf dem Rechner selbst also unter <code>http://localhost:5043</code>. Alle Pfade dieser Seite hängen an dieser Adresse. Im Feld „Basis-URL der Beispiele“ links tragen Sie Ihre Adresse ein; die Codebeispiele übernehmen sie.</p>
+          <h3 class="api-h3" id="ablauf">Ablauf: von der Registrierung bis zur Antwort mit Quellen</h3>
+          <p>So gehören die Aufrufe zusammen (Reihenfolge auf einer frischen Installation):</p>
+          <ol class="api-steps">
+            <li><strong>Zustand prüfen:</strong> <code>GET /health</code> und <a href="#get-api-system-status">GET /api/system-status</a> (<code>mode</code>, <code>modelsMissing</code>). Fehlen Modelle, zuerst laden; Fragen sind sonst nicht möglich.</li>
+            <li><strong>Registrieren (einmal):</strong> <a href="#post-api-tenant-register">POST /api/tenant/register</a> mit Lizenzdaten und Admin-Passwort.</li>
+            <li><strong>Als Admin anmelden</strong> (<a href="#post-api-auth-admin-login">POST /api/auth/admin-login</a>) und ein Mitglied für das Fachsystem anlegen (<a href="#post-api-admin-users">POST /api/admin/users</a>). Eine Kategorie für Dokumente legt der Admin einmal an.</li>
+            <li><strong>Als Mitglied anmelden:</strong> <a href="#post-api-auth-login">POST /api/auth/login</a> liefert das Zugriffstoken (<code>accessToken</code>).</li>
+            <li><strong>Dokument hochladen</strong> (<a href="#post-api-v1-documents">POST /api/v1/documents</a>) und warten, bis der Status <code>Ready</code> ist (<a href="#get-api-v1-documents">GET /api/v1/documents</a>). Neue Dokumente sind zunächst privat; der Admin kann sie für alle freigeben.</li>
+            <li><strong>Frage stellen:</strong> <a href="#post-api-v1-chat">POST /api/v1/chat</a> antwortet als Strom von <code>data: {…}</code>-Zeilen. Das letzte Ereignis (<code>"type":"done"</code>) trägt die Quellen (<code>citations</code>).</li>
+          </ol>
+          <h3 class="api-h3">Welche Installer enthalten die API?</h3>
+          <div class="card api-installers">
+            <p>Alle vier Varianten enthalten die API. Die Varianten mit Endung <code>-api</code> enthalten <strong>keine Weboberfläche</strong> und sind für eigene Oberflächen und Fachsysteme gedacht.</p>
+            <ul>
+              <li><strong>Voll</strong> und <strong>Minimal</strong>: mit Weboberfläche, API unter <code>/api</code> derselben Adresse.</li>
+              <li><strong>Voll ohne Oberfläche</strong> (<code>full-api</code>) und <strong>Minimal ohne Oberfläche</strong> (<code>minimal-api</code>): nur die API. Für Browser-Oberflächen auf einer anderen Adresse wird die Installation mit <code>--cors</code> (Linux) bzw. <code>/CORS=https://app.example</code> (Windows) eingerichtet.</li>
+            </ul>
+            <p><a class="btn secondary" href="download.html">Zur Download-Seite</a></p>
+          </div>
+        </section>
+        <div class="note" id="api-empty" hidden>Kein Endpunkt passt zu Ihrer Suche. Suchbegriff kürzen oder Filter zurücksetzen.</div>
+      </div>
+    </div>
+    <div class="note warn" id="api-error" hidden>Die API-Beschreibung konnte nicht geladen werden. Bitte später erneut versuchen.</div>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span>
+      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+    </div>
+  </footer>
+  <script src="assets/api-doku.js" defer></script>
+</body>
+</html>
