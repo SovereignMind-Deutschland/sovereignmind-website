@@ -51,7 +51,7 @@
         <table>
           <thead><tr><th></th><th>Voll</th><th>Voll ohne Oberfläche</th><th>Minimal</th><th>API (minimal ohne Oberfläche)</th></tr></thead>
           <tbody>
-            <tr><td>Datei</td><td><code>SovereignMind-Setup-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-Api-&lt;Version&gt;.exe</code></td></tr>
+            <tr><td>Datei</td><td><code>SovereignMind-Setup-Full-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Full-Api-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-Api-&lt;Version&gt;.exe</code></td></tr>
             <tr><td>Weboberfläche</td><td>ja</td><td>nein</td><td>ja</td><td>nein</td></tr>
             <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td><td>wie Minimal</td></tr>
             <tr><td>Internet</td><td>nicht nötig</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td><td>wie Minimal</td></tr>
@@ -88,8 +88,8 @@
         und alles Entpackte am Ende wieder löscht. Das volle Bundle ist sehr groß und liegt deshalb im Download-Ordner in Teilen
         (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile in einen Ordner laden und dort ausführen:</p>
       <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
-      <p>Vier Bundles, zwei Fragen: Modelle offline im Bundle (<code>sovereignmind-installer_…</code> und <code>sovereignmind-installer-full-api_…</code>) oder beim Installieren geladen
-        (<code>…-minimal_…</code> und <code>…-api_…</code>); mit Weboberfläche (<code>sovereignmind-installer_…</code>, <code>…-minimal_…</code>) oder ohne (<code>…-full-api_…</code>, <code>…-api_…</code>).
+      <p>Vier Bundles, zwei Fragen: Modelle offline im Bundle (<code>sovereignmind-installer-full_…</code> und <code>sovereignmind-installer-full-api_…</code>) oder beim Installieren geladen
+        (<code>…-minimal_…</code> und <code>…-api_…</code>); mit Weboberfläche (<code>sovereignmind-installer-full_…</code>, <code>…-minimal_…</code>) oder ohne (<code>…-full-api_…</code>, <code>…-api_…</code>).
         Die Varianten mit Modellen setzen <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
       <h2 id="linux-variante">Minimal: kleiner Download, Modelle werden geladen</h2>
       <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält Ollama, aber keine KI-Modelle.

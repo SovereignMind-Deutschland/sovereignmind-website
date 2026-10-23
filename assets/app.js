@@ -6,8 +6,8 @@
   var COMMANDS = {
     windows: '',
     linux: [
-      'cat sovereignmind-installer_<Version>_amd64.run.part* > sovereignmind-installer_<Version>_amd64.run',
-      'sudo bash sovereignmind-installer_<Version>_amd64.run'
+      'cat sovereignmind-installer-full_<Version>_amd64.run.part* > sovereignmind-installer-full_<Version>_amd64.run',
+      'sudo bash sovereignmind-installer-full_<Version>_amd64.run'
     ].join('\n')
   };
 

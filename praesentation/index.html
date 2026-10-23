@@ -67,7 +67,7 @@
   <div class="row">
     <div class="card"><p class="num sm">1</p><h3 class="w">Ingestion</h3><p>Upload, Parsing mit Docling, Chunking, Embedding, Speichern in Qdrant. Duplikate erkennt ein Inhalts-Hash.</p></div>
     <div class="card"><p class="num sm">2</p><h3 class="w">Query</h3><p>Frage embedden, Qdrant-Suche, Prompt mit Treffern, Streaming-Antwort auf Deutsch mit klickbaren Quellenzitaten.</p></div>
-    <div class="card"><p class="num sm">3</p><h3 class="w">Sprache</h3><p>Diktat per faster-whisper ins Eingabefeld, Antworten per Qwen3-TTS vorlesen.</p></div>
+    <div class="card"><p class="num sm">3</p><h3 class="w">Sprache</h3><p>Antworten per Qwen3-TTS vorlesen; Diktat per faster-whisper folgt.</p></div>
   </div>
 </section>
 
@@ -82,7 +82,7 @@
   <div class="row">
     <div class="card"><h3>Schnittstellen</h3><p>Das Modell ruft interne HTTP-Systeme und Anbieter-APIs selbst auf.</p></div>
     <div class="card"><h3>Chat-Uploads</h3><p>Dateien in einer Konversation durchsuchen, ohne sie dauerhaft abzulegen.</p></div>
-    <div class="card"><h3>Sprache</h3><p>Diktat und Vorlesen mit mehreren Stimmen, pro Tenant freigeschaltet.</p></div>
+    <div class="card"><h3>Sprache</h3><p>Vorlesen mit mehreren Stimmen, pro Tenant freigeschaltet. Diktat folgt.</p></div>
   </div>
 </section>
 
@@ -110,12 +110,12 @@
 
 <!-- 9 Stimmen -->
 <section class="slide alt" data-title="Stimmen">
-  <div class="head"><p class="eyebrow">Stimmen</p><h2>Vorlesen und Diktat, komplett lokal</h2></div>
+  <div class="head"><p class="eyebrow">Stimmen</p><h2>Vorlesen, komplett lokal</h2></div>
   <div class="row">
     <div class="card"><p class="num sm">3</p><h3 class="w">Stimmen</h3><p>Ramona (Standard), Karlsson und Thorsten. Neue Stimmen sind kleine Artefakte von ca. 45 KB.</p></div>
     <div class="card"><p class="num sm">GPU</p><h3 class="w">Qwen3-TTS</h3><p>Natürliche Stimmen, mit GPU zügig, ohne GPU langsamer auf der CPU.</p></div>
     <div class="card"><h3>Pro Assistent</h3><p>Der Admin weist jedem Assistenten eine Stimme zu. Mitglieder wählen Standard, Assistent oder eigene Stimme.</p></div>
-    <div class="card"><h3>Diktat</h3><p>faster-whisper schreibt die Sprache direkt ins Eingabefeld.</p></div>
+    <div class="card"><h3>Diktat (folgt)</h3><p>faster-whisper schreibt die Sprache später direkt ins Eingabefeld; noch nicht verfügbar.</p></div>
   </div>
 </section>
 
@@ -151,7 +151,7 @@
     <tr><td>Vektor-DB</td><td>Qdrant</td><td>Guter .NET-Client, REST/gRPC</td></tr>
     <tr><td>Parsing</td><td>Docling (Python)</td><td>Air-Gapped-fähig, Modelle vorgeladen</td></tr>
     <tr><td>Inferenz</td><td>Ollama (nativ)</td><td>Nutzt die GPU über den Host-Treiber</td></tr>
-    <tr><td>Voice</td><td>faster-whisper, Qwen3-TTS</td><td>Diktat und Vorlesen lokal, Freigabe pro Tenant</td></tr>
+    <tr><td>Voice</td><td>faster-whisper, Qwen3-TTS</td><td>Vorlesen lokal, Freigabe pro Tenant; Diktat folgt</td></tr>
     <tr><td>Lizenz</td><td>Signierte JWE-Tokens</td><td>Offline-Prüfung, kein Lizenzserver</td></tr>
     <tr><td>Deployment</td><td>Nativer Installer</td><td>Windows-Setup und Linux-.deb, kein Docker</td></tr>
   </table>

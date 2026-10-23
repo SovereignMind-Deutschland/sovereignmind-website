@@ -7,7 +7,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), Screenshots, Kontakt |
 | `download.html` | Installation für Windows (Setup) und Linux (Ein-Befehl-Bundle) aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
-| `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste im Hauptprojekt: `Support/docs/vergleich/`) |
+| `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste: im Hauptprojekt zu klären, `Support/docs/vergleich/` gibt es dort nicht mehr) |
 | `api.html` | API-Dokumentation aus `assets/api/openapi.json`: Einleitung, Ablauf, Endpunkte mit Parametern, Antworten und Codebeispielen (curl, C#, Python, JavaScript), Datentypen; Renderer `assets/api-doku.js`, Stile `assets/api-doku.css` |
 | `praesentation/` | Präsentation (18 Folien, mit „Ausprobieren“) |
 
@@ -36,7 +36,7 @@ node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeit
 - **Version, Download-Ordner:** nur in `assets/downloads.json` (von Hand pflegen, sonst zeigt die Seite die alte Version; Prüfsummen werden derzeit bewusst nicht veröffentlicht):
   `version`, `driveFolderUrl` (Freigabe „Jeder mit dem Link“, nur ansehen; muss mit `https://` beginnen).
   Fehlt die Datei oder der Ordner-Link, blenden die Knöpfe sich aus und ein Hinweis steht da. Das ist der letzte Schritt des
-  Release-Ablaufs (`docs/installer-lokal-bauen.md` im Hauptprojekt). Dort liegen auch die Dateien: Windows-Setup (`.exe` plus `-N.bin`),
+  Release-Ablaufs (`Support/docs/installer-lokal-bauen.md` im Hauptprojekt). Dort liegen auch die Dateien: Windows-Setup (`.exe` plus `-N.bin`),
   Linux-Bundle (`sovereignmind-installer_<Version>_amd64.run.partNN`). Der Linux-Befehl steht in `assets/app.js`
   (`COMMANDS`, `<Version>` wird aus `downloads.json` eingesetzt); mit dem README des Installer-Repos abgleichen.
 - **Demo:** Es gibt nur **eine** Software und einen Installer. Der Abschnitt `#demo` in `download.html` beschreibt, was beim ersten Start

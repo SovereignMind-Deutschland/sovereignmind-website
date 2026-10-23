@@ -80,7 +80,7 @@
           <div class="card"><h3>Anbindung interner Systeme</h3><p>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</p></div>
           <div class="card"><h3>Antwort-Cache</h3><p>Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Admin kann den Cache leeren oder auf Standard zurücksetzen.</p></div>
           <div class="card"><h3>Dateien im Chat</h3><p>Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.</p></div>
-          <div class="card"><h3>Sprache</h3><p>Diktat und Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Admin schaltet beides pro Unternehmen frei.</p></div>
+          <div class="card"><h3>Sprache</h3><p>Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Admin schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.</p></div>
           <div class="card"><h3>Wissenspakete</h3><p>Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Admin aus dem Katalog installiert oder als Datei importiert.</p></div>
           <div class="card"><h3>Themes</h3><p>Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.</p></div>
           <div class="card"><h3>Support-Nachrichten</h3><p>Nutzer schreiben dem Admin über ein Kontaktformular direkt aus der App.</p></div>
@@ -130,11 +130,11 @@
         </div>
 
         <h3 class="sub">Stimmen</h3>
-        <p class="lead">Diktat und Vorlesen laufen komplett lokal. Qwen3-TTS liest vor, mit GPU zügig, ohne GPU langsamer auf der CPU.</p>
+        <p class="lead">Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Admin, ihre Unterstützung wird dann nachgeladen.</p>
         <div class="grid">
           <div class="card"><h3>Mehrere Stimmen</h3><p>Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.</p></div>
-          <div class="card"><h3>Diktat</h3><p>Spracheingabe per faster-whisper landet direkt im Eingabefeld des Chats.</p></div>
-          <div class="card"><h3>Pro Unternehmen und Nutzer</h3><p>Der Admin schaltet Diktat und Vorlesen einzeln frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</p></div>
+          <div class="card"><h3>Diktat (noch nicht verfügbar)</h3><p>Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.</p></div>
+          <div class="card"><h3>Pro Unternehmen und Nutzer</h3><p>Der Admin schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</p></div>
         </div>
       </div>
     </section>
