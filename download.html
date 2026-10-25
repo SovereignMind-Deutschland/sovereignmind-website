@@ -136,6 +136,7 @@
             <tr><td><code>sovereignmind autostart on|off</code></td><td>Start beim Hochfahren des Rechners</td></tr>
             <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Protokoll von backend, postgres, qdrant, ingestion, voice oder ollama</td></tr>
             <tr><td><code>sovereignmind lan on|off [IP]</code></td><td>Zugriff aus dem Netzwerk ein- bzw. ausschalten</td></tr>
+            <tr><td><code>sovereignmind https NAME [MODUS]</code></td><td>HTTPS-Name und Zertifikatsmodus einrichten (<a href="#https">Modi</a>); <code>sovereignmind https off</code> schaltet ab</td></tr>
             <tr><td><code>sovereignmind backup</code></td><td>Sicherung jetzt starten</td></tr>
             <tr><td><code>sovereignmind models [status|load]</code></td><td>Stand der KI-Modelle zeigen bzw. fehlende Modelle laden (minimale und API-Variante)</td></tr>
             <tr><td><code>sovereignmind docs</code></td><td>Ort der Endpunkt-Dokumentation (API-Variante)</td></tr>
@@ -150,7 +151,7 @@
       Einschränkungen und löscht sich selbst:</p>
     <ul class="req">
       <li><strong>24 Stunden:</strong> Es zählt die Betriebszeit der Dienste, spätestens 24 Stunden nach dem Start ist Schluss. Danach werden alle Daten gelöscht, auch die, die Sie in der Demo angelegt haben. Das Zurückstellen der Uhr verlängert die Frist nicht. Danach lässt sich eine neue Demo starten.</li>
-      <li><strong>Nur auf dem eigenen Rechner:</strong> Die Software erzwingt, dass die Demo ausschließlich über <code>http://localhost:5043</code> erreichbar ist, nicht im Netzwerk. Installieren Sie sie auf dem Rechner, an dem Sie sie ausprobieren.</li>
+      <li><strong>Nur unter den eingerichteten Adressen:</strong> Die Software erzwingt, dass die Demo nur auf dem Rechner selbst (<code>http://localhost:5043</code>) oder unter dem Namen erreichbar ist, den Sie bei der Installation für HTTPS (<a href="#https">siehe unten</a>) bzw. den Netzwerkzugriff eingerichtet haben. Unter jeder anderen Adresse lehnt sie die Demo ab.</li>
       <li><strong>Zugangsdaten:</strong> Admin mit Passwort <code>sovereignmind</code>, Nutzer <code>test@sovereignmind.de</code> mit Passwort <code>sovereignmind</code>. Beide stehen auch auf der Anmeldeseite.</li>
       <li><strong>Eingeschränkt:</strong> ein Sitzplatz (keine weiteren Nutzer), Passwörter und Lizenz nicht änderbar, Schnittstellen gesperrt, höchstens 50 Dokumente und 200&nbsp;MB, keine Sicherungen.</li>
       <li><strong>Mit Schlüssel freischalten:</strong> Hat Ihnen der Anbieter ausdrücklich einen Lizenzschlüssel ausgestellt, schaltet er die Demo-Installation frei. Dabei wählen Sie, ob die Daten der Demo übernommen oder gelöscht werden. Eine zweite Installation oder ein Deinstallieren ist nicht nötig.</li>
@@ -164,10 +165,26 @@
 
     <h2>Nach der Installation</h2>
     <ol>
-      <li>App öffnen: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (der Port ist bei der Installation wählbar)</li>
+      <li>App öffnen: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (der Port ist bei der Installation wählbar) oder, wenn <a href="#https">HTTPS</a> eingerichtet ist, unter <code>https://chat.example.de</code> (Ihr Name)</li>
       <li>Beim ersten Aufruf zeigt die App eine Willkommensseite: <strong>„Demo starten“</strong> (ohne Schlüssel, 24 Stunden) oder <strong>„Mit Lizenz einrichten“</strong> (Lizenzschlüssel, Unternehmen und Admin-Passwort; die Aktivierung läuft offline).</li>
       <li>Alles läuft als Dienst im Hintergrund und startet mit dem Rechner. Status und Steuerung: Tray-App (Windows) bzw. <code>sovereignmind status</code> (Linux).</li>
     </ol>
+
+    <h2 id="https">HTTPS im Netzwerk</h2>
+    <p>Der Installer bringt einen HTTPS-Proxy (Caddy) mit. Unter Windows richten Sie ihn auf der Setup-Seite „HTTPS“ ein, unter Linux mit
+      <code>sudo sovereignmind https chat.example.de &lt;modus&gt;</code>. Chat (<code>chat.…</code>) und Admin-Bereich (<code>admin.…</code>) sind zwei Namen derselben App. Die Demo startet auch unter diesen Namen.
+      Für andere Geräte im Netzwerk muss der LAN-Zugriff an sein (<code>sovereignmind lan on</code>); er ist standardmäßig aus.</p>
+    <div class="overflow">
+      <table>
+        <thead><tr><th>Modus</th><th>Zertifikat</th><th>Hinweis</th></tr></thead>
+        <tbody>
+          <tr><td><code>internal</code> (Standard)</td><td>eigene interne CA</td><td>Das Root-Zertifikat einmalig je Gerät installieren, sonst zeigt der Browser eine Warnung</td></tr>
+          <tr><td><code>acme-http</code></td><td>Let's Encrypt (HTTP-01)</td><td>Öffentlicher Name, Port 80 aus dem Internet erreichbar</td></tr>
+          <tr><td><code>acme-dns</code></td><td>Let's Encrypt (DNS-01)</td><td>Eigene Domain und API-Schlüssel des DNS-Anbieters; der Server muss nicht aus dem Internet erreichbar sein</td></tr>
+          <tr><td><code>wildcard</code></td><td>mitgeliefertes Wildcard-Zertifikat</td><td>Keine Browserwarnung und kein Internet nötig; wird erst mit gültiger Lizenz aktiv (bis dahin gilt <code>internal</code>). Die Namen tragen Sie per Hosts-Zeile oder im Router-DNS ein.</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>Lizenz und Wissenspakete</h2>
     <p>Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden; bitte nicht weitergeben.
