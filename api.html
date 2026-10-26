@@ -68,11 +68,8 @@
           </ol>
           <h3 class="api-h3">Welche Installer enthalten die API?</h3>
           <div class="card api-installers">
-            <p>Alle vier Varianten enthalten die API. Die Varianten mit Endung <code>-api</code> enthalten <strong>keine Weboberfläche</strong> und sind für eigene Oberflächen und Fachsysteme gedacht.</p>
-            <ul>
-              <li><strong>Voll</strong> und <strong>Minimal</strong>: mit Weboberfläche, API unter <code>/api</code> derselben Adresse.</li>
-              <li><strong>Voll ohne Oberfläche</strong> (<code>full-api</code>) und <strong>Minimal ohne Oberfläche</strong> (<code>minimal-api</code>): nur die API. Für Browser-Oberflächen auf einer anderen Adresse wird die Installation mit <code>--cors</code> (Linux) bzw. <code>/CORS=https://app.example</code> (Windows) eingerichtet.</li>
-            </ul>
+            <p>Beide Installer (<strong>Voll</strong> und <strong>Minimal</strong>) enthalten die API unter <code>/api</code> derselben Adresse, zusammen mit der Weboberfläche.</p>
+            <p>Wer nur die API nutzt oder ein eigenes Frontend anbindet, schaltet die Weboberfläche ab (Linux <code>sudo sovereignmind frontend off</code>, Windows Tray-Menü „Weboberfläche“). Für Browser-Oberflächen auf einer anderen Adresse wird die Installation mit <code>--cors</code> (Linux) bzw. <code>/CORS=https://app.example</code> (Windows) eingerichtet.</p>
             <p><a class="btn secondary" href="download.html">Zur Download-Seite</a></p>
           </div>
         </section>
