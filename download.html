@@ -72,7 +72,7 @@
         <li>Administratorrechte</li>
         <li>Voller Installer: Ollama und die KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: Ollama ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
         <li>Mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM; ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
-        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Hardware-Dashboard) ist im Setup als Aufgabe wählbar.</div>
       <p>Bedienung nach der Installation: Die <strong>Tray-App „SovereignMind Control“</strong> im Infobereich der Taskleiste startet und stoppt alle Dienste,
@@ -109,7 +109,7 @@
         <li>Platz, volles Bundle: ca. 13&nbsp;GB Download, 7,7&nbsp;GB (beim Update 13&nbsp;GB) vorübergehend unter <code>/var/tmp</code>, ca. 26&nbsp;GB installiert. Minimales Bundle: ca. 3&nbsp;GB Download, 2,3&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
         <li>Ollama liefert der Installer mit, die KI-Modelle nur das volle Bundle; ein vorhandenes, älteres Ollama wird auf die mitgelieferte Version angehoben</li>
         <li>Mindestens 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM; sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
-        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die E-Mail-Adresse, auf die er ausgestellt wurde, nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</div>
 
@@ -129,6 +129,7 @@
             <tr><td><code>sovereignmind autostart on|off</code></td><td>Start beim Hochfahren des Rechners</td></tr>
             <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Protokoll von backend, postgres, qdrant, ingestion, voice oder ollama</td></tr>
             <tr><td><code>sovereignmind lan on|off [IP]</code></td><td>Zugriff aus dem Netzwerk ein- bzw. ausschalten</td></tr>
+            <tr><td><code>sovereignmind lan status|open</code></td><td>Zugriffsmodus anzeigen bzw. Geräte-Freigabe aufheben (Notfall)</td></tr>
             <tr><td><code>sovereignmind https NAME [MODUS]</code></td><td>HTTPS-Name und Zertifikatsmodus einrichten (<a href="#https">Modi</a>); <code>sovereignmind https off</code> schaltet ab</td></tr>
             <tr><td><code>sovereignmind backup</code></td><td>Sicherung jetzt starten</td></tr>
             <tr><td><code>sovereignmind models [status|load]</code></td><td>Stand der KI-Modelle zeigen bzw. fehlende Modelle laden (minimale Variante)</td></tr>
@@ -166,7 +167,8 @@
     <h2 id="https">HTTPS im Netzwerk</h2>
     <p>Der Installer bringt einen HTTPS-Proxy (Caddy) mit. Unter Windows richten Sie ihn auf der Setup-Seite „HTTPS“ ein, unter Linux mit
       <code>sudo sovereignmind https chat.example.de &lt;modus&gt;</code>. Chat (<code>chat.…</code>) und Admin-Bereich (<code>admin.…</code>) sind zwei getrennte Apps mit eigenem Namen hinter demselben Backend. Die Demo startet auch unter diesen Namen.
-      Für andere Geräte im Netzwerk muss der LAN-Zugriff an sein (<code>sovereignmind lan on</code>); er ist standardmäßig aus.</p>
+      Für andere Geräte im Netzwerk muss der LAN-Zugriff an sein (<code>sovereignmind lan on</code>); er ist standardmäßig aus.
+      Zusätzlich kann der Admin unter „Netzwerk &amp; Geräte“ den Zugriff auf freigegebene Paare aus Nutzer und IP-Adresse beschränken. Sperren Sie sich aus, stellt <code>sovereignmind lan open</code> auf dem Server den offenen Zugriff wieder her.</p>
     <div class="overflow">
       <table>
         <thead><tr><th>Modus</th><th>Zertifikat</th><th>Hinweis</th></tr></thead>
@@ -180,7 +182,7 @@
     </div>
 
     <h2>Lizenz und Wissenspakete</h2>
-    <p>Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden; bitte nicht weitergeben.
+    <p>Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden und kann zusätzlich an Firmenname und Zahlungsreferenz (Rechnungsnummer oder letzte vier Stellen von Karte bzw. IBAN) gebunden sein; bei der Einrichtung geben Sie diese Angaben ein. Sie stehen im Schlüssel nur als Hash. Bitte den Schlüssel nicht weitergeben: Nach fünf falschen Angaben pro Stunde ist die Einlösung vorübergehend gesperrt.
       Wissenspakete lädt der Admin direkt in der App unter „Wissenspakete“ herunter. Pakete mit Zusatzfunktion setzen eine passende Lizenz voraus.</p>
 
     <h2>Update und Datensicherung</h2>
