@@ -153,7 +153,8 @@
     var BRANDED = ['chat', 'einstellungen', 'admin-nutzung', 'admin-profil'];
     var state = {
       variant: 'standard',
-      theme: window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      theme: document.documentElement.getAttribute('data-theme') ||
+        (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
     };
     var controls = document.querySelector('[data-gallery-controls]');
     var box = document.querySelector('[data-lightbox]');

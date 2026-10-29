@@ -141,7 +141,7 @@
     ht.appendChild(el('b', null, d.name));
     head.appendChild(ht);
     head.appendChild(el('span', 'role', '▤ ' + d.role));
-    head.appendChild(el('span', 'ai', '· KI-Assistent'));
+    head.appendChild(el('span', 'ai', 'KI-Assistent'));
     chat.appendChild(head);
 
     var body = el('div', 'chat-body');

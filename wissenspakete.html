@@ -7,6 +7,7 @@
   <meta name="description" content="Katalog der SovereignMind-Wissenspakete: durchsuchen, filtern und herunterladen.">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/theme.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -23,13 +24,13 @@
         <a aria-current="page" href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
         <a href="api.html">API</a>
-        <a class="btn" href="download.html">Herunterladen</a>
+        <a class="btn" href="download.html">Setup herunterladen</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
-    <h1 style="margin-top:40px">Wissenspakete</h1>
+    <h1 class="page-title">Wissenspakete</h1>
     <p>Fertige Wissensbestände für Ihre SovereignMind-Installation, zum Beispiel Gesetze und Verordnungen. Jedes Paket wird vor dem Import per Prüfsumme geprüft.</p>
 
     <noscript>
@@ -71,7 +72,7 @@
     <h2>Datei manuell importieren (ohne Internet)</h2>
     <p>Laden Sie die <code>.smpack</code>-Datei hier herunter, übertragen Sie sie auf den Server und importieren Sie sie unter <em>Admin &gt; Wissenspakete</em> per Dateiauswahl. Vergleichen Sie vorher die SHA-256-Prüfsumme aus der Paketkarte.</p>
 
-    <p class="muted" style="margin-bottom:48px">Hinweis: Der Katalog selbst kommt von dieser Seite. Die Paketdateien lädt Ihr Browser von GitHub (Release-Downloads); dabei wird Ihre IP-Adresse an GitHub übermittelt.</p>
+    <p class="muted page-end">Hinweis: Der Katalog selbst kommt von dieser Seite. Die Paketdateien lädt Ihr Browser von GitHub (Release-Downloads); dabei wird Ihre IP-Adresse an GitHub übermittelt.</p>
   </main>
 
   <footer class="site">

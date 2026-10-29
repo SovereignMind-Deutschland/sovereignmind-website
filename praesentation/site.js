@@ -11,13 +11,13 @@
   slides.forEach(function (s, i) {
     var o = document.createElement('option');
     o.value = i;
-    o.textContent = (i + 1) + ' · ' + s.dataset.title;
+    o.textContent = (i + 1) + '. ' + s.dataset.title;
     picker.appendChild(o);
     if (s.classList.contains('cover') || s.classList.contains('statement')) return;
     var f = document.createElement('div');
     f.className = 'foot';
     var l = document.createElement('span');
-    l.textContent = 'SovereignMind · ' + s.dataset.title;
+    l.textContent = 'SovereignMind: ' + s.dataset.title;
     var r = document.createElement('span');
     r.className = 'r';
     var n = document.createElement('span');

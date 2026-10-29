@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 520" role="img" aria-labelledby="t d">
+  <title id="t">Architektur von SovereignMind</title>
+  <desc id="d">Die Web-Oberfläche greift auf das Backend zu. Das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL.</desc>
+  <style>
+    :root { --box: #ffffff; --line: #00669c; --text: #0a2540; --muted: #44566b; --main: #00669c; --on-main: #ffffff; --house: #b8862f; --house-text: #7f5a12; }
+    text { font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; text-anchor: middle; }
+    .box { fill: var(--box); stroke: var(--line); stroke-width: 1.5; }
+    .main { fill: var(--main); }
+    .t { font-size: 16px; font-weight: 600; fill: var(--text); }
+    .w { font-size: 16px; font-weight: 600; fill: var(--on-main); }
+    .s { font-size: 14px; fill: var(--muted); }
+    .ws { font-size: 14px; fill: var(--on-main); }
+    .h { font-size: 14px; font-weight: 600; fill: var(--house-text); }
+    .l { stroke: var(--line); stroke-width: 1.5; fill: none; }
+    .out { fill: none; stroke: var(--house); stroke-width: 2; stroke-dasharray: 8 5; }
+  </style>
+  <rect class="out" x="4" y="4" width="332" height="512" rx="6"/>
+  <text class="h" x="170" y="30">Alles läuft in Ihrem Netz,</text>
+  <text class="h" x="170" y="48">ohne Cloud-KI-Anbindung</text>
+  <rect class="box" x="70" y="66" width="200" height="52" rx="8"/>
+  <text class="t" x="170" y="90">Web-Oberfläche</text>
+  <text class="s" x="170" y="108">Browser</text>
+  <path class="l" d="M170 118V140"/>
+  <rect class="main" x="50" y="140" width="240" height="84" rx="8"/>
+  <text class="w" x="170" y="168">Backend</text>
+  <text class="ws" x="170" y="190">Auth, Rollen,</text>
+  <text class="ws" x="170" y="208">Lizenz, Mandanten</text>
+  <path class="l" d="M170 224V236H30V479M30 263H50M30 317H50M30 371H50M30 425H50M30 479H50"/>
+  <rect class="box" x="50" y="244" width="240" height="38" rx="8"/>
+  <text class="t" x="170" y="268">Inferenz (Ollama)</text>
+  <rect class="box" x="50" y="298" width="240" height="38" rx="8"/>
+  <text class="t" x="170" y="322">Vektordatenbank (Qdrant)</text>
+  <rect class="box" x="50" y="352" width="240" height="38" rx="8"/>
+  <text class="t" x="170" y="376">Dokumente (Docling)</text>
+  <rect class="box" x="50" y="406" width="240" height="38" rx="8"/>
+  <text class="t" x="170" y="430">Sprache (Voice-Worker)</text>
+  <rect class="box" x="50" y="460" width="240" height="38" rx="8"/>
+  <text class="t" x="170" y="484">PostgreSQL</text>
+</svg>

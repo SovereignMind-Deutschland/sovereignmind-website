@@ -1,16 +1,20 @@
-.demo { --cut: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; max-width: 860px; }
+.demo { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 860px; }
+.net .demo { max-width: none; border: 0; border-radius: 0; background: var(--surface); clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%); }
 .demo-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border); background: var(--surface); }
+.demo-tabs button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .demo-tabs button { display: flex; align-items: center; gap: 10px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px 4px 4px; cursor: pointer; font: inherit; text-align: left; }
-.demo-tabs button[aria-selected="true"] { border-color: var(--accent-hi); background: rgba(56, 189, 248, .12); }
+.demo-tabs button[aria-selected="true"] { border-color: var(--accent-hi); background: color-mix(in srgb, var(--accent-hi) 12%, transparent); }
 .demo-tabs img { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex: none; }
 .demo-tabs small { display: block; color: var(--muted); font-size: .78rem; }
 
-.demo-chat { background-image: linear-gradient(rgba(56, 189, 248, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, .05) 1px, transparent 1px); background-size: 32px 32px; }
-.chat-head { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; padding: 10px 12px; font-size: .85rem; color: var(--muted); border-top: 2px solid var(--accent); border-bottom: 1px solid var(--border); background: rgba(11, 20, 48, .7); }
+.demo-chat { background: var(--bg); }
+.net .demo-chat { background: var(--surface); }
+.net .msg.bot .bubble { background: var(--bg); }
+.chat-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 10px 12px; font-size: .875rem; color: var(--muted); border-bottom: 1px solid var(--border); background: var(--surface); }
 .chat-head img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
 .chat-head b { color: var(--text); }
 .chat-head .role { color: var(--accent-hi); }
-.chat-body { padding: 24px 20px; display: flex; flex-direction: column; gap: 18px; }
+.chat-body { padding: 20px 16px; display: flex; flex-direction: column; gap: 18px; }
 
 .msg { display: flex; gap: 10px; }
 .msg.user { align-self: flex-end; max-width: 80%; }
@@ -20,9 +24,9 @@
 .msg .who { font-size: .8rem; margin-bottom: 4px; }
 .msg .who b { color: var(--text); }
 .msg .who span { color: var(--muted); }
-.msg .bubble { padding: 12px 16px; clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%); }
-.msg.user .bubble { background: linear-gradient(135deg, #0b6fb0, var(--accent)); color: #fff; }
-.msg.bot .bubble { background: #0b1230; border-left: 3px solid var(--accent-hi); }
+.msg .bubble { padding: 12px 16px; border-radius: var(--radius); }
+.msg.user .bubble { background: var(--primary); color: var(--accent-text); }
+.msg.bot .bubble { background: var(--surface); border-left: 3px solid var(--accent-hi); }
 .msg .bubble p { margin: 0 0 6px; }
 .msg .bubble ul { margin: 0 0 8px; padding-left: 20px; }
 .msg .bubble li { margin: 2px 0; }

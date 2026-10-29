@@ -25,6 +25,10 @@ node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeit
 
 `tests/api-doku.test.mjs` prüft den Renderer der API-Seite ohne Browser (Schein-DOM): Markdown-Teilsatz (kein HTML-Durchlass, nur `http(s)`-Links), `$ref`-Auflösung mit Zyklenschutz, Beispiel-Generator und Codebeispiele (curl, C#, Python, JavaScript) für alle Endpunkte der committeten `assets/api/openapi.json`. `tests/` und `scripts/` gelangen nicht auf die veröffentlichte Seite (`pages.yml`). Vor dem Push nach Änderungen an `api-doku.js` oder `openapi.json` ausführen; `assets/api-doku.js`/`.css` danach mit `sync-app-api-doku.py` in die App kopieren (Hauptprojekt).
 
+## Gestaltung und Schrift
+
+Die Seite folgt dem Auftritt „Kompass“ (Plan: `Support/docs/pläne/frontend-design/` im Hauptprojekt): Markenblau, Messing nur für „läuft lokal“, Hell und Dunkel nach Systemwahl mit Umschalter in der Navigation (`assets/theme.js`, Architektur-Grafik je Design als eigene SVG), Linien statt Schatten, Gemischtschreibung. Tokens stehen am Anfang von `assets/style.css`. Schriften: Familjen Grotesk und Public Sans (Teilmenge latin, SIL OFL, Lizenztexte neben den Dateien) in `assets/fonts/`, selbst gehostet; `tests/extern.test.mjs` stellt sicher, dass HTML und CSS keine externe Adresse laden. Kunden-App und Admin-Portal teilen sich dieselbe Gestaltung (`theme-standard.css`).
+
 ## Impressum und Datenschutz (Anbieterdaten)
 
 `index.html` (Kontakt), `impressum.html` und `datenschutz.html` enthalten nur Platzhalter (`{{PROVIDER_NAME}}`, `{{PROVIDER_STREET}}`, `{{PROVIDER_CITY}}`, `{{PROVIDER_EMAIL}}`, `{{PROVIDER_PHONE}}`, `{{PROVIDER_VAT_ID}}`). Die Anschrift steht nicht im Repo: `pages.yml` setzt sie mit `scripts/render-provider.py` aus den Actions-**Variablen** der Organisation (nicht Secrets) in eine Kopie ein und bricht ab, wenn ein Pflichtwert (Name, Straße, Ort, E-Mail) fehlt. Lokal zeigt die Seite die Platzhalter; für eine Vorschau mit Testwerten in einer Kopie: `python3 scripts/render-provider.py --test-values <kopie>/index.html <kopie>/impressum.html <kopie>/datenschutz.html`.

@@ -70,7 +70,7 @@
     var head = el('tr');
     head.appendChild(el('th', null, 'Variante'));
     cfg.szenarien.forEach(function (n) {
-      var th = el('th', null, n + ' Nutzer');
+      var th = el('th', 'num', n + ' Nutzer');
       th.setAttribute('scope', 'col');
       head.appendChild(th);
     });
@@ -83,7 +83,7 @@
       th.setAttribute('scope', 'row');
       tr.appendChild(th);
       byScenario.forEach(function (rows) {
-        var td = el('td', null, span(rows[i].lo, rows[i].hi));
+        var td = el('td', 'num', span(rows[i].lo, rows[i].hi));
         if (rows[i].zeit > 0) td.appendChild(el('small', 'zeit', 'davon Arbeitszeit ' + eur(rows[i].zeit)));
         tr.appendChild(td);
       });

@@ -7,6 +7,7 @@
   <meta name="description" content="SovereignMind installieren: Nativer Installer für Windows und Linux, ohne Docker.">
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/theme.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -23,17 +24,17 @@
         <a href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
         <a href="api.html">API</a>
-        <a class="btn" aria-current="page" href="download.html">Herunterladen</a>
+        <a class="btn" aria-current="page" href="download.html">Setup herunterladen</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
-    <h1 style="margin-top:40px">SovereignMind installieren</h1>
+    <h1 class="page-title">SovereignMind installieren</h1>
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
     <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem.</p>
     <p class="version" data-version hidden></p>
-    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Sobald er veröffentlicht ist, erscheint hier der Link.</p>
+    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>); sobald er veröffentlicht ist, erscheint er hier.</p>
 
     <div class="tabs" role="tablist" aria-label="Betriebssystem">
       <button class="tab" role="tab" id="tab-windows" data-os="windows" aria-controls="panel-windows" aria-selected="false">Windows</button>
@@ -158,7 +159,7 @@
     <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
 
     <h2>Nach der Installation</h2>
-    <ol>
+    <ol class="steps">
       <li>App öffnen: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (der Port ist bei der Installation wählbar) oder, wenn <a href="#https">HTTPS</a> eingerichtet ist, unter <code>https://chat.example.de</code> (Ihr Name)</li>
       <li>Beim ersten Aufruf zeigt die App eine Willkommensseite: <strong>„Demo starten“</strong> (ohne Schlüssel, 24 Stunden) oder <strong>„Mit Lizenz einrichten“</strong> (Lizenzschlüssel, Unternehmen und Admin-Passwort; die Aktivierung läuft offline).</li>
       <li>Alles läuft als Dienst im Hintergrund und startet mit dem Rechner. Status und Steuerung: Tray-App (Windows) bzw. <code>sovereignmind status</code> (Linux).</li>
@@ -189,7 +190,7 @@
     <p><strong>Update:</strong> neue Version des Installers ausführen: unter Windows das neue Setup, unter Linux das neue Bundle mit demselben Befehl wie bei der Installation (Teile vorher zusammenfügen). Daten, Schlüssel und Lizenz bleiben erhalten; vor dem Update wird ein Datenbank-Dump angelegt.</p>
     <p><strong>Sicherung:</strong> Die tägliche Sicherung läuft automatisch. Wiederherstellung und Deinstallation beschreibt das Betreiber-Handbuch, das mit dem Anbieter-Support ausgeliefert wird.</p>
 
-    <p style="margin-bottom:48px">Bei Problemen bitte beim Anbieter melden und die Ausgabe des Installers mitschicken.</p>
+    <p class="page-end">Bei Problemen bitte beim Anbieter melden und die Ausgabe des Installers mitschicken.</p>
   </main>
 
   <footer class="site">

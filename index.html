@@ -8,6 +8,7 @@
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/demo.css">
+  <script src="assets/theme.js"></script>
 </head>
 <body>
   <a class="skip" href="#main">Zum Inhalt</a>
@@ -24,7 +25,7 @@
         <a href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
         <a href="api.html">API</a>
-        <a class="btn" href="download.html">Herunterladen</a>
+        <a class="btn" href="download.html">Setup herunterladen</a>
       </nav>
     </div>
   </header>
@@ -32,24 +33,28 @@
   <main id="main">
     <section class="hero">
       <div class="wrap">
-        <img class="hero-logo" src="assets/logo-outline.svg" alt="SovereignMind Logo">
-        <h1>On-Premise KI-Assistent für den DACH-Mittelstand</h1>
-        <p>Ein DSGVO-konformer Chat über Ihre eigenen Firmendokumente, der komplett lokal bei Ihnen läuft.
-          Dokumente und Prompts verlassen Ihr Netzwerk nicht, es gibt keine Anbindung an OpenAI, Google oder andere Cloud-KI-APIs.</p>
-        <div class="actions">
-          <a class="btn" href="download.html">Herunterladen</a>
-          <a class="btn secondary" href="#funktionen">Funktionen ansehen</a>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <h1>On-Premise KI-Assistent für den DACH-Mittelstand</h1>
+            <p>Fragen an die eigenen Firmendokumente, beantwortet mit Quellenbeleg. Alles läuft in Ihrem Netz: Dokumente und Fragen verlassen es nicht.</p>
+            <div class="actions">
+              <a class="btn" href="download.html#demo">Demo ausprobieren</a>
+              <a class="textlink" href="download.html">Installation ansehen</a>
+            </div>
+            <p class="hint">Die Demo läuft 24 Stunden ohne Lizenzschlüssel, mit einem Sitzplatz.</p>
+            <p class="version" data-version hidden></p>
+          </div>
+          <div class="net" id="ausprobieren">
+            <svg class="net-line" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>
+            <p class="net-label">Ihr Netz</p>
+            <div class="demo" data-demo>
+              <div class="demo-tabs" role="tablist" aria-label="Assistent wählen"></div>
+              <div class="demo-chat" aria-live="polite"></div>
+              <p class="demo-note" data-demo-note></p>
+            </div>
+          </div>
         </div>
-        <p class="version" data-version hidden></p>
-        <div class="note warn" data-status-note style="max-width:680px;margin:24px auto 0;text-align:left"><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
-      </div>
-    </section>
-
-    <section class="block" id="ausprobieren">
-      <div class="wrap">
-        <h2>Ausprobieren</h2>
-        <p class="lead">Nach der Installation startet die Demo mit einem Klick, ganz ohne Lizenzschlüssel: 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner oder unter dem eingerichteten HTTPS-Namen. Danach werden alle Daten gelöscht, und eine neue Demo lässt sich starten.</p>
-        <a class="btn" href="download.html#demo">Zur Demo</a>
+        <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
       </div>
     </section>
 
@@ -58,59 +63,70 @@
         <h2>Wofür ist das gedacht?</h2>
         <p class="lead">Überall liegen sensible Dokumente, die nicht in eine US-Cloud dürfen. Ohne freigegebene Alternative
           landen sie oft trotzdem in privaten ChatGPT-Accounts. SovereignMind ist die selbst gehostete Alternative.</p>
-        <div class="grid">
-          <div class="card"><h3>Kanzleien</h3><p>Verträge und Akten durchsuchen, ohne Mandantendaten aus der Hand zu geben.</p></div>
-          <div class="card"><h3>Personalabteilungen</h3><p>Richtlinien und Personalunterlagen befragen, ohne dass sie das Haus verlassen.</p></div>
-          <div class="card"><h3>Gesundheitswesen</h3><p>Handbücher und Dokumentation nutzbar machen, mit voller Datenhoheit.</p></div>
-          <div class="card"><h3>Industrie</h3><p>Handbücher und Fertigungspläne per Frage finden statt per Ordnersuche.</p></div>
-        </div>
+        <dl class="rows">
+          <div><dt>Kanzleien</dt><dd>Verträge und Akten durchsuchen, ohne Mandantendaten aus der Hand zu geben.</dd></div>
+          <div><dt>Personalabteilungen</dt><dd>Richtlinien und Personalunterlagen befragen, ohne dass sie das Haus verlassen.</dd></div>
+          <div><dt>Gesundheitswesen</dt><dd>Handbücher und Dokumentation nutzbar machen, mit voller Datenhoheit.</dd></div>
+          <div><dt>Industrie</dt><dd>Handbücher und Fertigungspläne per Frage finden statt per Ordnersuche.</dd></div>
+        </dl>
       </div>
     </section>
 
     <section class="block" id="funktionen">
       <div class="wrap">
         <h2>Funktionen</h2>
-        <p class="lead">Alles, was ein Team für den Alltag mit einem internen KI-Assistenten braucht.</p>
-        <div class="grid">
-          <div class="card"><h3>Lokale KI</h3><p>Sprachmodell und Embeddings laufen auf Ihrer Hardware (Ollama). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, sonst CPU).</p></div>
-          <div class="card"><h3>Chat mit Quellenbelegen</h3><p>Fragen in natürlicher Sprache, Antworten mit klickbaren Verweisen ins Originaldokument. Antworten immer auf Deutsch.</p></div>
-          <div class="card"><h3>Dokumentenverwaltung</h3><p>PDF, DOCX, Tabellen u. a. werden automatisch geparst und durchsuchbar gemacht. Kategorien, Duplikaterkennung, Verarbeitungsstatus.</p></div>
-          <div class="card"><h3>Nutzer und Rollen</h3><p>Admin und Member, eigenes Branding pro Unternehmen.</p></div>
-          <div class="card"><h3>Assistenten und Prompt-Bibliothek</h3><p>Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.</p></div>
-          <div class="card"><h3>Anbindung interner Systeme</h3><p>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</p></div>
-          <div class="card"><h3>Antwort-Cache</h3><p>Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Admin kann den Cache leeren oder auf Standard zurücksetzen.</p></div>
-          <div class="card"><h3>Dateien im Chat</h3><p>Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.</p></div>
-          <div class="card"><h3>Sprache</h3><p>Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Admin schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.</p></div>
-          <div class="card"><h3>Wissenspakete</h3><p>Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Admin aus dem Katalog installiert oder als Datei importiert.</p></div>
-          <div class="card"><h3>Themes</h3><p>Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.</p></div>
-          <div class="card"><h3>Support-Nachrichten</h3><p>Nutzer schreiben dem Admin über ein Kontaktformular direkt aus der App.</p></div>
-          <div class="card"><h3>Admin-Bereich</h3><p>Nutzer, Dokumente, Branding, Lizenz, KI-Einstellungen, Wissenspakete, Support, Nutzungsstatistik, Logs und Hardware-Dashboard.</p></div>
+        <div class="feature-main">
+          <h3>Fragen an die eigenen Dokumente</h3>
+          <div>
+            <p>Fragen in natürlicher Sprache, Antworten immer auf Deutsch, mit klickbaren Verweisen ins Originaldokument. PDF, DOCX, Tabellen und mehr werden automatisch gelesen und durchsuchbar gemacht, mit Kategorien, Duplikaterkennung und Verarbeitungsstatus.</p>
+          </div>
         </div>
+        <dl class="rows">
+          <div><dt>Lokale KI</dt><dd>Sprachmodell und Embeddings laufen auf Ihrer Hardware (Ollama). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, sonst CPU).</dd></div>
+          <div><dt>Nutzer und Rollen</dt><dd>Admin und Member, eigenes Branding pro Unternehmen.</dd></div>
+          <div><dt>Assistenten und Prompt-Bibliothek</dt><dd>Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.</dd></div>
+          <div><dt>Anbindung interner Systeme</dt><dd>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</dd></div>
+          <div><dt>Antwort-Cache</dt><dd>Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Betreiber kann den Cache leeren oder auf Standard zurücksetzen.</dd></div>
+          <div><dt>Dateien im Chat</dt><dd>Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.</dd></div>
+          <div><dt>Sprache</dt><dd>Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.</dd></div>
+          <div><dt>Wissenspakete</dt><dd>Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Betreiber aus dem Katalog installiert oder als Datei importiert.</dd></div>
+          <div><dt>Themes</dt><dd>Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.</dd></div>
+          <div><dt>Support-Nachrichten</dt><dd>Nutzer schreiben dem Betreiber über ein Kontaktformular direkt aus der App.</dd></div>
+          <div><dt>Admin-Bereich</dt><dd>Nutzer, Dokumente, Branding, Lizenz, KI-Einstellungen, Wissenspakete, Support, Nutzungsstatistik, Logs und Hardware-Dashboard.</dd></div>
+        </dl>
       </div>
     </section>
 
     <section class="block" id="assistenten">
       <div class="wrap">
         <h2>Assistenten, Stimmen und Schnittstellen</h2>
-        <p class="lead">Jedes Unternehmen stellt sich seine Assistenten selbst zusammen: mit Fachwissen, Charakter, Gesicht und Stimme, und mit Zugriff auf die Systeme, die im Haus schon laufen.</p>
+        <p class="lead">Jedes Unternehmen stellt sich seine Assistenten selbst zusammen: mit Fachwissen, Charakter, Gesicht und Stimme, und mit Zugriff auf die Systeme, die im Haus schon laufen. Den Beispiel-Chat oben gibt es mit vier Assistenten.</p>
 
         <h3 class="sub">Assistenten konfigurieren</h3>
-        <div class="grid">
-          <div class="card"><h3>Rollen</h3><p>Eine Rolle trägt die Fachanweisung, zum Beispiel „Vertragsprüfer“. Jeder Assistent hat höchstens eine; wird die Rolle gelöscht, bleiben die Assistenten bestehen.</p></div>
-          <div class="card"><h3>Persönlichkeit</h3><p>Ton und Charakter legt der Admin pro Assistent fest, dazu Anzeigename und eine Zusatzanweisung. Mitgeliefert sind Clara, Jonas, Sam und Robin.</p></div>
-          <div class="card"><h3>Avatar</h3><p>Eine von 20 mitgelieferten Vorlagen (KI-generierte Gesichter und Illustrationen) oder ein eigenes Bild. Im Chat erscheint der Avatar neben jeder Antwort, mit Hinweis „KI-Assistent“.</p></div>
-          <div class="card"><h3>Wissen und Werkzeuge</h3><p>Pro Assistent lassen sich Dokumentkategorien als Wissensbasis und Schnittstellen als Werkzeuge zuordnen.</p></div>
-          <div class="card"><h3>Eigene Stimme</h3><p>Der Admin weist jedem Assistenten eine Stimme zu. Mitglieder wählen: Standard, Stimme des Assistenten oder eigene Stimme.</p></div>
-          <div class="card"><h3>Prompt-Bibliothek</h3><p>Wiederverwendbare Vorlagen, die Nutzer im Chat mit einem Klick einfügen.</p></div>
-        </div>
+        <dl class="rows">
+          <div><dt>Rollen</dt><dd>Eine Rolle trägt die Fachanweisung, zum Beispiel „Vertragsprüfer“. Jeder Assistent hat höchstens eine; wird die Rolle gelöscht, bleiben die Assistenten bestehen.</dd></div>
+          <div><dt>Persönlichkeit</dt><dd>Ton und Charakter legt der Betreiber pro Assistent fest, dazu Anzeigename und eine Zusatzanweisung. Mitgeliefert sind Clara, Jonas, Sam und Robin.</dd></div>
+          <div><dt>Avatar</dt><dd>Eine von 20 mitgelieferten Vorlagen (KI-generierte Gesichter und Illustrationen) oder ein eigenes Bild. Im Chat erscheint der Avatar neben jeder Antwort, mit Hinweis „KI-Assistent“.</dd></div>
+          <div><dt>Wissen und Werkzeuge</dt><dd>Pro Assistent lassen sich Dokumentkategorien als Wissensbasis und Schnittstellen als Werkzeuge zuordnen.</dd></div>
+          <div><dt>Eigene Stimme</dt><dd>Der Betreiber weist jedem Assistenten eine Stimme zu. Mitglieder wählen: Standard, Stimme des Assistenten oder eigene Stimme.</dd></div>
+          <div><dt>Prompt-Bibliothek</dt><dd>Wiederverwendbare Vorlagen, die Nutzer im Chat mit einem Klick einfügen.</dd></div>
+        </dl>
 
-        <h3 class="sub">Beispiel: So kann ein Chat aussehen</h3>
-        <p class="lead">Gemockte Unterhaltung mit vier Assistenten. Wählen Sie einen aus und lassen Sie sich die Antwort vorlesen.</p>
-        <div class="demo" data-demo>
-          <div class="demo-tabs" role="tablist" aria-label="Assistent wählen"></div>
-          <div class="demo-chat" aria-live="polite"></div>
-          <p class="demo-note" data-demo-note></p>
-        </div>
+        <h3 class="sub">Anbindung per API</h3>
+        <p class="lead">Das Modell ruft angebundene Systeme bei Bedarf selbst auf. Die Aufrufe erscheinen als aufklappbare Karte im Chat, Zugangsdaten werden verschlüsselt gespeichert, erlaubte Ziel-Hosts begrenzt eine Allowlist.</p>
+        <dl class="rows">
+          <div><dt>Anbieter-Vorlagen</dt><dd>Fertige Vorlagen für HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (Handwerkersoftware) und Microsoft 365 mit OAuth2. Alle nur lesend.</dd></div>
+          <div><dt>Eigene Schnittstellen</dt><dd>Generische Gerüste für Volltextsuche, Terminabfrage und Ticketstatus, anpassbar an jedes interne HTTP-System wie DMS oder ERP.</dd></div>
+          <div><dt>Geführte Einrichtung</dt><dd>Die Vorlagenauswahl bietet Suche, Kategorie-Filter, Funktionsauswahl sowie Hinweise zu Zugangsdaten und Einrichtung.</dd></div>
+        </dl>
+
+        <h3 class="sub">Stimmen</h3>
+        <p class="lead">Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Betreiber, ihre Unterstützung wird dann nachgeladen.</p>
+        <dl class="rows">
+          <div><dt>Mehrere Stimmen</dt><dd>Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.</dd></div>
+          <div><dt>Diktat (noch nicht verfügbar)</dt><dd>Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.</dd></div>
+          <div><dt>Pro Unternehmen und Nutzer</dt><dd>Der Betreiber schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</dd></div>
+        </dl>
         <div class="voices">
           <h4>Stimmenproben (Qwen3-TTS)</h4>
           <div class="voice-row">
@@ -120,22 +136,6 @@
           </div>
           <p class="demo-note">Quellen: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Das Vorlesen im Beispiel-Chat nutzt die Sprachausgabe Ihres Browsers als Vorschau, im Produkt liest die gewählte Stimme vor.</p>
         </div>
-
-        <h3 class="sub">Anbindung per API</h3>
-        <p class="lead">Das Modell ruft angebundene Systeme bei Bedarf selbst auf. Die Aufrufe erscheinen als aufklappbare Karte im Chat, Zugangsdaten werden verschlüsselt gespeichert, erlaubte Ziel-Hosts begrenzt eine Allowlist.</p>
-        <div class="grid">
-          <div class="card"><h3>Anbieter-Vorlagen</h3><p>Fertige Vorlagen für HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (Handwerkersoftware) und Microsoft 365 mit OAuth2. Alle nur lesend.</p></div>
-          <div class="card"><h3>Eigene Schnittstellen</h3><p>Generische Gerüste für Volltextsuche, Terminabfrage und Ticketstatus, anpassbar an jedes interne HTTP-System wie DMS oder ERP.</p></div>
-          <div class="card"><h3>Geführte Einrichtung</h3><p>Die Vorlagenauswahl bietet Suche, Kategorie-Filter, Funktionsauswahl sowie Hinweise zu Zugangsdaten und Einrichtung.</p></div>
-        </div>
-
-        <h3 class="sub">Stimmen</h3>
-        <p class="lead">Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Admin, ihre Unterstützung wird dann nachgeladen.</p>
-        <div class="grid">
-          <div class="card"><h3>Mehrere Stimmen</h3><p>Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.</p></div>
-          <div class="card"><h3>Diktat (noch nicht verfügbar)</h3><p>Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.</p></div>
-          <div class="card"><h3>Pro Unternehmen und Nutzer</h3><p>Der Admin schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</p></div>
-        </div>
       </div>
     </section>
 
@@ -143,7 +143,16 @@
       <div class="wrap">
         <h2>Architektur in Kürze</h2>
         <p class="lead">Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Ollama und die Modelle liefert der Installer mit.</p>
-        <div class="arch"><img src="assets/architektur.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360"></div>
+        <div class="arch">
+        <picture class="light">
+          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-hell.svg" width="340" height="520">
+          <img src="assets/architektur-hell.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360">
+        </picture>
+        <picture class="dark">
+          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-dunkel.svg" width="340" height="520">
+          <img src="assets/architektur-dunkel.svg" alt=""  width="760" height="360">
+        </picture>
+      </div>
       </div>
     </section>
 
@@ -154,11 +163,13 @@
           Für Start, Stopp und Status braucht niemand Systemkenntnisse: unter Windows übernimmt das die Tray-App, unter Linux ein einzelnes Kommando.</p>
         <div class="ops">
           <div class="ops-text">
-            <div class="card"><h3>Windows: Tray-App</h3><p>„SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.</p></div>
-            <div class="card"><h3>Linux: <code>sovereignmind</code></h3><p>Ein Kommando für <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> und <code>backup</code>. Befehle mit Rechtebedarf rufen selbst <code>sudo</code> auf.</p></div>
-            <div class="card"><h3>HTTPS-Proxy</h3><p>Der Installer bringt einen HTTPS-Proxy mit: interne CA, Let's Encrypt oder ein mitgeliefertes Wildcard-Zertifikat ohne Browserwarnung. Chat und Admin-Bereich laufen unter eigenen Namen, die Demo startet auch dort.</p></div>
-            <div class="card"><h3>API für Fachsysteme</h3><p>Jede Installation enthält eine Schnittstelle zum Anbinden eigener Oberflächen und Fachsysteme. Alle Endpunkte, Anmeldung, Fehler und Codebeispiele lesen Sie ohne Installation nach.</p></div>
-            <p><a class="btn secondary" href="download.html#linux">Alle Befehle ansehen</a> <a class="btn secondary" href="api.html">API-Dokumentation</a></p>
+            <dl class="rows">
+            <div><dt>Windows: Tray-App</dt><dd>„SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.</dd></div>
+            <div><dt>Linux: <code>sovereignmind</code></dt><dd>Ein Kommando für <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> und <code>backup</code>. Befehle mit Rechtebedarf rufen selbst <code>sudo</code> auf.</dd></div>
+            <div><dt>HTTPS-Proxy</dt><dd>Der Installer bringt einen HTTPS-Proxy mit: interne CA, Let's Encrypt oder ein mitgeliefertes Wildcard-Zertifikat ohne Browserwarnung. Chat und Admin-Bereich laufen unter eigenen Namen, die Demo startet auch dort.</dd></div>
+            <div><dt>API für Fachsysteme</dt><dd>Jede Installation enthält eine Schnittstelle zum Anbinden eigener Oberflächen und Fachsysteme. Alle Endpunkte, Anmeldung, Fehler und Codebeispiele lesen Sie ohne Installation nach.</dd></div>
+            </dl>
+            <p class="actions-row"><a class="btn secondary" href="download.html#linux">Alle Befehle ansehen</a> <a class="btn secondary" href="api.html">API-Dokumentation lesen</a></p>
           </div>
           <figure class="term-fig">
             <div class="term" role="img" aria-label="Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, Ollama, Ordner">
@@ -240,10 +251,9 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
     <section class="block" id="kontakt">
       <div class="wrap">
         <h2>Kontakt und Lizenz</h2>
-        <p class="lead">Für Lizenzanfragen und Lizenzschlüssel wenden Sie sich bitte an den Anbieter.
-          <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a>
-          · <a href="praesentation/index.html">Präsentation (18 Folien)</a></p>
-        <a class="btn" href="download.html">Zur Installation</a>
+        <p class="lead">Für Lizenzanfragen und Lizenzschlüssel wenden Sie sich bitte an den Anbieter: <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a></p>
+        <p class="lead"><a href="praesentation/index.html">Präsentation mit 18 Folien ansehen</a></p>
+        <a class="btn" href="download.html">Setup herunterladen</a>
       </div>
     </section>
   </main>
