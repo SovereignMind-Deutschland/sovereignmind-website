@@ -147,7 +147,7 @@
       ['admin-ki-einstellungen', 'Admin: KI-Einstellungen'],
       ['admin-connectors', 'Admin: Schnittstellen'],
       ['admin-connector-vorlagen', 'Admin: Schnittstellen-Vorlagen'],
-      ['admin-hardware', 'Hardware-Dashboard'],
+      ['admin-dashboard', 'Admin: Dashboard'],
       ['admin-support', 'Admin: Support']
     ];
     var BRANDED = ['chat', 'einstellungen', 'admin-nutzung', 'admin-profil'];
