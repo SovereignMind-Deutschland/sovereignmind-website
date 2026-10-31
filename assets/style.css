@@ -191,6 +191,7 @@ dl.rows { margin: 0; border-top: 1px solid var(--border); }
 dl.rows > div { display: grid; gap: var(--s-1) var(--s-5); grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr); padding: var(--s-4) 0; border-bottom: 1px solid var(--border); }
 dl.rows dt { font: 600 1.0625rem/1.3 var(--display); }
 dl.rows dd { margin: 0; color: var(--muted); max-width: 68ch; }
+dl.rows dd .beispiel { display: block; margin-top: var(--s-2); font-style: italic; }
 @media (max-width: 640px) { dl.rows > div { grid-template-columns: 1fr; } }
 .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; }

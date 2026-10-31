@@ -1,0 +1,19 @@
+# SovereignMind
+
+> SovereignMind ist ein selbst gehosteter KI-Assistent für Firmendokumente: Sprachmodell, Dokumentensuche und Datenbank laufen auf eigener Hardware, ohne Anbindung an Cloud-KI. Antworten verweisen auf das Originaldokument. Zielgruppe ist der Mittelstand im DACH-Raum mit sensiblen Dokumenten.
+
+Stand: Oktober 2026. Grenze: SovereignMind wird derzeit nur als Demo zur Erprobung bereitgestellt (24 Stunden, ohne Lizenzschlüssel, nur auf dem eigenen Rechner). Produktivbetrieb ist nicht gestattet, ob und wann Lizenzen angeboten werden, ist offen. Es gibt keinen Preis.
+
+## Seiten
+
+- [Produkt](https://sovereignmind-deutschland.github.io/sovereignmind-website/): Funktionen, Architektur, Betrieb im Alltag
+- [Was ist ein On-Premise-KI-Assistent?](https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html): Begriff, DSGVO und Schatten-IT, Entscheidungshilfe lokal oder Cloud (keine Rechtsberatung)
+- [Vergleich](https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html): lokal gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, Kostenbeispiel mit Annahmen, Quellen und Stand
+- [Wissenspakete](https://sovereignmind-deutschland.github.io/sovereignmind-website/wissenspakete.html): Katalog vorverarbeiteter Wissenspakete, zum Beispiel deutsche Gesetze
+- [Download und Demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html): Installation unter Windows und Linux, Demo-Grenzen
+- [API](https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html): Dokumentation der Schnittstelle
+
+## Hinweise
+
+- Die Kostenzahlen im Vergleich sind ein Rechenbeispiel mit offenen Annahmen, keine Preisliste. Preise Dritter stammen teils aus Übersichten Dritter und sind datiert.
+- Lokale Modelle sind in Qualität und Tempo von der Hardware begrenzt; die stärksten Cloud-Modelle erreichen sie nicht.

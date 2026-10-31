@@ -30,6 +30,7 @@ test('HTML: kein <script src>, <link href> oder <img/source src> auf fremde Serv
   for (const f of files.filter((x) => x.endsWith('.html'))) {
     const html = readFileSync(f, 'utf8');
     for (const m of html.matchAll(/<(script|link|source|img|iframe)\b[^>]*\b(?:src|href|srcset)\s*=\s*["']([^"']+)["']/gi)) {
+      if (/rel\s*=\s*["']canonical["']/i.test(m[0])) continue; // Canonical ist eine Angabe, nichts, was geladen wird
       assert.ok(!EXTERN.test(m[2].trim()), `${f}: externe URL in <${m[1]}>: ${m[2]}`);
     }
   }

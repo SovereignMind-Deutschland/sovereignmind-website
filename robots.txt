@@ -1,0 +1,5 @@
+# noindex-Seiten (impressum, datenschutz, 404) bewusst nicht gesperrt: Der Crawler muss das noindex lesen können.
+User-agent: *
+Allow: /
+
+Sitemap: https://sovereignmind-deutschland.github.io/sovereignmind-website/sitemap.xml

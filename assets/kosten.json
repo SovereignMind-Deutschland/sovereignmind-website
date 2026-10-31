@@ -1,6 +1,6 @@
 {
   "stand": "2026-10-21",
-  "hinweis": "Alle Beträge in Euro, netto (ohne MwSt.), über die Zeiträume in 'zeitraeume'. Annahmen und Quellen stehen in Support/docs/vergleich/phase-6-quellen.md (Hauptrepo).",
+  "hinweis": "Alle Beträge in Euro, netto (ohne MwSt.), über die Zeiträume in 'zeitraeume'. Annahmen und Quellen stehen unter \"quellen\" und auf der Seite vergleich.html.",
   "zeitraeume": [
     12,
     36
@@ -123,7 +123,7 @@
     },
     {
       "id": "Q4",
-      "text": "Azure-Preisseite zeigt keine Beträge; Stundensätze aus Drittseiten (Basic ca. 0,10 $/h, S1 ca. 0,34 $/h), Token-Preise GPT-4.1 (2 $/8 $ je Million) aus Drittseiten.",
+      "text": "Azure-Preisseite (Oktober 2026) zeigt keine Beträge; Stundensätze aus Drittseiten (Basic ca. 0,10 $/h, S1 ca. 0,34 $/h), Token-Preise GPT-4.1 (2 $/8 $ je Million) aus Drittseiten (Oktober 2026).",
       "belegt": "teilweise"
     }
   ],

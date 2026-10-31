@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On-Premise-KI-Assistent: Was ist das? – SovereignMind</title>
+  <meta name="description" content="Was ein On-Premise-KI-Assistent ist, wann er sich lohnt und was DSGVO und Schatten-IT damit zu tun haben. Sachlich, ohne Rechtsberatung.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="de_DE">
+  <meta property="og:title" content="On-Premise-KI-Assistent: Was ist das? – SovereignMind">
+  <meta property="og:description" content="Was ein On-Premise-KI-Assistent ist, wann er sich lohnt und was DSGVO und Schatten-IT damit zu tun haben. Sachlich, ohne Rechtsberatung.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: Der KI-Assistent, der Ihre Daten nie verlässt">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="On-Premise-KI-Assistent: Was ist das? – SovereignMind">
+  <meta name="twitter:description" content="Was ein On-Premise-KI-Assistent ist, wann er sich lohnt und was DSGVO und Schatten-IT damit zu tun haben. Sachlich, ohne Rechtsberatung.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Startseite",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "On-Premise-KI",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html"
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Zum Inhalt</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menü</button>
+      <nav class="main" id="hauptnav" aria-label="Hauptnavigation">
+        <a href="index.html">Produkt</a>
+        <a href="wissenspakete.html">Wissenspakete</a>
+        <a href="vergleich.html">Vergleich</a>
+        <a href="api.html">API</a>
+        <a class="btn" href="download.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Was ist ein On-Premise-KI-Assistent und wann lohnt er sich?</h1>
+    <p><strong>Ein On-Premise-KI-Assistent ist ein KI-Chat, dessen Sprachmodell und Dokumentensuche auf Hardware der eigenen Organisation laufen statt bei einem Cloud-Anbieter.</strong> Fragen und Dokumente bleiben im eigenen Netz. Er lohnt sich vor allem, wenn sensible Dokumente nicht an Dritte gehen sollen und viele Personen dieselbe Installation nutzen. Stand: Oktober 2026.</p>
+    <div class="note warn"><strong>Wichtig:</strong> SovereignMind wird derzeit nur als Demo zur Erprobung bereitgestellt (kein Produktivbetrieb, Lizenzangebot offen). Diese Seite erklärt das Konzept allgemein und ist keine Rechtsberatung.</div>
+
+    <h2>Was bedeutet „On-Premise“ bei KI?</h2>
+    <p>„On-Premise“ heißt: Die Software läuft in der eigenen Umgebung, auf einem Server oder einer Workstation, die die Organisation selbst betreibt. Bei einem Cloud-Assistenten läuft dasselbe beim Anbieter. Bei SovereignMind laufen Sprachmodell (Ollama), Dokumentensuche (Qdrant) und Datenbank (PostgreSQL) lokal; es gibt keine Anbindung an Cloud-KI-Dienste.</p>
+
+    <h2>Wie beantwortet er Fragen zu eigenen Dokumenten?</h2>
+    <p>Das Verfahren heißt Retrieval-Augmented Generation (RAG): Dokumente werden zerlegt und durchsuchbar gemacht. Bei einer Frage sucht das System die passenden Stellen und lässt das Sprachmodell daraus eine Antwort formulieren. SovereignMind verlinkt die Antwort mit dem Originaldokument, damit man sie nachprüfen kann.</p>
+
+    <h2>Was hat das mit der DSGVO zu tun?</h2>
+    <p>Enthalten Dokumente personenbezogene Daten, gilt die DSGVO für ihre Verarbeitung, auch wenn ein KI-Dienst sie verarbeitet. Typische Punkte, die bei einem Cloud-Dienst zu klären sind:</p>
+    <ul>
+      <li>Ein Vertrag zur Auftragsverarbeitung mit dem Anbieter (Art. 28 DSGVO).</li>
+      <li>Der Standort der Verarbeitung; für Übermittlungen in Drittländer gelten besondere Voraussetzungen (Art. 44 ff. DSGVO).</li>
+      <li>Bei Berufsgeheimnissen (zum Beispiel Kanzleien, Arztpraxen) zusätzlich die berufsrechtlichen Vorgaben, etwa § 203 StGB.</li>
+    </ul>
+    <p>Ein lokaler Betrieb vermeidet die Weitergabe an einen Anbieter, ersetzt aber nicht die übrigen Pflichten (Rechtsgrundlage, Zugriffsrechte, Löschkonzept). Ob ein Einsatz zulässig ist, klären Sie mit Ihrer oder Ihrem Datenschutzbeauftragten.</p>
+
+    <h2>Was ist Schatten-IT, und warum spielt sie hier eine Rolle?</h2>
+    <p>Schatten-IT sind Dienste, die Mitarbeitende ohne Freigabe der IT nutzen, etwa private Konten bei Cloud-Chatbots. Wo es keine freigegebene Alternative gibt, ist die Versuchung groß, Dokumente dort einzufügen. Eine intern bereitgestellte Lösung kann das Risiko verringern, verhindert die private Nutzung aber nicht von allein. Dazu braucht es zusätzlich Regeln und Schulung.</p>
+
+    <h2>Wann lohnt sich ein lokaler Assistent, wann eher Cloud?</h2>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Entscheidungshilfe, horizontal scrollbar">
+      <table>
+        <caption>Entscheidungshilfe: lokal oder Cloud (Stand Oktober 2026)</caption>
+        <thead><tr><th scope="col">Kriterium</th><th scope="col">Eher lokal</th><th scope="col">Eher Cloud</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Dokumente</th><td>Vertraulich, Berufsgeheimnis, Personal- oder Konstruktionsdaten</td><td>Wenig sensibel</td></tr>
+          <tr><th scope="row">Nutzerzahl</th><td>Viele Nutzer an einer Installation</td><td>Wenige oder stark schwankende Nutzerzahl</td></tr>
+          <tr><th scope="row">Kosten</th><td>Feste Kosten für Hardware und Betrieb</td><td>Lizenz je Nutzer, teils nutzungsabhängig</td></tr>
+          <tr><th scope="row">Modellqualität</th><td>Lokale Open-Weight-Modelle, von der Hardware begrenzt</td><td>Stärkste verfügbare Modelle</td></tr>
+          <tr><th scope="row">Betrieb</th><td>Eigene Hardware, Updates, Sicherung</td><td>Kaum Betriebsaufwand</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Zahlen und Annahmen dazu stehen im <a href="vergleich.html">Vergleich mit Kostenbeispiel und Quellen</a>.</p>
+
+    <h2>Was braucht ein lokaler Assistent an Hardware?</h2>
+    <p>SovereignMind nennt als Mindestausstattung 8 GB Grafikspeicher (VRAM) und 16 GB Arbeitsspeicher. Das Modell wird nach dem verfügbaren VRAM gewählt; ein Betrieb nur mit dem Prozessor ist möglich, aber langsamer. Qualität und Tempo hängen von der Hardware ab.</p>
+
+    <h2>Wie kann man es ausprobieren?</h2>
+    <p>Die Demo läuft 24 Stunden ohne Lizenzschlüssel und nur auf dem eigenen Rechner. Bitte keine echten oder vertraulichen Daten verwenden. <a href="download.html#demo">Zur Demo</a> · <a href="index.html#kontakt">Rückmeldung geben</a></p>
+
+    <p class="muted page-end">Dies ist keine Rechts-, Steuer- oder Einkaufsberatung.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+    </div>
+  </footer>
+</body>
+</html>
