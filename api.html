@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>API – SovereignMind</title>
   <meta name="description" content="Dokumentation der SovereignMind-Schnittstelle: Bereiche und Endpunkte zum Nachlesen, ohne Installation.">
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <link rel="stylesheet" href="assets/api-doku.css">
@@ -15,17 +16,13 @@
   <header class="site">
     <div class="wrap">
       <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
-      <nav class="main" aria-label="Hauptnavigation">
-        <a href="index.html#funktionen">Funktionen</a>
-        <a href="index.html#assistenten">Assistenten</a>
-        <a href="index.html#architektur">Architektur</a>
-        <a href="index.html#betrieb">Betrieb</a>
-        <a href="index.html#kontakt">Kontakt</a>
-        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menü</button>
+      <nav class="main" id="hauptnav" aria-label="Hauptnavigation">
+        <a href="index.html">Produkt</a>
         <a href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
-        <a aria-current="page" href="api.html">API</a>
-        <a class="btn" href="download.html">Setup herunterladen</a>
+        <a href="api.html" aria-current="page">API</a>
+        <a class="btn" href="download.html">Download</a>
       </nav>
     </div>
   </header>
@@ -83,7 +80,7 @@
   <footer class="site">
     <div class="wrap">
       <span>© SovereignMind</span>
-      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </footer>
   <script src="assets/api-doku.js" defer></script>

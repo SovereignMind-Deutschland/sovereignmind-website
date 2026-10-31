@@ -1,21 +1,20 @@
-@font-face { font-family: "Familjen Grotesk"; src: url("../assets/fonts/FamiljenGrotesk-latin.woff2") format("woff2"); font-weight: 400 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Public Sans"; src: url("../assets/fonts/PublicSans-latin.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Geist"; src: url("../assets/fonts/Geist-Variable.woff2") format("woff2"); font-weight: 100 900; font-style: normal; font-display: swap; }
 
-/* Kompass, Dunkel: gleiche Werte wie assets/style.css. Die Präsentation ist bewusst immer dunkel (Beamer). */
+/* Obsidian, Dunkel: gleiche Werte wie assets/style.css. Die Präsentation ist bewusst immer dunkel (Beamer). */
 :root {
   color-scheme: dark;
-  --bg: #0a2540;
-  --surface: #10304f;
+  --bg: #0b1320;
+  --surface: #121c2d;
   --text: #eaf2fa;
   --muted: #9fb4c9;
-  --border: #1f3d5e;
-  --accent: #0089cf;
-  --accent-hi: #5bbcf0;
-  --primary: #00669c;
+  --border: #24334d;
+  --accent: #0f766e;
+  --accent-hi: #2dd4bf;
+  --primary: #0f766e;
   --radius: 6px;
-  --cut: 20px;
-  --display: "Familjen Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --body: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Geist Mono", ui-monospace, Consolas, monospace;
+  --display: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; }

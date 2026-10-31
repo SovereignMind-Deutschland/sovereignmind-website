@@ -1,5 +1,5 @@
 .demo { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; max-width: 860px; }
-.net .demo { max-width: none; border: 0; border-radius: 0; background: var(--surface); clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%); }
+.net .demo { max-width: none; border: 0; background: var(--surface); }
 .demo-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-bottom: 1px solid var(--border); background: var(--surface); }
 .demo-tabs button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .demo-tabs button { display: flex; align-items: center; gap: 10px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 999px; padding: 4px 14px 4px 4px; cursor: pointer; font: inherit; text-align: left; }

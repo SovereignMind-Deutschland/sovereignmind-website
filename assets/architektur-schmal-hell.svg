@@ -2,8 +2,8 @@
   <title id="t">Architektur von SovereignMind</title>
   <desc id="d">Die Web-Oberfläche greift auf das Backend zu. Das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL.</desc>
   <style>
-    :root { --box: #ffffff; --line: #00669c; --text: #0a2540; --muted: #44566b; --main: #00669c; --on-main: #ffffff; --house: #b8862f; --house-text: #7f5a12; }
-    text { font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif; text-anchor: middle; }
+    :root { --box: #ffffff; --line: #0f766e; --text: #0e1726; --muted: #4b5a70; --main: #0f766e; --on-main: #ffffff; --house: #d9a441; --house-text: #8a6414; }
+    text { font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif; text-anchor: middle; }
     .box { fill: var(--box); stroke: var(--line); stroke-width: 1.5; }
     .main { fill: var(--main); }
     .t { font-size: 16px; font-weight: 600; fill: var(--text); }

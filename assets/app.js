@@ -163,7 +163,7 @@
     var current = [];
     var index = 0;
 
-    var src = function (id) { return BASE + state.variant + '/' + state.theme + '/' + id + '.png'; };
+    var src = function (id) { return BASE + state.variant + '/' + state.theme + '/' + id + '.webp'; };
 
     function syncControls() {
       controls.querySelectorAll('button').forEach(function (x) {

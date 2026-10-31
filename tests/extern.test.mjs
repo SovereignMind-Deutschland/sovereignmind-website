@@ -47,6 +47,18 @@ test('CSS: kein @import und kein url() auf fremde Server', () => {
 
 test('Schriften liegen lokal und sind per @font-face eingebunden', () => {
   const css = readFileSync(join(root, 'assets/style.css'), 'utf8');
-  assert.match(css, /@font-face[^}]*fonts\/FamiljenGrotesk-latin\.woff2/);
-  assert.match(css, /@font-face[^}]*fonts\/PublicSans-latin\.woff2/);
+  assert.match(css, /@font-face[^}]*fonts\/Geist-Variable\.woff2/);
+  assert.match(css, /@font-face[^}]*fonts\/GeistMono-Variable\.woff2/);
+});
+
+test('Navigation: höchstens 6 Einträge, Skip-Link und genau eine Überschrift 1 je Seite', () => {
+  for (const f of files.filter((x) => x.endsWith('.html') && !x.includes('praesentation') && !x.endsWith('404.html'))) {
+    const html = readFileSync(f, 'utf8');
+    const nav = html.match(/<nav class="main"[\s\S]*?<\/nav>/);
+    assert.ok(nav, `${f}: keine Hauptnavigation`);
+    const n = (nav[0].match(/<a /g) || []).length;
+    assert.ok(n <= 6, `${f}: ${n} Navigationseinträge`);
+    assert.match(html, /class="skip"/, `${f}: Skip-Link fehlt`);
+    assert.equal((html.match(/<h1[ >]/g) || []).length, 1, `${f}: <h1> nicht genau einmal`);
+  }
 });

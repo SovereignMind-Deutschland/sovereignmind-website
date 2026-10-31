@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Vergleich – SovereignMind</title>
   <meta name="description" content="Sachlicher Vergleich: lokaler KI-Assistent gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, mit Kostenbeispiel, Annahmen und Quellen.">
+  <link rel="preload" href="assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="assets/logo.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/style.css">
   <script src="assets/theme.js"></script>
@@ -14,24 +15,20 @@
   <header class="site">
     <div class="wrap">
       <a class="brand" href="index.html"><img src="assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
-      <nav class="main" aria-label="Hauptnavigation">
-        <a href="index.html#funktionen">Funktionen</a>
-        <a href="index.html#assistenten">Assistenten</a>
-        <a href="index.html#architektur">Architektur</a>
-        <a href="index.html#betrieb">Betrieb</a>
-        <a href="index.html#kontakt">Kontakt</a>
-        <a target="_blank" rel="noopener" href="praesentation/index.html">Präsentation</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menü</button>
+      <nav class="main" id="hauptnav" aria-label="Hauptnavigation">
+        <a href="index.html">Produkt</a>
         <a href="wissenspakete.html">Wissenspakete</a>
-        <a aria-current="page" href="vergleich.html">Vergleich</a>
+        <a href="vergleich.html" aria-current="page">Vergleich</a>
         <a href="api.html">API</a>
-        <a class="btn" href="download.html">Setup herunterladen</a>
+        <a class="btn" href="download.html">Download</a>
       </nav>
     </div>
   </header>
 
   <main id="main" class="wrap">
     <h1 class="page-title">Lokal oder Cloud? Ein sachlicher Vergleich</h1>
-    <p>Diese Seite stellt einen lokal betriebenen KI-Assistenten (SovereignMind) drei Anbietertypen gegenüber: Cloud-Assistenten mit Lizenz je Nutzer, ein selbstgebauter Cloud-Chat und frei verfügbare Oberflächen zum Selbsthosten. Stand der Zahlen: <strong data-stand>–</strong>.</p>
+    <p>Diese Seite stellt einen lokal betriebenen KI-Assistenten (SovereignMind) drei Anbietertypen gegenüber: Cloud-Assistenten mit Lizenz je Nutzer, ein selbstgebauter Cloud-Chat und frei verfügbare Oberflächen zum Selbsthosten. Stand der Zahlen: <strong data-stand>Oktober 2026</strong>.</p>
     <div class="note warn"><strong>Wichtig:</strong> Die Kostenzahlen sind ein <em>Rechenbeispiel mit offenen Annahmen</em>, keine Preisliste und kein Angebot. SovereignMind wird derzeit nur als Demo bereitgestellt; ein Lizenzpreis steht nicht fest, deshalb sind die SovereignMind-Zeilen ohne Lizenzgebühr gerechnet. Maßgeblich sind immer die aktuellen Angaben der Hersteller. Preise Dritter stammen teils aus Übersichten Dritter und sind vor einer Entscheidung zu prüfen (siehe Quellen).</div>
 
     <h2>Wann passt was?</h2>
@@ -77,7 +74,7 @@
     <div id="calc-out" role="status" aria-live="polite"></div>
 
     <h2>Quellen und Stand</h2>
-    <p>Stand: <strong data-stand>–</strong>. Preise ändern sich; die Angaben der Hersteller gehen vor. Namen von Produkten werden hier bewusst nur als Typ geführt.</p>
+    <p>Stand: <strong data-stand>Oktober 2026</strong>. Preise ändern sich; die Angaben der Hersteller gehen vor. Namen von Produkten werden hier bewusst nur als Typ geführt.</p>
     <ul id="quellen-liste"></ul>
     <p class="muted page-end">Dies ist keine Rechts-, Steuer- oder Einkaufsberatung. Ob ein Cloud-Dienst für bestimmte Daten zulässig ist, klären Sie mit Ihrem Datenschutzbeauftragten.</p>
   </main>
@@ -85,7 +82,7 @@
   <footer class="site">
     <div class="wrap">
       <span>© SovereignMind</span>
-      <span><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </footer>
   <script src="assets/vergleich.js" defer></script>

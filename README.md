@@ -27,7 +27,7 @@ node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeit
 
 ## Gestaltung und Schrift
 
-Die Seite folgt dem Auftritt „Kompass“ (Plan: `Support/docs/pläne/frontend-design/` im Hauptprojekt): Markenblau, Messing nur für „läuft lokal“, Hell und Dunkel nach Systemwahl mit Umschalter in der Navigation (`assets/theme.js`, Architektur-Grafik je Design als eigene SVG), Linien statt Schatten, Gemischtschreibung. Tokens stehen am Anfang von `assets/style.css`. Schriften: Familjen Grotesk und Public Sans (Teilmenge latin, SIL OFL, Lizenztexte neben den Dateien) in `assets/fonts/`, selbst gehostet; `tests/extern.test.mjs` stellt sicher, dass HTML und CSS keine externe Adresse laden. Kunden-App und Admin-Portal teilen sich dieselbe Gestaltung (`theme-standard.css`).
+Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-relaunch/` im Hauptprojekt): Tinte + Petrol, Messing nur für „läuft lokal“, dunkle Kopfzeile und dunkler Hero, Inhalt hell oder dunkel nach Systemwahl mit Umschalter in der Navigation (`assets/theme.js`, dort auch das Mobil-Menü; Architektur-Grafik je Design als eigene SVG), höchstens 6 Navigationseinträge, Gemischtschreibung. Tokens stehen am Anfang von `assets/style.css`. Schrift: Geist Sans und Geist Mono (variabel, SIL OFL, `OFL-Geist.txt` neben den Dateien) in `assets/fonts/`, selbst gehostet; `tests/extern.test.mjs` stellt sicher, dass HTML und CSS keine externe Adresse laden, die Navigation höchstens 6 Einträge hat und jede Seite Skip-Link und eine h1 besitzt. Kunden-App und Admin-Portal teilen sich dieselbe Gestaltung (`theme-standard.css`).
 
 ## Impressum und Datenschutz (Anbieterdaten)
 
@@ -54,7 +54,7 @@ Die Seite folgt dem Auftritt „Kompass“ (Plan: `Support/docs/pläne/frontend-
   Ausgabe von `sovereignmind status` in `index.html` (Abschnitt `#betrieb`, Klasse `term`). Der Mock ist Text, kein Bild, und
   zeigt Beispieldaten (Adresse `192.168.0.42`). Ändert sich die Ausgabe von `sovereignmind status` im Hauptprojekt
   (`Support/installer/linux/bin/sovereignmind`), den Mock anpassen.
-- **Screenshots:** nach `assets/screenshots/` legen (nur Testdaten); die Liste der Bilder steht in `assets/app.js` (`SHOTS`).
+- **Screenshots:** nach `assets/screenshots/` legen (nur Testdaten, als WebP: `node scripts/png-zu-webp.mjs` wandelt neue PNG um); die Liste der Bilder steht in `assets/app.js` (`SHOTS`).
 - **Offen vor Veröffentlichung:** Kontaktweg (`index.html`, Abschnitt Kontakt), Impressum und Datenschutz (Platzhalter).
 - **API-Seite:** `assets/api/openapi.json` nur über das Sync-Skript des Hauptprojekts ändern (`Support/scripts/sync-website-api.py`, prüft vor dem Kopieren auf interne Pfade und Zugangsdaten), nie von Hand. Die Seite zeigt Version aus `downloads.json` und das Datum der Datei. Basis-URL und Sprache der Codebeispiele merkt sich der Browser (`localStorage`). `pages.yml` kopiert `assets/api/` automatisch mit.
 - Keine Inhalte aus dem privaten Hauptrepo ungeprüft übernehmen.
