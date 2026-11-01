@@ -213,6 +213,8 @@ dl.rows dd .beispiel { display: block; margin-top: var(--s-2); font-style: itali
 .theme-toggle { background: transparent; color: #aab6c8; border: 1px solid var(--ink-600); border-radius: var(--radius); min-height: 44px; padding: 0 14px; font: 500 .9375rem/1.2 var(--body); cursor: pointer; transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
 .theme-toggle:hover { color: #fff; border-color: #8fa1bb; }
 
+.video { margin: 0; max-width: 960px; }
+.video video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border: 1px solid var(--border); border-radius: var(--radius); background: #000; }
 .shots { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
 .shot { margin: 0; }
 .shot > a, .shot > button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: var(--radius); }

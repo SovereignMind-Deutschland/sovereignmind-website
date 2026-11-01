@@ -4,7 +4,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 
 | Seite | Inhalt |
 | --- | --- |
-| `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), Screenshots, Kontakt |
+| `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), **Demo-Video** (`assets/video/`: MP4, Titelbild, deutsche Untertitel als VTT), Screenshots, Kontakt |
 | `download.html` | Installation für Windows (Setup) und Linux (Ein-Befehl-Bundle) aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
 | `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste: im Hauptprojekt zu klären, `Support/docs/vergleich/` gibt es dort nicht mehr) |
