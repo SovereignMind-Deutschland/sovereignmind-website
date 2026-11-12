@@ -9,7 +9,11 @@
 #   SM_KEEP=1        Arbeitsordner nicht löschen
 #   SM_SETUP_ARGS    Optionen für das Setup, z. B. "/PORT=8443 /FRONTEND=off"
 #   SM_DRY_RUN=1     nur prüfen und anzeigen
-#   SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_NO_ELEVATE=1   (nur für Tests)
+#   SM_ELEVATE       y/n: Frage "in neuem Administrator-Fenster fortfahren?" vorab beantworten
+#   SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_NO_ELEVATE=1, SM_IS_ADMIN=0/1, SM_ELEVATE_DRY=1   (nur für Tests)
+# Administratorrechte: Läuft PowerShell schon als Administrator, startet das Setup ohne Abfrage. Sonst fragt das Skript vor dem
+# Download, ob es in einem neuen Administrator-Fenster weitermachen soll (UAC sofort); bei "n" kommt die UAC-Abfrage nach dem
+# Download. Wird sie abgelehnt, bleiben die geprüften Dateien liegen und ein neuer Start öffnet sofort die Abfrage.
 # Die EULA zeigt das Setup; dieses Skript stimmt nie zu.
 # Ergebnis: $global:LASTEXITCODE (0 Erfolg, 1 Fehler); das Skript beendet die Sitzung nie.
 
@@ -48,6 +52,65 @@ function Install-SovereignMind {
         }
         else {
             Fail "Weder curl.exe noch BITS vorhanden. Windows 10 ab Version 1803 wird benötigt."
+        }
+    }
+
+    function Test-Admin {
+        if ($env:SM_IS_ADMIN) { return ($env:SM_IS_ADMIN -eq "1") }
+        $id = [Security.Principal.WindowsIdentity]::GetCurrent()
+        return ([Security.Principal.WindowsPrincipal]::new($id)).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+    }
+
+    # Ja/Nein im Terminal; ohne Terminal "nein"
+    function Read-YesNo([string]$question) {
+        if ($env:SM_ELEVATE) { return ($env:SM_ELEVATE.Trim().ToLowerInvariant() -in "y", "j", "ja", "yes", "1") }
+        $interactive = $false
+        try { $interactive = [Environment]::UserInteractive -and -not [Console]::IsInputRedirected } catch { }
+        if (-not $interactive) { return $false }
+        while ($true) {
+            $a = "$(Read-Host "$question [y/n]")".Trim().ToLowerInvariant()
+            if ($a -in "y", "j", "ja", "yes") { return $true }
+            if ($a -in "n", "nein", "no") { return $false }
+            Write-Host "Bitte y oder n eingeben."
+        }
+    }
+
+    # Dieses Skript in einem neuen PowerShell-Fenster mit Administratorrechten fortsetzen. Bei "irm | iex" gibt es keine
+    # Skriptdatei: die Funktion wird mit den aufgelösten Einstellungen in eine Datei unter %TEMP% geschrieben, die sich beim
+    # Start selbst löscht. Das erhöhte Fenster erbt die Umgebungsvariablen nicht sicher, daher stehen sie in der Datei.
+    # Rückgabe: $true, wenn das neue Fenster gestartet wurde.
+    function Start-Elevated([string]$version) {
+        $vars = [ordered]@{ SM_VERSION = $version; SM_DOWNLOAD_DIR = $workDir; SM_ELEVATED = "1" }
+        foreach ($k in "SM_KEEP", "SM_SETUP_ARGS", "SM_API_URL", "SM_BASE_URL", "SM_FREE_KB") {
+            $v = [Environment]::GetEnvironmentVariable($k)
+            if ($v) { $vars[$k] = $v }
+        }
+        $lines = @(
+            "# Automatisch erzeugt von install.ps1 (SovereignMind); löscht sich beim Start selbst.",
+            'Remove-Item -LiteralPath $PSCommandPath -Force -ErrorAction SilentlyContinue'
+        )
+        foreach ($k in $vars.Keys) { $lines += ('$env:{0} = ''{1}''' -f $k, ("$($vars[$k])" -replace "'", "''")) }
+        $lines += "function Install-SovereignMind {"
+        $lines += ${function:Install-SovereignMind}.ToString()
+        $lines += "}"
+        $lines += "Install-SovereignMind"
+        $lines += 'if ($env:SM_NO_ELEVATE -ne "1") { Write-Host ""; Read-Host "Enter drücken, um das Fenster zu schließen" | Out-Null }'
+        $lines += 'exit $global:LASTEXITCODE'
+        $file = Join-Path ([IO.Path]::GetTempPath()) ("SovereignMind-Install-" + [guid]::NewGuid().ToString("N").Substring(0, 8) + ".ps1")
+        [IO.File]::WriteAllText($file, ($lines -join "`r`n"), [Text.UTF8Encoding]::new($true))
+        if ($env:SM_ELEVATE_DRY -eq "1") {
+            Status "Würde mit Administratorrechten fortsetzen: $file"
+            return $true
+        }
+        $shell = (Get-Process -Id $PID).Path
+        try {
+            Start-Process -FilePath $shell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$file`"" | Out-Null
+            return $true
+        }
+        catch {
+            Remove-Item -LiteralPath $file -Force -ErrorAction SilentlyContinue
+            Write-Host "Die Windows-Sicherheitsabfrage wurde abgelehnt oder abgebrochen." -ForegroundColor Yellow
+            return $false
         }
     }
 
@@ -111,6 +174,26 @@ function Install-SovereignMind {
             return
         }
 
+        # Administratorrechte vor dem Download klären
+        $isAdmin = Test-Admin
+        if ($isAdmin) {
+            Status "PowerShell läuft als Administrator: das Setup startet nach dem Download ohne Windows-Sicherheitsabfrage."
+        }
+        elseif ($env:SM_NO_ELEVATE -ne "1" -and $env:SM_ELEVATED -ne "1") {
+            Write-Host ""
+            Write-Host "Das Setup braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) käme sonst erst nach dem Download (ca. 3 GB)."
+            Write-Host "Mit 'y' erscheint die Abfrage jetzt, und die Installation läuft in einem neuen Fenster mit Administratorrechten weiter."
+            Write-Host "Mit 'n' geht es hier weiter; nach dem Download erscheint die Abfrage, bitte dann am Rechner sein."
+            Write-Host "Tipp: PowerShell gleich als Administrator öffnen, dann gibt es keine Abfrage."
+            if (Read-YesNo "Jetzt in einem neuen Administrator-Fenster fortfahren?") {
+                if (Start-Elevated $version) {
+                    Status "Die Installation läuft im neuen Fenster weiter. Dieses Fenster kann geschlossen werden."
+                    return
+                }
+            }
+            Status "Weiter in diesem Fenster. Nach dem Download erscheint die Windows-Sicherheitsabfrage."
+        }
+
         # 3. Download
         New-Item -ItemType Directory -Force -Path $workDir | Out-Null
         $workCreated = $true
@@ -155,12 +238,15 @@ function Install-SovereignMind {
 
         # 5. Setup starten (UAC-Abfrage); die EULA zeigt das Setup
         $exe = Join-Path $workDir $exeName
-        Status "Starte das Setup (die Windows-Sicherheitsabfrage erscheint) ..."
+        if ($isAdmin -or $env:SM_NO_ELEVATE -eq "1") { Status "Starte das Setup ..." } else { Status "Starte das Setup (die Windows-Sicherheitsabfrage erscheint) ..." }
         $start = @{ FilePath = $exe; Wait = $true; PassThru = $true }
         if ($setupArgs.Trim()) { $start.ArgumentList = $setupArgs }
-        if ($env:SM_NO_ELEVATE -ne "1") { $start.Verb = "RunAs" }
-        try { $p = Start-Process @start } catch { Fail "Das Setup wurde nicht gestartet (Abfrage abgelehnt?): $($_.Exception.Message)" }
+        if ($env:SM_NO_ELEVATE -ne "1" -and -not $isAdmin) { $start.Verb = "RunAs" }
+        # Geprüfte Dateien behalten, falls die Abfrage abgelehnt wird oder das Setup abbricht: ein neuer Start lädt nichts nach
+        $keepOnError = $true
+        try { $p = Start-Process @start } catch { Fail "Das Setup wurde nicht gestartet (Abfrage abgelehnt?): $($_.Exception.Message) Erneut starten öffnet die Abfrage ohne neuen Download." }
         if ($p.ExitCode -ne 0) { Fail "Das Setup endete mit Exit-Code $($p.ExitCode)." }
+        $keepOnError = $false
         Status "Fertig. Das Setup hat die Installation abgeschlossen."
     }
     catch [System.InvalidOperationException] {
@@ -174,7 +260,7 @@ function Install-SovereignMind {
     finally {
         if ($workCreated) {
             if ($env:SM_KEEP -eq "1") { Status "Arbeitsordner bleibt erhalten: $workDir" }
-            elseif ($keepOnError) { Status "Teilweise geladene Dateien bleiben für die Wiederaufnahme in $workDir." }
+            elseif ($keepOnError) { Status "Geladene Dateien bleiben für einen neuen Start in $workDir." }
             else { Remove-Item -LiteralPath $workDir -Recurse -Force -ErrorAction SilentlyContinue }
         }
     }

@@ -2,6 +2,7 @@
 # SovereignMind: Installation der minimalen Variante unter Linux per Einzeiler.
 #   curl -fsSL https://sovereignmind-deutschland.github.io/sovereignmind-website/install.sh | sh
 #   curl -fsSL .../install.sh | sh -s -- --dry-run
+# Ohne root fragt das Skript das sudo-Passwort gleich zu Beginn ab (vor dem Download) und hält es bis zum Ende gültig.
 # Lädt die Teile des Bundles aus dem GitHub-Release, prüft sie, fügt sie zusammen und startet das Bundle.
 #
 # Umgebungsvariablen:
@@ -29,7 +30,9 @@ warning() { printf 'WARNUNG: %s\n' "$*" >&2; }
 available() { command -v "$1" >/dev/null 2>&1; }
 
 WORK=""
+SUDO_KEEP=""
 cleanup() {
+  if [ -n "$SUDO_KEEP" ]; then kill "$SUDO_KEEP" 2>/dev/null || true; fi
   [ -n "$WORK" ] || return 0
   if [ "${SM_KEEP:-0}" = "1" ]; then status "Arbeitsordner bleibt erhalten: $WORK"; return 0; fi
   rm -rf "$WORK"
@@ -37,6 +40,19 @@ cleanup() {
 
 fetch() { # URL ZIEL (mit Wiederaufnahme)
   curl --fail --show-error --location --progress-bar -C - -o "$2" "$1"
+}
+
+sudo_prepare() { # sudo-Passwort vor dem Download abfragen und bis zum Ende gültig halten
+  [ "$SUDO" = "sudo" ] || return 0
+  if [ "$TTY" = 0 ]; then
+    sudo -n -v 2>/dev/null || error "sudo braucht ein Passwort, es gibt aber kein Terminal. Als root starten: curl -fsSL .../install.sh | sudo sh -s -- --accept-eula --yes"
+  else
+    status "Die Installation braucht root-Rechte. Bitte jetzt das sudo-Passwort eingeben; danach läuft alles ohne weitere Rückfrage."
+    sudo -v || error "sudo-Anmeldung fehlgeschlagen."
+  fi
+  # Download dauert oft länger als die sudo-Frist (Standard 15 min): Anmeldung im Hintergrund auffrischen
+  ( while kill -0 $$ 2>/dev/null; do sleep 50; sudo -n -v 2>/dev/null || exit 0; done ) >/dev/null 2>&1 &
+  SUDO_KEEP=$!
 }
 
 sum_ok() { # SUMS NAME DATEI -> 0, wenn die Summe passt
@@ -129,11 +145,13 @@ main() {
     esac
   fi
 
-  mkdir -p "$SM_DOWNLOAD_DIR" 2>/dev/null || error "Arbeitsordner $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."
-  WORK="$SM_DOWNLOAD_DIR"
   trap cleanup EXIT
   trap 'exit 130' INT
   trap 'exit 143' TERM HUP
+  sudo_prepare
+
+  mkdir -p "$SM_DOWNLOAD_DIR" 2>/dev/null || error "Arbeitsordner $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."
+  WORK="$SM_DOWNLOAD_DIR"
 
   status "Lade Prüfsummen ..."
   rm -f "$WORK/SHA256SUMS.txt"
