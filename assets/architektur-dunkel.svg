@@ -26,7 +26,7 @@
   <path class="l" d="M180 180H245"/>
   <path class="l" d="M425 180H470M470 66V306M470 66H500M470 126H500M470 186H500M470 246H500M470 306H500"/>
   <rect class="box" x="500" y="44" width="230" height="44" rx="8"/>
-  <text class="t" x="615" y="71">Inferenz (Ollama)</text>
+  <text class="t" x="615" y="71">Inferenz (llama.cpp)</text>
   <rect class="box" x="500" y="104" width="230" height="44" rx="8"/>
   <text class="t" x="615" y="131">Vektordatenbank (Qdrant)</text>
   <rect class="box" x="500" y="164" width="230" height="44" rx="8"/>

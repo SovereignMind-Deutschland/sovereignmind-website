@@ -27,7 +27,7 @@
   <text class="ws" x="170" y="208">Lizenz, Mandanten</text>
   <path class="l" d="M170 224V236H30V479M30 263H50M30 317H50M30 371H50M30 425H50M30 479H50"/>
   <rect class="box" x="50" y="244" width="240" height="38" rx="8"/>
-  <text class="t" x="170" y="268">Inferenz (Ollama)</text>
+  <text class="t" x="170" y="268">Inferenz (llama.cpp)</text>
   <rect class="box" x="50" y="298" width="240" height="38" rx="8"/>
   <text class="t" x="170" y="322">Vektordatenbank (Qdrant)</text>
   <rect class="box" x="50" y="352" width="240" height="38" rx="8"/>

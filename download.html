@@ -86,7 +86,7 @@
           <tbody>
             <tr><td>Datei</td><td><code>SovereignMind-Setup-Full-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td></tr>
             <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td></tr>
-            <tr><td>Internet</td><td>nicht nötig</td><td>nötig (<code>registry.ollama.ai</code> und <code>huggingface.co</code> freigeben)</td></tr>
+            <tr><td>Internet</td><td>nicht nötig</td><td>nötig (<code>huggingface.co</code> freigeben)</td></tr>
             <tr><td>Wann</td><td>abgeschottete Netze</td><td>Rechner mit Internet, kleinerer Download</td></tr>
           </tbody>
         </table>
@@ -104,7 +104,7 @@
       <ul class="req">
         <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
         <li>Administratorrechte</li>
-        <li>Voller Installer: Ollama und die KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: Ollama ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
+        <li>Voller Installer: KI-Server (llama.cpp) und KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: der KI-Server ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
         <li>Mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM; ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
@@ -123,8 +123,8 @@
       <p>Zwei Bundles, eine Frage: Modelle offline im Bundle (<code>sovereignmind-installer-full_…</code>) oder beim Installieren geladen (<code>sovereignmind-installer-minimal_…</code>); beide enthalten Weboberfläche und API.
         Das volle Bundle setzt <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
       <h2 id="linux-variante">Minimal: kleiner Download, Modelle werden geladen</h2>
-      <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält Ollama, aber keine KI-Modelle.
-        Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>registry.ollama.ai</code> und <code>huggingface.co</code> müssen erreichbar sein) und zeigt dabei im Terminal den Fortschritt
+      <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält den KI-Server (llama.cpp), aber keine KI-Modelle.
+        Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt dabei im Terminal den Fortschritt
         („Modell 2 von 4: … 63&nbsp;%“). Für Rechner ohne Internet nehmen Sie das volle Bundle.</p>
       <div class="cmd"><pre><code data-cmd="linux-minimal"></code></pre><button type="button" data-copy="linux-minimal">Kopieren</button></div>
       <h2 id="linux-eigenes-frontend">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
@@ -141,7 +141,7 @@
         <li>Ubuntu 24.04 oder Debian 12 (x64)</li>
         <li><code>sudo</code>-Rechte</li>
         <li>Platz, volles Bundle: ca. 13&nbsp;GB Download, 7,7&nbsp;GB (beim Update 13&nbsp;GB) vorübergehend unter <code>/var/tmp</code>, ca. 26&nbsp;GB installiert. Minimales Bundle: ca. 3&nbsp;GB Download, 2,3&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
-        <li>Ollama liefert der Installer mit, die KI-Modelle nur das volle Bundle; ein vorhandenes, älteres Ollama wird auf die mitgelieferte Version angehoben</li>
+        <li>Den KI-Server (llama.cpp, nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU) liefert der Installer mit, die KI-Modelle nur das volle Bundle; eine frühere Ollama-Installation des Pakets wird übernommen</li>
         <li>Mindestens 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM; sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
@@ -156,12 +156,12 @@
           <tbody>
             <tr><td><code>sovereignmind frontend [status|on|off]</code></td><td>Weboberfläche ein- oder ausschalten (nur API)</td></tr>
             <tr><td><code>sovereignmind open</code></td><td>Weboberfläche im Browser öffnen (ohne Desktop nur die Adresse)</td></tr>
-            <tr><td><code>sovereignmind status</code></td><td>Version, Adressen, Gesundheit, Dienste, Autostart, Ollama, Ordner; ohne root</td></tr>
+            <tr><td><code>sovereignmind status</code></td><td>Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner; ohne root</td></tr>
             <tr><td><code>sovereignmind url</code></td><td>Adresse lokal und im Netzwerk</td></tr>
             <tr><td><code>sovereignmind start</code> / <code>stop</code></td><td>Alle Dienste starten bzw. stoppen</td></tr>
             <tr><td><code>sovereignmind restart [backend]</code></td><td>Alle Dienste oder nur das Backend neu starten</td></tr>
             <tr><td><code>sovereignmind autostart on|off</code></td><td>Start beim Hochfahren des Rechners</td></tr>
-            <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Protokoll von backend, postgres, qdrant, ingestion, voice oder ollama</td></tr>
+            <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Protokoll von backend, postgres, qdrant, ingestion, voice, llm-chat oder llm-embed</td></tr>
             <tr><td><code>sovereignmind lan on|off [IP]</code></td><td>Zugriff aus dem Netzwerk ein- bzw. ausschalten</td></tr>
             <tr><td><code>sovereignmind lan status|open</code></td><td>Zugriffsmodus anzeigen bzw. Geräte-Freigabe aufheben (Notfall)</td></tr>
             <tr><td><code>sovereignmind https NAME [MODUS]</code></td><td>HTTPS-Name und Zertifikatsmodus einrichten (<a href="#https">Modi</a>); <code>sovereignmind https off</code> schaltet ab</td></tr>

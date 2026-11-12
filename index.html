@@ -149,7 +149,7 @@
           </div>
         </div>
         <dl class="rows">
-          <div><dt>Lokale KI</dt><dd>Sprachmodell und Embeddings laufen auf Ihrer Hardware (Ollama). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, sonst CPU).</dd></div>
+          <div><dt>Lokale KI</dt><dd>Sprachmodell und Embeddings laufen auf Ihrer Hardware (llama.cpp). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, Intel, sonst CPU).</dd></div>
           <div><dt>Nutzer und Rollen</dt><dd>Admin und Member, eigenes Branding pro Unternehmen.</dd></div>
           <div><dt>Assistenten und Prompt-Bibliothek</dt><dd>Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.</dd></div>
           <div><dt>Anbindung interner Systeme</dt><dd>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</dd></div>
@@ -209,7 +209,7 @@
     <section class="block" id="architektur">
       <div class="wrap">
         <h2>Architektur in Kürze</h2>
-        <p class="lead">Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Ollama und die Modelle liefert der Installer mit.</p>
+        <p class="lead">Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Den KI-Server (llama.cpp) und die Modelle liefert der Installer mit.</p>
         <div class="arch">
         <picture class="light">
           <source media="(max-width: 640px)" srcset="assets/architektur-schmal-hell.svg" width="340" height="520">
@@ -239,7 +239,7 @@
             <p class="actions-row"><a class="btn secondary" href="download.html#linux">Alle Befehle ansehen</a> <a class="btn secondary" href="api.html">API-Dokumentation lesen</a></p>
           </div>
           <figure class="term-fig">
-            <div class="term" role="img" aria-label="Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, Ollama, Ordner">
+            <div class="term" role="img" aria-label="Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner">
               <div class="term-bar"><span></span><span></span><span></span><b>Terminal</b></div>
 <pre class="term-body" aria-hidden="true"><span class="p">$</span> <span class="c">sovereignmind status</span>
 <b>SovereignMind</b> 2026.10.19.1606   <span class="g">● läuft</span>
@@ -253,12 +253,12 @@ Dienste:
   Vektordatenbank (Qdrant)      <span class="g">● aktiv</span>
   Dokumentenimport              <span class="g">● aktiv</span>
   Sprache                       <span class="g">● aktiv</span>
-  Ollama (KI-Modelle)           <span class="g">● aktiv</span>
+  KI-Server Chat                <span class="g">● aktiv</span>
+  KI-Server Embeddings          <span class="g">● aktiv</span>
   Backend und Weboberfläche     <span class="g">● aktiv</span>
 
 Autostart:               an
-Ollama:                  vorhandene Installation (0.40.4)
-Geladene Modelle:        <span class="d">keine (werden bei der ersten Anfrage geladen)</span>
+KI-Server:               llama.cpp b12191, GPU (Vulkan): NVIDIA GeForce RTX 5070 Laptop GPU
 Nächste Sicherung:       Tue 2026-10-20
 
 Programme:               /opt/sovereignmind

@@ -53,7 +53,7 @@
     <div class="arrow">↓</div>
   </div>
   <div class="row">
-    <div class="card tight"><h3>Inferenz</h3><p>Ollama, nativ auf dem Host</p></div>
+    <div class="card tight"><h3>Inferenz</h3><p>llama.cpp (llama-server), nativ auf dem Host</p></div>
     <div class="card tight"><h3>Qdrant</h3><p>Vektorsuche</p></div>
     <div class="card tight"><h3>Ingestion</h3><p>Docling (Python)</p></div>
     <div class="card tight"><h3>Voice</h3><p>faster-whisper, Qwen3-TTS</p></div>
@@ -150,7 +150,7 @@
     <tr><td>Persistenz</td><td>PostgreSQL (EF Core)</td><td>Zugangsdaten werden automatisch erzeugt</td></tr>
     <tr><td>Vektor-DB</td><td>Qdrant</td><td>Guter .NET-Client, REST/gRPC</td></tr>
     <tr><td>Parsing</td><td>Docling (Python)</td><td>Air-Gapped-fähig, Modelle vorgeladen</td></tr>
-    <tr><td>Inferenz</td><td>Ollama (nativ)</td><td>Nutzt die GPU über den Host-Treiber</td></tr>
+    <tr><td>Inferenz</td><td>llama.cpp (nativ, Vulkan)</td><td>Nutzt NVIDIA, AMD und Intel über den Host-Treiber, sonst CPU</td></tr>
     <tr><td>Voice</td><td>faster-whisper, Qwen3-TTS</td><td>Vorlesen lokal, Freigabe pro Tenant; Diktat folgt</td></tr>
     <tr><td>Lizenz</td><td>Signierte JWE-Tokens</td><td>Offline-Prüfung, kein Lizenzserver</td></tr>
     <tr><td>Deployment</td><td>Nativer Installer</td><td>Windows-Setup und Linux-.deb, kein Docker</td></tr>
@@ -159,12 +159,12 @@
 
 <!-- 10 Inferenz -->
 <section class="slide" data-title="Inferenz">
-  <div class="head"><h2>Ollama läuft nativ auf dem Host</h2></div>
+  <div class="head"><h2>llama.cpp läuft nativ auf dem Host</h2></div>
   <div class="row">
     <div class="card" style="gap:20px;padding:48px"><p class="tag">Warum nativ</p><h3 class="big">Direkt auf der GPU</h3>
       <ul><li>Kein Container, kein GPU-Passthrough</li><li>NVIDIA und AMD über den Host-Treiber</li><li>Ohne GPU läuft alles auf der CPU</li></ul></div>
     <div class="card" style="gap:20px;padding:48px"><p class="tag">Im Betrieb</p><h3 class="big">Modelle im Griff</h3>
-      <ul><li>Der Installer liefert Ollama und die Modelle mit</li><li>Mehrere Modelle vorhalten, Live-Modellwechsel</li><li>Auswahl nach VRAM, Wechsel durch den Admin</li></ul></div>
+      <ul><li>Der Installer liefert llama-server und die Modelle mit</li><li>Chat und Embeddings als zwei Dienste, Modellwechsel durch den Admin</li><li>Auswahl nach VRAM, Wechsel durch den Admin</li></ul></div>
   </div>
 </section>
 
