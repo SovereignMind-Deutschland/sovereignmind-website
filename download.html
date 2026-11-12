@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Herunterladen – SovereignMind</title>
-  <meta name="description" content="SovereignMind installieren: Nativer Installer für Windows und Linux, ohne Docker.">
+  <meta name="description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
   <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SovereignMind">
   <meta property="og:locale" content="de_DE">
   <meta property="og:title" content="Herunterladen – SovereignMind">
-  <meta property="og:description" content="SovereignMind installieren: Nativer Installer für Windows und Linux, ohne Docker.">
+  <meta property="og:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
   <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
   <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="SovereignMind: Der KI-Assistent, der Ihre Daten nie verlässt">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Herunterladen – SovereignMind">
-  <meta name="twitter:description" content="SovereignMind installieren: Nativer Installer für Windows und Linux, ohne Docker.">
+  <meta name="twitter:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
   <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
   <script type="application/ld+json">
   {
@@ -65,9 +65,8 @@
     <h1 class="page-title">SovereignMind installieren</h1>
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
     <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Sie brauchen mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM sowie Platz für den Installer (voll ca. 13&nbsp;GB, minimal ca. 3&nbsp;GB plus Modelle). Setzen Sie keine echten oder vertraulichen Daten ein. Einzelheiten: <a href="#demo">Demo</a>.</div>
-    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem.</p>
+    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem: Ein Befehl lädt den minimalen Installer aus dem Release und startet ihn. Das volle Paket für Rechner ohne Internet gibt es weiterhin als Download-Ordner.</p>
     <p class="version" data-version hidden></p>
-    <p class="note" data-download-missing hidden>Der Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>); sobald er veröffentlicht ist, erscheint er hier.</p>
 
     <div class="tabs" role="tablist" aria-label="Betriebssystem">
       <button class="tab" role="tab" id="tab-windows" data-os="windows" aria-controls="panel-windows" aria-selected="false">Windows</button>
@@ -76,10 +75,28 @@
 
     <!-- Windows -->
     <div class="panel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
-      <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
-      <p>Die Datei <code>SovereignMind-Setup-&lt;Version&gt;.exe</code> (oder die minimale Variante, siehe unten) samt allen zugehörigen <code>…-N.bin</code>-Teilen aus dem Download-Ordner in einen Ordner laden und die <code>.exe</code> als Administrator ausführen.</p>
-      <h2 id="windows-variante">Welche Datei?</h2>
-      <p>Eine Frage entscheidet: <strong>Müssen die KI-Modelle offline im Installer sein?</strong> (abgeschottetes Netz: ja)</p>
+      <h2 id="windows-einzeiler">Minimal: ein Befehl, Modelle werden geladen</h2>
+      <p>PowerShell öffnen, den Befehl einfügen und mit Enter bestätigen:</p>
+      <div class="cmd"><pre><code data-cmd="windows"></code></pre><button type="button" data-copy="windows">Kopieren</button></div>
+      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt das Setup mit seinen Teilen (rund 3&nbsp;GB), vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code> und startet das Setup. Windows fragt dabei nach Administratorrechten. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Setup, das Skript stimmt nie für Sie zu. Die KI-Modelle (ca. 11&nbsp;GB) lädt das Setup danach aus dem Internet nach.</p>
+      <details>
+        <summary>Skript vorab lesen</summary>
+        <p>Ohne <code>| iex</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.ps1">install.ps1</a>.</p>
+        <div class="cmd"><pre><code data-cmd="windows-lesen"></code></pre><button type="button" data-copy="windows-lesen">Kopieren</button></div>
+      </details>
+      <details>
+        <summary>Ohne Skript: Dateien aus dem Release</summary>
+        <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code>, alle <code>…-N.bin</code>-Teile und <code>SHA256SUMS.txt</code> in einen Ordner laden. Die Summe der <code>.exe</code> mit der Zeile in <code>SHA256SUMS.txt</code> vergleichen (die <code>.bin</code>-Teile genauso), dann die <code>.exe</code> als Administrator ausführen.</p>
+        <div class="cmd"><pre><code data-cmd="windows-manuell"></code></pre><button type="button" data-copy="windows-manuell">Kopieren</button></div>
+      </details>
+      <h2 id="windows-eigenes-frontend-einzeiler">Einzeiler mit Optionen</h2>
+      <p>Optionen für das Setup übergeben Sie vor dem Befehl in <code>SM_SETUP_ARGS</code>, zum Beispiel für eine eigene Oberfläche ohne Weboberfläche (mehr dazu <a href="#windows-api">weiter unten</a>). <code>SM_VERSION</code> wählt eine bestimmte Version.</p>
+      <div class="cmd"><pre><code data-cmd="windows-eigenes-frontend"></code></pre><button type="button" data-copy="windows-eigenes-frontend">Kopieren</button></div>
+      <h2 id="windows-variante">Volles Paket: Modelle im Installer</h2>
+      <p>Für abgeschottete Netze liegt das volle Paket (ca. 13&nbsp;GB) im Download-Ordner, nicht im Release.
+        <a class="btn" data-drive href="#" rel="noopener" hidden>Voller Installer: Download-Ordner öffnen (Google Drive)</a>
+        <span class="note" data-drive-missing hidden>Der Link zum Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>).</span></p>
+      <p>Die Datei <code>SovereignMind-Setup-Full-&lt;Version&gt;.exe</code> samt allen zugehörigen <code>…-N.bin</code>-Teilen in einen Ordner laden und die <code>.exe</code> als Administrator ausführen. Eine Frage entscheidet, welche Variante passt: <strong>Müssen die KI-Modelle offline im Installer sein?</strong> (abgeschottetes Netz: ja)</p>
       <div class="overflow">
         <table>
           <thead><tr><th></th><th>Voll</th><th>Minimal</th></tr></thead>
@@ -115,20 +132,29 @@
 
     <!-- Linux -->
     <div class="panel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux" hidden>
-      <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
-      <p>Der Linux-Installer ist <strong>eine Datei, ein Befehl</strong>: ein selbstentpackendes Bundle, das alle Pakete nacheinander installiert
-        und alles Entpackte am Ende wieder löscht. Das volle Bundle ist sehr groß und liegt deshalb im Download-Ordner in Teilen
-        (<code>…run.part01</code> bis <code>partNN</code>). Alle Teile in einen Ordner laden und dort ausführen:</p>
+      <h2 id="linux-variante">Minimal: ein Befehl, Modelle werden geladen</h2>
+      <p>Terminal öffnen, den Befehl einfügen und mit Enter bestätigen:</p>
       <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
-      <p>Zwei Bundles, eine Frage: Modelle offline im Bundle (<code>sovereignmind-installer-full_…</code>) oder beim Installieren geladen (<code>sovereignmind-installer-minimal_…</code>); beide enthalten Weboberfläche und API.
-        Das volle Bundle setzt <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
-      <h2 id="linux-variante">Minimal: kleiner Download, Modelle werden geladen</h2>
-      <p>Das <strong>minimale Bundle</strong> (<code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run</code>, rund 3&nbsp;GB statt 13&nbsp;GB) enthält den KI-Server (llama.cpp), aber keine KI-Modelle.
-        Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt dabei im Terminal den Fortschritt
-        („Modell 2 von 4: … 63&nbsp;%“). Für Rechner ohne Internet nehmen Sie das volle Bundle.</p>
-      <div class="cmd"><pre><code data-cmd="linux-minimal"></code></pre><button type="button" data-copy="linux-minimal">Kopieren</button></div>
+      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt die Teile des minimalen Bundles (rund 3&nbsp;GB), prüft jeden Teil gegen <code>SHA256SUMS.txt</code>, fügt sie zusammen und startet das Bundle mit <code>sudo</code>. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Bundle (Eingabe vom Terminal), das Skript stimmt nie für Sie zu. Das Bundle enthält den KI-Server (llama.cpp), aber keine KI-Modelle: Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt dabei im Terminal den Fortschritt („Modell 2 von 4: … 63&nbsp;%“). Das Skript arbeitet standardmäßig unter <code>/var/tmp/sovereignmind-install</code> und löscht den Ordner am Ende. Es braucht dort ca. 6&nbsp;GB frei; <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ordner.</p>
+      <details>
+        <summary>Skript vorab lesen</summary>
+        <p>Ohne <code>| sh</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> prüft nur und ändert nichts.</p>
+        <div class="cmd"><pre><code data-cmd="linux-lesen"></code></pre><button type="button" data-copy="linux-lesen">Kopieren</button></div>
+      </details>
+      <details>
+        <summary>Ohne Skript: Dateien aus dem Release</summary>
+        <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> und <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
+        <div class="cmd"><pre><code data-cmd="linux-manuell-minimal"></code></pre><button type="button" data-copy="linux-manuell-minimal">Kopieren</button></div>
+      </details>
+      <h2 id="linux-voll">Volles Paket: Modelle im Bundle</h2>
+      <p>Für Rechner ohne Internet liegt das volle Bundle (ca. 13&nbsp;GB) im Download-Ordner, nicht im Release.
+        <a class="btn" data-drive href="#" rel="noopener" hidden>Volles Bundle: Download-Ordner öffnen (Google Drive)</a>
+        <span class="note" data-drive-missing hidden>Der Link zum Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>).</span></p>
+      <p>Das Bundle ist ein selbstentpackendes Archiv, das alle Pakete nacheinander installiert und alles Entpackte am Ende wieder löscht. Es liegt in Teilen (<code>…run.part01</code> bis <code>partNN</code>); alle Teile in einen Ordner laden und dort ausführen:</p>
+      <div class="cmd"><pre><code data-cmd="linux-manuell-voll"></code></pre><button type="button" data-copy="linux-manuell-voll">Kopieren</button></div>
+      <p>Das volle Bundle setzt <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist in keinem der beiden Bundles enthalten und wird bei Bedarf im Admin-Bereich nachgeladen. Beide Bundles enthalten Weboberfläche und API.</p>
       <h2 id="linux-eigenes-frontend">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
-      <p>Die Weboberfläche ist bei beiden Bundles standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar, für eigene Oberflächen und die Anbindung an Fachsysteme. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
+      <p>Der Einzeiler reicht Optionen für das Bundle über <code>SM_BUNDLE_ARGS</code> weiter (Beispiel unten). Die Weboberfläche ist bei beiden Bundles standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar, für eigene Oberflächen und die Anbindung an Fachsysteme. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
         <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
         <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online: <a href="api.html">API-Dokumentation auf dieser Webseite</a> (Endpunkte, Anmeldung, Codebeispiele).</p>
       <div class="cmd"><pre><code data-cmd="linux-eigenes-frontend"></code></pre><button type="button" data-copy="linux-eigenes-frontend">Kopieren</button></div>
@@ -186,7 +212,7 @@
       <li>Gleiche Größe und gleiche Voraussetzungen wie oben (beim vollen Installer sind die Modelle enthalten, beim minimalen werden sie geladen).</li>
     </ul>
     <p>Installation und Download wie oben unter Windows bzw. Linux. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie zweimal: im Installer und in der App, beim Start der Demo bzw. bei der Einrichtung.</p>
-    <p><a class="btn" data-release href="#" rel="noopener" hidden>Download-Ordner öffnen (Google Drive)</a></p>
+    <p><a class="btn" data-drive href="#" rel="noopener" hidden>Volles Paket: Download-Ordner öffnen (Google Drive)</a></p>
 
     <h2 id="eula">Endnutzer-Lizenzvertrag</h2>
     <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
@@ -220,7 +246,7 @@
       Wissenspakete lädt der Admin direkt in der App unter „Wissenspakete“ herunter. Pakete mit Zusatzfunktion setzen eine passende Lizenz voraus.</p>
 
     <h2>Update und Datensicherung</h2>
-    <p><strong>Update:</strong> neue Version des Installers ausführen: unter Windows das neue Setup, unter Linux das neue Bundle mit demselben Befehl wie bei der Installation (Teile vorher zusammenfügen). Daten, Schlüssel und Lizenz bleiben erhalten; vor dem Update wird ein Datenbank-Dump angelegt.</p>
+    <p><strong>Update:</strong> neue Version des Installers ausführen: den Einzeiler noch einmal ausführen (er nimmt die neueste Version) oder das neue Setup bzw. Bundle von Hand starten. Daten, Schlüssel und Lizenz bleiben erhalten; vor dem Update wird ein Datenbank-Dump angelegt.</p>
     <p><strong>Sicherung:</strong> Die tägliche Sicherung läuft automatisch. Wiederherstellung und Deinstallation beschreibt das Betreiber-Handbuch, das mit dem Anbieter-Support ausgeliefert wird.</p>
 
     <p>Weiterlesen: <a href="vergleich.html">Lokal oder Cloud? Der Vergleich</a>, <a href="wissenspakete.html">Wissenspakete für Ihre Installation</a>.</p>

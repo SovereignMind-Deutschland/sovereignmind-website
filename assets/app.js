@@ -1,25 +1,35 @@
 (function () {
   'use strict';
 
-  // Zentrale Konfiguration: Befehle hier, Version/Download-Ordner in assets/downloads.json (von Hand pflegen).
+  // Zentrale Konfiguration: Befehle hier, Version/Release/Drive-Ordner in assets/downloads.json (von Hand pflegen).
+  // Die Skripte liegen im Wurzelordner der Seite (install.sh, install.ps1; Kopie aus dem Hauptprojekt, sync-website-install.sh).
   var DOWNLOADS_JSON = 'assets/downloads.json';
+  var SITE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
+  var PS1 = SITE + 'install.ps1';
+  var SH = SITE + 'install.sh';
   var COMMANDS = {
-    windows: '',
-    linux: [
-      'cat sovereignmind-installer-full_<Version>_amd64.run.part* > sovereignmind-installer-full_<Version>_amd64.run',
-      'sudo bash sovereignmind-installer-full_<Version>_amd64.run'
-    ].join('\n')
+    windows: 'irm ' + PS1 + ' | iex',
+    linux: 'curl -fsSL ' + SH + ' | sh'
   };
 
-  // Weitere Befehle ohne eigenen Reiter (Variante minimal und Anbindung eines eigenen Frontends); sie zählen nicht für die Reiterauswahl (COMMANDS).
+  // Weitere Befehle ohne eigenen Reiter; sie zählen nicht für die Reiterauswahl (COMMANDS).
   var EXTRA_COMMANDS = {
-    'linux-minimal': [
+    'windows-lesen': 'irm ' + PS1,
+    'windows-manuell': 'Get-FileHash .\\SovereignMind-Setup-Minimal-<Version>.exe -Algorithm SHA256',
+    'windows-eigenes-frontend': [
+      '$env:SM_SETUP_ARGS = "/FRONTEND=off /CORS=https://app.example"',
+      'irm ' + PS1 + ' | iex'
+    ].join('\n'),
+    'linux-lesen': 'curl -fsSL ' + SH,
+    'linux-eigenes-frontend': 'curl -fsSL ' + SH + ' | SM_BUNDLE_ARGS="--no-frontend --cors https://app.example" sh',
+    'linux-manuell-minimal': [
       'cat sovereignmind-installer-minimal_<Version>_amd64.run.part* > sovereignmind-installer-minimal_<Version>_amd64.run',
+      'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-minimal_<Version>_amd64.run'
     ].join('\n'),
-    'linux-eigenes-frontend': [
-      'cat sovereignmind-installer-minimal_<Version>_amd64.run.part* > sovereignmind-installer-minimal_<Version>_amd64.run',
-      'sudo bash sovereignmind-installer-minimal_<Version>_amd64.run --no-frontend --cors https://app.example'
+    'linux-manuell-voll': [
+      'cat sovereignmind-installer-full_<Version>_amd64.run.part* > sovereignmind-installer-full_<Version>_amd64.run',
+      'sudo bash sovereignmind-installer-full_<Version>_amd64.run'
     ].join('\n')
   };
 
@@ -34,13 +44,25 @@
   }
   renderCommands('');
 
-  // Download-Ordner und Version aus downloads.json. Fehlt die Datei oder der Ordner-Link, bleibt alles ausgeblendet
-  // und ein Hinweis steht da (kein toter Link).
+  // Version, Release-Seite und Drive-Ordner aus downloads.json. Die Einzeiler brauchen die Datei nicht. Fehlt ein Link,
+  // bleibt er ausgeblendet und (beim Drive-Ordner) ein Hinweis steht da (kein toter Link).
+  //   data-release-url  Link auf die Release-Seite auf GitHub (releaseUrl)
+  //   data-drive        Link auf den Drive-Ordner mit dem vollen Paket (driveFolderUrl)
+  //   data-drive-missing  Hinweis, solange der Drive-Link fehlt
   function isHttpUrl(u) { return typeof u === 'string' && /^https:\/\//i.test(u); }
-  function showMissing() {
-    document.querySelectorAll('[data-download-missing]').forEach(function (el) { el.hidden = false; });
+  function setLinks(selector, url) {
+    document.querySelectorAll(selector).forEach(function (a) {
+      if (isHttpUrl(url)) {
+        a.href = url;
+        a.target = '_blank';
+        a.hidden = false;
+      }
+    });
   }
-  var hasDownloadUi = document.querySelector('[data-release], [data-version]');
+  function showMissing() {
+    document.querySelectorAll('[data-drive-missing]').forEach(function (el) { el.hidden = false; });
+  }
+  var hasDownloadUi = document.querySelector('[data-release-url], [data-drive], [data-version]');
   if (hasDownloadUi && window.fetch) {
     fetch(DOWNLOADS_JSON, { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
@@ -54,15 +76,9 @@
             el.hidden = false;
           });
         }
-        if (isHttpUrl(d.driveFolderUrl)) {
-          document.querySelectorAll('[data-release]').forEach(function (a) {
-            a.href = d.driveFolderUrl;
-            a.target = '_blank';
-            a.hidden = false;
-          });
-        } else {
-          showMissing();
-        }
+        setLinks('[data-release-url]', d.releaseUrl);
+        if (isHttpUrl(d.driveFolderUrl)) setLinks('[data-drive]', d.driveFolderUrl);
+        else showMissing();
       })
       .catch(showMissing);
   } else if (hasDownloadUi) {

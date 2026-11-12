@@ -5,7 +5,8 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | Seite | Inhalt |
 | --- | --- |
 | `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), **Demo-Video** (`assets/video/`: MP4, Titelbild, deutsche Untertitel als VTT), Screenshots, Kontakt |
-| `download.html` | Installation für Windows (Setup) und Linux (Ein-Befehl-Bundle) aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
+| `install.sh`, `install.ps1` | Skripte der Einzeiler (`curl -fsSL …/install.sh \| sh`, `irm …/install.ps1 \| iex`); **Kopie** aus dem Hauptprojekt, nicht von Hand ändern (siehe Pflege) |
+| `download.html` | Installation für Windows und Linux: Einzeiler für die minimale Variante (aus dem GitHub-Release), volles Paket aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
 | `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste: im Hauptprojekt zu klären, `Support/docs/vergleich/` gibt es dort nicht mehr) |
 | `api.html` | API-Dokumentation aus `assets/api/openapi.json`: Einleitung, Ablauf, Endpunkte mit Parametern, Antworten und Codebeispielen (curl, C#, Python, JavaScript), Datentypen; Renderer `assets/api-doku.js`, Stile `assets/api-doku.css` |
@@ -23,6 +24,8 @@ python3 -m http.server 8080   # im Repo-Ordner, dann http://localhost:8080
 node --test "tests/*.test.mjs"   # im Repo-Ordner; Node 20+, keine Abhängigkeiten
 ```
 
+`tests/download.test.mjs` prüft die Download-Seite ohne Browser: Einzeiler und ihre Adressen (app.js läuft mit Schein-DOM), Skripte vorhanden und identisch mit der Quelle, `downloads.json`, Anker und lokale Links, Drive-Link als „volles Paket“ benannt, Metadaten und `llms.txt`.
+
 `tests/api-doku.test.mjs` prüft den Renderer der API-Seite ohne Browser (Schein-DOM): Markdown-Teilsatz (kein HTML-Durchlass, nur `http(s)`-Links), `$ref`-Auflösung mit Zyklenschutz, Beispiel-Generator und Codebeispiele (curl, C#, Python, JavaScript) für alle Endpunkte der committeten `assets/api/openapi.json`. `tests/` und `scripts/` gelangen nicht auf die veröffentlichte Seite (`pages.yml`). Vor dem Push nach Änderungen an `api-doku.js` oder `openapi.json` ausführen; `assets/api-doku.js`/`.css` danach mit `sync-app-api-doku.py` in die App kopieren (Hauptprojekt).
 
 ## Gestaltung und Schrift
@@ -37,12 +40,13 @@ Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-r
 
 - **Vergleichsseite:** Preise und Annahmen nur in `assets/kosten.json` (Stand-Datum wird daraus angezeigt), quartalsweise gegen die Anbieterseiten prüfen; danach im Hauptprojekt `python3 Support/docs/vergleich/kostenmodell.py` und `node Support/docs/vergleich/test-vergleich.mjs` ausführen.
 
-- **Version, Download-Ordner:** nur in `assets/downloads.json` (von Hand pflegen, sonst zeigt die Seite die alte Version; Prüfsummen werden derzeit bewusst nicht veröffentlicht):
-  `version`, `driveFolderUrl` (Freigabe „Jeder mit dem Link“, nur ansehen; muss mit `https://` beginnen).
-  Fehlt die Datei oder der Ordner-Link, blenden die Knöpfe sich aus und ein Hinweis steht da. Das ist der letzte Schritt des
-  Release-Ablaufs (`Support/docs/installer-lokal-bauen.md` im Hauptprojekt). Dort liegen auch die Dateien: Windows-Setup (`.exe` plus `-N.bin`),
-  Linux-Bundle (`sovereignmind-installer_<Version>_amd64.run.partNN`). Der Linux-Befehl steht in `assets/app.js`
-  (`COMMANDS`, `<Version>` wird aus `downloads.json` eingesetzt); mit dem README des Installer-Repos abgleichen.
+- **Einzeiler-Skripte:** `install.sh` und `install.ps1` im Wurzelordner (Adresse `…/sovereignmind-website/install.sh`, `…/install.ps1`; `pages.yml` kopiert sie mit). Quelle ist `Support/installer/online/` im Hauptprojekt; dort `Support/scripts/sync-website-install.sh --website ../sovereignmind-website` ausführen (entfernt den Plan-Verweis im Kopf und prüft auf interne Pfade, private Adressen und Zugangsdaten; `--check` meldet nur, ob die Kopie aktuell ist). `tests/download.test.mjs` prüft die Kopie gegen die Quelle, wenn das Hauptprojekt daneben liegt. Die Befehle der Seite stehen in `assets/app.js` (`COMMANDS`, `EXTRA_COMMANDS`).
+- **Version, Release, Download-Ordner:** nur in `assets/downloads.json` (von Hand oder mit `release-checksums.sh --write` pflegen, sonst zeigt die Seite die alte Version; Prüfsummen werden derzeit bewusst nicht veröffentlicht):
+  `version`, `releaseTag` (`v<version>`), `releaseUrl` (Release-Seite auf GitHub, für die manuelle Variante), `driveFolderUrl` (nur noch für das **volle** Paket; Freigabe „Jeder mit dem Link“, nur ansehen).
+  Links müssen mit `https://` beginnen. Fehlt ein Link, blendet der Knopf sich aus; beim Drive-Ordner steht dann ein Hinweis da. Die Einzeiler brauchen die Datei nicht:
+  sie fragen die neueste Version selbst bei GitHub ab. Das ist der letzte Schritt des Release-Ablaufs (`Support/docs/installer-lokal-bauen.md` im Hauptprojekt, `publish-release.sh`).
+  Im Release liegen die Dateien der minimalen Variante: Windows-Setup (`.exe` plus `-N.bin`), Linux-Bundle (`sovereignmind-installer-minimal_<Version>_amd64.run.partNN`) und `SHA256SUMS.txt`.
+  Die manuellen Befehle in `assets/app.js` mit dem README des Installer-Repos abgleichen.
 - **Demo:** Es gibt nur **eine** Software und einen Installer. Der Abschnitt `#demo` in `download.html` beschreibt, was beim ersten Start
   zur Wahl steht („Demo starten“ oder „Mit Lizenz einrichten“), die Grenzen (24 Stunden, ein Sitzplatz, nur localhost, Löschung, Neustart
   möglich, Freischaltung mit Schlüssel) und die öffentlichen Zugangsdaten. Mit dem Plan `docs/pläne/demo-willkommen` im Hauptprojekt
