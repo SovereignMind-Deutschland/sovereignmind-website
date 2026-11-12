@@ -21,7 +21,7 @@ REPO="sovereignmind-deutschland/sovereignmind-installer"
 SM_API_URL="${SM_API_URL:-https://api.github.com/repos/$REPO/releases/latest}"
 SM_VARIANT="${SM_VARIANT:-minimal}"
 SM_DOWNLOAD_DIR="${SM_DOWNLOAD_DIR:-/var/tmp/sovereignmind-install}"
-# Platzbedarf im Arbeitsordner in KiB: Download ca. 3 GB + Entpacken ca. 2,3 GB durch das Bundle
+# Platzbedarf im Arbeitsordner in KiB: Download ca. 0,9 GB + Entpacken ca. 0,9 GB durch das Bundle, großzügiger Puffer
 NEED_KB=$((6 * 1024 * 1024))
 
 status() { printf '>>> %s\n' "$*" >&2; }

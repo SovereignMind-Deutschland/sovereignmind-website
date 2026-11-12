@@ -26,7 +26,7 @@ function Install-SovereignMind {
     $apiUrl = if ($env:SM_API_URL) { $env:SM_API_URL } else { "https://api.github.com/repos/$repo/releases/latest" }
     $baseUrl = if ($env:SM_BASE_URL) { $env:SM_BASE_URL } else { "https://github.com/$repo/releases/download" }
     $workDir = if ($env:SM_DOWNLOAD_DIR) { $env:SM_DOWNLOAD_DIR } else { Join-Path $env:TEMP "SovereignMind-Install" }
-    # Platzbedarf im Arbeitsordner in KiB: Download ca. 3 GB, Puffer für das Setup
+    # Platzbedarf im Arbeitsordner in KiB: Download ca. 0,8 GB, großzügiger Puffer für das Setup
     $needKb = 4 * 1024 * 1024
     $keepOnError = $false
     $workCreated = $false
@@ -181,7 +181,7 @@ function Install-SovereignMind {
         }
         elseif ($env:SM_NO_ELEVATE -ne "1" -and $env:SM_ELEVATED -ne "1") {
             Write-Host ""
-            Write-Host "Das Setup braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) käme sonst erst nach dem Download (ca. 3 GB)."
+            Write-Host "Das Setup braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) käme sonst erst nach dem Download (ca. 0,8 GB)."
             Write-Host "Mit 'y' erscheint die Abfrage jetzt, und die Installation läuft in einem neuen Fenster mit Administratorrechten weiter."
             Write-Host "Mit 'n' geht es hier weiter; nach dem Download erscheint die Abfrage, bitte dann am Rechner sein."
             Write-Host "Tipp: PowerShell gleich als Administrator öffnen, dann gibt es keine Abfrage."
