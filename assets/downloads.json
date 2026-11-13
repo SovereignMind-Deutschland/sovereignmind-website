@@ -1,6 +1,14 @@
 {
-  "version": "2026.11.12.1920",
-  "releaseTag": "v2026.11.12.1920",
-  "releaseUrl": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/tag/v2026.11.12.1920",
-  "driveFolderUrl": "https://drive.google.com/drive/folders/1hyPWE-iv8Beps4RKIsIvNVD6pVvENPIY"
+  "version": "2026.11.13.1918",
+  "releaseTag": "v2026.11.13.1918",
+  "releaseUrl": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/tag/v2026.11.13.1918",
+  "driveFolderUrl": "https://drive.google.com/drive/folders/1hyPWE-iv8Beps4RKIsIvNVD6pVvENPIY",
+  "sha256": {
+    "SovereignMind-Setup-Minimal-2026.11.13.1918-1.bin": "a92d0f57e0198e7849375d2b0421af40bc13f16b120575d59cd2fa050bd51ddf",
+    "SovereignMind-Setup-Minimal-2026.11.13.1918.exe": "793d0590ad57ca5f90cd9d7bfe2cacbc9aada6c01020fcf0fbdef4a03090d522",
+    "sovereignmind-installer-minimal_2026.11.13.1918_amd64.run": "922813c0ff7741288984d004116eda0823a972a13839ad6914bef0cc8e87c35b",
+    "sovereignmind-installer-minimal_2026.11.13.1918_amd64.run.part01": "922813c0ff7741288984d004116eda0823a972a13839ad6914bef0cc8e87c35b",
+    "sovereignmind-installer-minimal_2026.11.13.1918_x86_64.run": "53a8440e742c5f9661834cb7b02b3f91b6c82a25c4dab19cbf99e9cd720e43f0",
+    "sovereignmind-installer-minimal_2026.11.13.1918_x86_64.run.part01": "53a8440e742c5f9661834cb7b02b3f91b6c82a25c4dab19cbf99e9cd720e43f0"
+  }
 }
