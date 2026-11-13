@@ -153,7 +153,7 @@
     <tr><td>Inferenz</td><td>llama.cpp (nativ, Vulkan)</td><td>Nutzt NVIDIA, AMD und Intel über den Host-Treiber, sonst CPU</td></tr>
     <tr><td>Voice</td><td>faster-whisper, Qwen3-TTS</td><td>Vorlesen lokal, Freigabe pro Tenant; Diktat folgt</td></tr>
     <tr><td>Lizenz</td><td>Signierte JWE-Tokens</td><td>Offline-Prüfung, kein Lizenzserver</td></tr>
-    <tr><td>Deployment</td><td>Nativer Installer</td><td>Windows-Setup und Linux-.deb, kein Docker</td></tr>
+    <tr><td>Deployment</td><td>Nativer Installer</td><td>Windows-Setup und Linux-Bundle (.deb), kein Docker</td></tr>
   </table>
 </section>
 
@@ -185,7 +185,7 @@
   <div class="row">
     <div class="card"><h3>Quality Gate</h3><p>Bei Pull Request und Push auf main laufen Backend-Tests mit Coverage-Gate, beide Frontends und die Python-Worker.</p></div>
     <div class="card"><h3>E2E-Tests</h3><p>Playwright-Tests gegen den vollständigen Stack, lokal ausgeführt.</p></div>
-    <div class="card"><h3>Releases</h3><p>Windows-Setup und Linux-.deb entstehen per Workflow als Release-Assets. Es werden keine Docker-Images veröffentlicht.</p></div>
+    <div class="card"><h3>Releases</h3><p>Windows-Setup und Linux-Bundle entstehen mit <code>npm run release</code> (Build per Docker) als Release-Assets. Es werden keine Docker-Images veröffentlicht.</p></div>
   </div>
 </section>
 
@@ -195,7 +195,7 @@
   <div class="row">
     <div class="card"><h3>Einrichtung</h3><p>Einmalige Gebühr für Installation und Anbindung beim Kunden.</p></div>
     <div class="card"><h3>Wartung</h3><p>Monatlicher Wartungsvertrag, gesteuert über die Laufzeit der Lizenz.</p></div>
-    <div class="card"><h3>Installer</h3><p>Nativer Installer für Windows und Linux (.deb), ohne Docker. Eingebauter HTTPS-Proxy, Aktivierung offline per E-Mail und Token.</p></div>
+    <div class="card"><h3>Installer</h3><p>Nativer Installer für Windows und Linux, ohne Docker; Installation mit einem Befehl. Eingebauter HTTPS-Proxy, Aktivierung offline per E-Mail und Token.</p></div>
   </div>
 </section>
 
