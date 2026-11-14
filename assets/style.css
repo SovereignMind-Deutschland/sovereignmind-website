@@ -376,3 +376,6 @@ small.zeit { display: block; color: var(--muted); font-size: .8rem; font-weight:
 }
 
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.sums code { word-break: break-all; font-size: .85em; }
+.sums td:first-child { word-break: break-all; }

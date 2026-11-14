@@ -59,6 +59,28 @@
       }
     });
   }
+  // SHA-256 je Datei aus downloads.json (nur als Text eingesetzt). Ohne Einträge bleibt der Verweis auf SHA256SUMS.txt.
+  function renderChecksums(sums) {
+    var body = document.querySelector('[data-sha256-rows]');
+    var box = document.querySelector('[data-sha256-box]');
+    if (!body || !box || !sums || typeof sums !== 'object') return;
+    var names = Object.keys(sums).filter(function (n) { return /^[0-9a-f]{64}$/i.test(String(sums[n])); }).sort();
+    if (!names.length) return;
+    names.forEach(function (name) {
+      var row = document.createElement('tr');
+      var file = document.createElement('td');
+      var sum = document.createElement('td');
+      var code = document.createElement('code');
+      file.textContent = name;
+      code.textContent = String(sums[name]).toLowerCase();
+      sum.appendChild(code);
+      row.appendChild(file);
+      row.appendChild(sum);
+      body.appendChild(row);
+    });
+    box.hidden = false;
+    document.querySelectorAll('[data-sha256-missing]').forEach(function (el) { el.hidden = true; });
+  }
   function showMissing() {
     document.querySelectorAll('[data-drive-missing]').forEach(function (el) { el.hidden = false; });
   }
@@ -76,6 +98,7 @@
             el.hidden = false;
           });
         }
+        renderChecksums(d.sha256);
         setLinks('[data-release-url]', d.releaseUrl);
         if (isHttpUrl(d.driveFolderUrl)) setLinks('[data-drive]', d.driveFolderUrl);
         else showMissing();

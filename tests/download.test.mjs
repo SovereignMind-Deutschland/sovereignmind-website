@@ -141,3 +141,15 @@ test('Deploy: pages.yml schließt die Skripte nicht aus', () => {
   const y = lesen('.github/workflows/pages.yml');
   assert.ok(!/--exclude=\.\/install/.test(y), 'install.* wird vom Deploy ausgeschlossen');
 });
+
+test('Prüfsummen und SmartScreen: Abschnitt vorhanden, Tabelle aus downloads.json, RPM als ungetestet', () => {
+  assert.match(html, /id="pruefsummen"/);
+  assert.match(html, /data-sha256-rows/);
+  assert.match(html, /SmartScreen/);
+  assert.match(html, /RPM-Familie \(Fedora, Rocky Linux\) ist noch nicht getestet/);
+  const sums = JSON.parse(lesen('assets/downloads.json')).sha256;
+  for (const [name, sum] of Object.entries(sums)) {
+    assert.match(sum, /^[0-9a-f]{64}$/, name);
+  }
+  assert.match(lesen('assets/app.js'), /renderChecksums\(d\.sha256\)/);
+});
