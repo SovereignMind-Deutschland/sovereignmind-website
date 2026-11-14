@@ -64,7 +64,7 @@
   <main id="main" class="wrap">
     <h1 class="page-title">SovereignMind installieren</h1>
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
-    <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Empfohlen sind 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht) sowie Platz für den Installer (ca. 3&nbsp;GB plus Modelle). Setzen Sie keine echten oder vertraulichen Daten ein. Einzelheiten: <a href="#demo">Demo</a>.</div>
+    <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Empfohlen sind 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht) sowie Platz für den Installer (ca. 3&nbsp;GB plus Modelle). <a href="#demo">Demo</a></div>
     <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem: Ein Befehl lädt den minimalen Installer aus dem Release und startet ihn.</p>
     <p class="version" data-version hidden></p>
 
@@ -78,7 +78,7 @@
       <h2 id="windows-einzeiler">Minimal: ein Befehl, Modelle werden geladen</h2>
       <p>PowerShell öffnen (am besten „Als Administrator ausführen“, dann gibt es keine weitere Abfrage), den Befehl einfügen und mit Enter bestätigen:</p>
       <div class="cmd"><pre><code data-cmd="windows"></code></pre><button type="button" data-copy="windows">Kopieren</button></div>
-      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt das Setup mit seinen Teilen (rund 0,8&nbsp;GB), vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code> und startet das Setup. Läuft PowerShell nicht als Administrator, fragt das Skript vor dem Download, ob es in einem neuen Administrator-Fenster weitermachen soll (<code>y</code>: die Windows-Sicherheitsabfrage kommt sofort; <code>n</code>: sie kommt erst nach dem Download). Wird die Abfrage abgelehnt, bleiben die geladenen Dateien liegen, und ein neuer Start lädt nichts doppelt. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Setup, das Skript stimmt nie für Sie zu. Die KI-Modelle (ca. 11&nbsp;GB) lädt das Setup danach aus dem Internet nach.</p>
+      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt das Installationspaket (ZIP-Teile, rund 0,9&nbsp;GB), vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code>, entpackt das Paket und startet die Installation. Läuft PowerShell nicht als Administrator, fragt das Skript vor dem Download, ob es in einem neuen Administrator-Fenster weitermachen soll (<code>y</code>: die Windows-Sicherheitsabfrage kommt sofort; <code>n</code>: sie kommt erst nach dem Download). Wird die Abfrage abgelehnt, bleiben die geladenen Dateien liegen, und ein neuer Start lädt nichts doppelt. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Terminal, das Skript stimmt nie für Sie zu. Die KI-Modelle (ca. 11&nbsp;GB) lädt das Setup danach aus dem Internet nach.</p>
       <details>
         <summary>Skript vorab lesen</summary>
         <p>Ohne <code>| iex</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.ps1">install.ps1</a>.</p>
@@ -86,7 +86,7 @@
       </details>
       <details>
         <summary>Ohne Skript: Dateien aus dem Release</summary>
-        <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code>, alle <code>…-N.bin</code>-Teile und <code>SHA256SUMS.txt</code> in einen Ordner laden. Die Summe der <code>.exe</code> mit der Zeile in <code>SHA256SUMS.txt</code> vergleichen (die <code>.bin</code>-Teile genauso), dann die <code>.exe</code> als Administrator ausführen.</p>
+        <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.zip.001</code> (und weitere <code>.zip.NNN</code>, falls vorhanden), <code>EULA.de.txt</code> und <code>SHA256SUMS.txt</code> sowie das Skript <a href="install.ps1" download>install.ps1</a> in einen Ordner laden. Die Summe jedes Teils mit der Zeile in <code>SHA256SUMS.txt</code> vergleichen, dann <code>install.ps1</code> in einer PowerShell als Administrator mit <code>-SourceDir</code> auf diesen Ordner starten. Das Skript entpackt das Paket und fragt nach dem <a href="#eula">Endnutzer-Lizenzvertrag</a>.</p>
         <div class="cmd"><pre><code data-cmd="windows-manuell"></code></pre><button type="button" data-copy="windows-manuell">Kopieren</button></div>
       </details>
       <h2 id="windows-eigenes-frontend-einzeiler">Einzeiler mit Optionen</h2>
@@ -192,7 +192,7 @@
     <p>Installation und Download wie oben unter Windows bzw. Linux. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie zweimal: im Installer und in der App, beim Start der Demo bzw. bei der Einrichtung.</p>
 
     <h2 id="eula">Endnutzer-Lizenzvertrag</h2>
-    <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
+    <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Skript <code>install.ps1</code> zeigt ihn vor der Installation und fragt im Terminal (oder vorab mit <code>-AcceptEula</code>), das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>
 
     <h2>Nach der Installation</h2>
     <ol class="steps">
@@ -227,7 +227,7 @@
       </table>
     </div>
     <p data-sha256-missing>Die Prüfsummen der aktuellen Version stehen in <code>SHA256SUMS.txt</code> auf der Release-Seite.</p>
-    <p><strong>Windows-Warnung (SmartScreen):</strong> Das Setup ist nicht mit einem Zertifikat signiert. Windows kann deshalb „Der Computer wurde durch Windows geschützt“ anzeigen. Prüfen Sie die Prüfsumme der Datei; stimmt sie, wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“. Das Setup bleibt eine Verwaltungsaufgabe und braucht ohnehin Administratorrechte.</p>
+    <p><strong>Windows-Warnung (SmartScreen):</strong> Das Installationspaket und <code>install.ps1</code> sind nicht mit einem Zertifikat signiert. Windows kann deshalb „Der Computer wurde durch Windows geschützt“ anzeigen. Prüfen Sie die Prüfsumme der Datei; stimmt sie, wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“. Das Setup bleibt eine Verwaltungsaufgabe und braucht ohnehin Administratorrechte.</p>
 
     <h2>Lizenz und Wissenspakete</h2>
     <p>Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden und kann zusätzlich an Firmenname und Zahlungsreferenz (Rechnungsnummer oder letzte vier Stellen von Karte bzw. IBAN) gebunden sein; bei der Einrichtung geben Sie diese Angaben ein. Sie stehen im Schlüssel nur als Hash. Bitte den Schlüssel nicht weitergeben: Nach fünf falschen Angaben pro Stunde ist die Einlösung vorübergehend gesperrt.

@@ -45,7 +45,7 @@ Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-r
   `version`, `releaseTag` (`v<version>`), `releaseUrl` (Release-Seite auf GitHub, für die manuelle Variante).
   Links müssen mit `https://` beginnen. Fehlt ein Link, blendet der Knopf sich aus. Die Einzeiler brauchen die Datei nicht:
   sie fragen die neueste Version selbst bei GitHub ab. Das ist der letzte Schritt des Release-Ablaufs (`Support/docs/installer-lokal-bauen.md` im Hauptprojekt, `publish-release.sh`).
-  Im Release liegen die Dateien der minimalen Variante: Windows-Setup (`.exe` plus `-N.bin`), Linux-Bundle (`sovereignmind-installer-minimal_<Version>_amd64.run.partNN`) und `SHA256SUMS.txt`.
+  Im Release liegen die Dateien der minimalen Variante: Windows-Paket (`SovereignMind-Setup-Minimal-<Version>.zip.NNN`), Linux-Bundle (`sovereignmind-installer-minimal_<Version>_amd64.run.partNN`) und `SHA256SUMS.txt`.
   Die manuellen Befehle in `assets/app.js` mit dem README des Installer-Repos abgleichen.
 - **Demo:** Es gibt nur **eine** Software und einen Installer. Der Abschnitt `#demo` in `download.html` beschreibt, was beim ersten Start
   zur Wahl steht („Demo starten“ oder „Mit Lizenz einrichten“), die Grenzen (24 Stunden, ein Sitzplatz, nur localhost, Löschung, Neustart

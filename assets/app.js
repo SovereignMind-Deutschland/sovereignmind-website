@@ -15,7 +15,10 @@
   // Weitere Befehle ohne eigenen Reiter; sie zählen nicht für die Reiterauswahl (COMMANDS).
   var EXTRA_COMMANDS = {
     'windows-lesen': 'irm ' + PS1,
-    'windows-manuell': 'Get-FileHash .\\SovereignMind-Setup-Minimal-<Version>.exe -Algorithm SHA256',
+    'windows-manuell': [
+      'Get-FileHash .\\SovereignMind-Setup-Minimal-<Version>.zip.001 -Algorithm SHA256',
+      'powershell -ExecutionPolicy Bypass -File .\\install.ps1 -SourceDir .'
+    ].join('\n'),
     'windows-eigenes-frontend': [
       '$env:SM_SETUP_ARGS = "/FRONTEND=off /CORS=https://app.example"',
       'irm ' + PS1 + ' | iex'
