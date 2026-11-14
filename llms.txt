@@ -10,7 +10,7 @@ Stand: November 2026. Grenze: SovereignMind wird derzeit nur als Demo zur Erprob
 - [Was ist ein On-Premise-KI-Assistent?](https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html): Begriff, DSGVO und Schatten-IT, Entscheidungshilfe lokal oder Cloud (keine Rechtsberatung)
 - [Vergleich](https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html): lokal gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, Kostenbeispiel mit Annahmen, Quellen und Stand
 - [Wissenspakete](https://sovereignmind-deutschland.github.io/sovereignmind-website/wissenspakete.html): Katalog vorverarbeiteter Wissenspakete, zum Beispiel deutsche Gesetze
-- [Download und Demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html): Installation unter Windows und Linux mit einem Befehl (`irm …/install.ps1 | iex` bzw. `curl -fsSL …/install.sh | sh`, minimale Variante aus dem GitHub-Release, Skripte vorab lesbar), volles Paket als Download-Ordner, Demo-Grenzen
+- [Download und Demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html): Installation unter Windows und Linux mit einem Befehl (`irm …/install.ps1 | iex` bzw. `curl -fsSL …/install.sh | sh`, minimale Variante aus dem GitHub-Release, Skripte vorab lesbar), Demo-Grenzen
 - [API](https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html): Dokumentation der Schnittstelle
 
 ## Hinweise

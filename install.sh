@@ -71,7 +71,7 @@ main() {
   done
   ARGS="$ARGS ${SM_BUNDLE_ARGS:-}"
 
-  [ "$SM_VARIANT" = "minimal" ] || error "SM_VARIANT=$SM_VARIANT wird nicht unterstützt (nur minimal). Das volle Paket steht auf der Download-Seite."
+  [ "$SM_VARIANT" = "minimal" ] || error "SM_VARIANT=$SM_VARIANT wird nicht unterstützt (nur minimal)."
   [ "$(uname -s)" = "Linux" ] || error "Dieses Skript läuft nur unter Linux."
   [ "$(uname -m)" = "x86_64" ] || error "Nur x86_64 wird unterstützt (gefunden: $(uname -m))."
 

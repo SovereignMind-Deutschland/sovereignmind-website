@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // Zentrale Konfiguration: Befehle hier, Version/Release/Drive-Ordner in assets/downloads.json (von Hand pflegen).
+  // Zentrale Konfiguration: Befehle hier, Version/Release in assets/downloads.json (von Hand pflegen).
   // Die Skripte liegen im Wurzelordner der Seite (install.sh, install.ps1; Kopie aus dem Hauptprojekt, sync-website-install.sh).
   var DOWNLOADS_JSON = 'assets/downloads.json';
   var SITE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
@@ -44,11 +44,9 @@
   }
   renderCommands('');
 
-  // Version, Release-Seite und Drive-Ordner aus downloads.json. Die Einzeiler brauchen die Datei nicht. Fehlt ein Link,
-  // bleibt er ausgeblendet und (beim Drive-Ordner) ein Hinweis steht da (kein toter Link).
+  // Version und Release-Seite aus downloads.json. Die Einzeiler brauchen die Datei nicht. Fehlt ein Link,
+  // bleibt er ausgeblendet (kein toter Link).
   //   data-release-url  Link auf die Release-Seite auf GitHub (releaseUrl)
-  //   data-drive        Link auf den Drive-Ordner mit dem vollen Paket (driveFolderUrl)
-  //   data-drive-missing  Hinweis, solange der Drive-Link fehlt
   function isHttpUrl(u) { return typeof u === 'string' && /^https:\/\//i.test(u); }
   function setLinks(selector, url) {
     document.querySelectorAll(selector).forEach(function (a) {
@@ -81,10 +79,7 @@
     box.hidden = false;
     document.querySelectorAll('[data-sha256-missing]').forEach(function (el) { el.hidden = true; });
   }
-  function showMissing() {
-    document.querySelectorAll('[data-drive-missing]').forEach(function (el) { el.hidden = false; });
-  }
-  var hasDownloadUi = document.querySelector('[data-release-url], [data-drive], [data-version]');
+  var hasDownloadUi = document.querySelector('[data-release-url], [data-version]');
   if (hasDownloadUi && window.fetch) {
     fetch(DOWNLOADS_JSON, { cache: 'no-cache' })
       .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
@@ -100,12 +95,8 @@
         }
         renderChecksums(d.sha256);
         setLinks('[data-release-url]', d.releaseUrl);
-        if (isHttpUrl(d.driveFolderUrl)) setLinks('[data-drive]', d.driveFolderUrl);
-        else showMissing();
       })
-      .catch(showMissing);
-  } else if (hasDownloadUi) {
-    showMissing();
+      .catch(function () { /* ohne downloads.json bleiben die Einzeiler nutzbar */ });
   }
 
   // Tabs

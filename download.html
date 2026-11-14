@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Herunterladen – SovereignMind</title>
-  <meta name="description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
+  <meta name="description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker.">
   <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SovereignMind">
   <meta property="og:locale" content="de_DE">
   <meta property="og:title" content="Herunterladen – SovereignMind">
-  <meta property="og:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
+  <meta property="og:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker.">
   <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
   <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="SovereignMind: Der KI-Assistent, der Ihre Daten nie verlässt">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Herunterladen – SovereignMind">
-  <meta name="twitter:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker. Das volle Paket für Rechner ohne Internet gibt es als Download.">
+  <meta name="twitter:description" content="SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker.">
   <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
   <script type="application/ld+json">
   {
@@ -64,8 +64,8 @@
   <main id="main" class="wrap">
     <h1 class="page-title">SovereignMind installieren</h1>
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
-    <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Sie brauchen mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM sowie Platz für den Installer (voll ca. 13&nbsp;GB, minimal ca. 3&nbsp;GB plus Modelle). Setzen Sie keine echten oder vertraulichen Daten ein. Einzelheiten: <a href="#demo">Demo</a>.</div>
-    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem: Ein Befehl lädt den minimalen Installer aus dem Release und startet ihn. Das volle Paket für Rechner ohne Internet gibt es weiterhin als Download-Ordner.</p>
+    <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Empfohlen sind 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht) sowie Platz für den Installer (ca. 3&nbsp;GB plus Modelle). Setzen Sie keine echten oder vertraulichen Daten ein. Einzelheiten: <a href="#demo">Demo</a>.</div>
+    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem: Ein Befehl lädt den minimalen Installer aus dem Release und startet ihn.</p>
     <p class="version" data-version hidden></p>
 
     <div class="tabs" role="tablist" aria-label="Betriebssystem">
@@ -92,23 +92,7 @@
       <h2 id="windows-eigenes-frontend-einzeiler">Einzeiler mit Optionen</h2>
       <p>Optionen für das Setup übergeben Sie vor dem Befehl in <code>SM_SETUP_ARGS</code>, zum Beispiel für eine eigene Oberfläche ohne Weboberfläche (mehr dazu <a href="#windows-api">weiter unten</a>). <code>SM_VERSION</code> wählt eine bestimmte Version.</p>
       <div class="cmd"><pre><code data-cmd="windows-eigenes-frontend"></code></pre><button type="button" data-copy="windows-eigenes-frontend">Kopieren</button></div>
-      <h2 id="windows-variante">Volles Paket: Modelle im Installer</h2>
-      <p>Für abgeschottete Netze liegt das volle Paket (ca. 13&nbsp;GB) im Download-Ordner, nicht im Release.
-        <a class="btn" data-drive href="#" rel="noopener" hidden>Voller Installer: Download-Ordner öffnen (Google Drive)</a>
-        <span class="note" data-drive-missing hidden>Der Link zum Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>).</span></p>
-      <p>Die Datei <code>SovereignMind-Setup-Full-&lt;Version&gt;.exe</code> samt allen zugehörigen <code>…-N.bin</code>-Teilen in einen Ordner laden und die <code>.exe</code> als Administrator ausführen. Eine Frage entscheidet, welche Variante passt: <strong>Müssen die KI-Modelle offline im Installer sein?</strong> (abgeschottetes Netz: ja)</p>
-      <div class="overflow">
-        <table>
-          <thead><tr><th></th><th>Voll</th><th>Minimal</th></tr></thead>
-          <tbody>
-            <tr><td>Datei</td><td><code>SovereignMind-Setup-Full-&lt;Version&gt;.exe</code></td><td><code>SovereignMind-Setup-Minimal-&lt;Version&gt;.exe</code></td></tr>
-            <tr><td>KI-Modelle</td><td>im Installer enthalten</td><td>werden beim Installieren geladen (ca. 11&nbsp;GB), der Installer zeigt den Fortschritt auf der Seite „Modelle werden geladen“</td></tr>
-            <tr><td>Internet</td><td>nicht nötig</td><td>nötig (<code>huggingface.co</code> freigeben)</td></tr>
-            <tr><td>Wann</td><td>abgeschottete Netze</td><td>Rechner mit Internet, kleinerer Download</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p>Beide Installer enthalten die Weboberfläche und die API. Der volle Installer setzt die Hugging-Face-Zugriffe der Worker auf „offline“: Die Dokumenten- und Sprachmodelle kommen aus dem Installer, die Worker brauchen im Betrieb keine Verbindung nach außen.
+      <p>Der Installer enthält die Weboberfläche und die API.
         Die Sprachausgabe läuft standardmäßig auf der CPU. Wer sie auf der Grafikkarte betreiben möchte, wählt das im Admin-Bereich unter „Voice“; die dafür nötige GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf aus dem Internet nach.</p>
       <p>Fehlt beim minimalen Installer das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich einen Hinweis mit der Schaltfläche „Jetzt laden“. Das größere 14B-Chat-Modell lädt der Admin bei Bedarf selbst (Admin-Bereich, Lokale Modelle).</p>
       <h2 id="windows-api">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
@@ -121,8 +105,8 @@
       <ul class="req">
         <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
         <li>Administratorrechte</li>
-        <li>Voller Installer: KI-Server (llama.cpp) und KI-Modelle sind enthalten, kein Internet für die Installation nötig. Minimaler Installer: der KI-Server ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt er aus dem Internet nach</li>
-        <li>Mindestens 8&nbsp;GB VRAM und 16&nbsp;GB RAM; ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
+        <li>KI-Server (llama.cpp) ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt der Installer aus dem Internet nach</li>
+        <li>Empfohlen: 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht); ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Dashboard) ist im Setup als Aufgabe wählbar.</div>
@@ -146,13 +130,7 @@
         <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> und <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
         <div class="cmd"><pre><code data-cmd="linux-manuell-minimal"></code></pre><button type="button" data-copy="linux-manuell-minimal">Kopieren</button></div>
       </details>
-      <h2 id="linux-voll">Volles Paket: Modelle im Bundle</h2>
-      <p>Für Rechner ohne Internet liegt das volle Bundle (ca. 13&nbsp;GB) im Download-Ordner, nicht im Release.
-        <a class="btn" data-drive href="#" rel="noopener" hidden>Volles Bundle: Download-Ordner öffnen (Google Drive)</a>
-        <span class="note" data-drive-missing hidden>Der Link zum Download-Ordner ist noch nicht eingetragen. Fragen Sie den Anbieter nach dem Link (Kontakt auf der <a href="index.html#kontakt">Startseite</a>).</span></p>
-      <p>Das Bundle ist ein selbstentpackendes Archiv, das alle Pakete nacheinander installiert und alles Entpackte am Ende wieder löscht. Es liegt in Teilen (<code>…run.part01</code> bis <code>partNN</code>); alle Teile in einen Ordner laden und dort ausführen:</p>
-      <div class="cmd"><pre><code data-cmd="linux-manuell-voll"></code></pre><button type="button" data-copy="linux-manuell-voll">Kopieren</button></div>
-      <p>Das volle Bundle setzt <code>HF_HUB_OFFLINE=1</code> in den Worker-Umgebungen: kein Zugriff auf Hugging Face im Betrieb. Die GPU-Unterstützung der Sprachausgabe ist in keinem der beiden Bundles enthalten und wird bei Bedarf im Admin-Bereich nachgeladen. Beide Bundles enthalten Weboberfläche und API.</p>
+      <p>Das Bundle enthält Weboberfläche und API. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
       <h2 id="linux-eigenes-frontend">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
       <p>Der Einzeiler reicht Optionen für das Bundle über <code>SM_BUNDLE_ARGS</code> weiter (Beispiel unten). Die Weboberfläche ist bei beiden Bundles standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar, für eigene Oberflächen und die Anbindung an Fachsysteme. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
         <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
@@ -166,9 +144,9 @@
       <ul class="req">
         <li>Ubuntu oder Debian (x64), aktuelle Version. Die RPM-Familie (Fedora, Rocky Linux) ist noch nicht getestet; das Bundle kann dort funktionieren, ist aber nicht freigegeben</li>
         <li><code>sudo</code>-Rechte</li>
-        <li>Platz, volles Bundle: ca. 13&nbsp;GB Download, 7,7&nbsp;GB (beim Update 13&nbsp;GB) vorübergehend unter <code>/var/tmp</code>, ca. 26&nbsp;GB installiert. Minimales Bundle: ca. 0,9&nbsp;GB Download, 0,9&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
-        <li>Den KI-Server (llama.cpp, nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU) liefert der Installer mit, die KI-Modelle nur das volle Bundle; eine frühere Ollama-Installation des Pakets wird übernommen</li>
-        <li>Mindestens 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM; sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
+        <li>Platz, Bundle: ca. 0,9&nbsp;GB Download, 0,9&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
+        <li>Den KI-Server (llama.cpp, nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU) liefert der Installer mit, die KI-Modelle lädt er nach; eine frühere Ollama-Installation des Pakets wird übernommen</li>
+        <li>Empfohlen: 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM (der Installer prüft das nicht); sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
         <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
       </ul>
       <div class="note">Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</div>
@@ -209,10 +187,9 @@
       <li><strong>Zugangsdaten:</strong> Admin mit Passwort <code>sovereignmind</code>, Nutzer <code>test@sovereignmind.de</code> mit Passwort <code>sovereignmind</code>. Beide stehen auch auf der Anmeldeseite.</li>
       <li><strong>Eingeschränkt:</strong> ein Sitzplatz (keine weiteren Nutzer), Passwörter und Lizenz nicht änderbar, Schnittstellen gesperrt, höchstens 50 Dokumente und 200&nbsp;MB, keine Sicherungen.</li>
       <li><strong>Mit Schlüssel freischalten:</strong> Hat Ihnen der Anbieter ausdrücklich einen Lizenzschlüssel ausgestellt, schaltet er die Demo-Installation frei. Dabei wählen Sie, ob die Daten der Demo übernommen oder gelöscht werden. Eine zweite Installation oder ein Deinstallieren ist nicht nötig.</li>
-      <li>Gleiche Größe und gleiche Voraussetzungen wie oben (beim vollen Installer sind die Modelle enthalten, beim minimalen werden sie geladen).</li>
+      <li>Gleiche Größe und gleiche Voraussetzungen wie oben (die Modelle werden geladen).</li>
     </ul>
     <p>Installation und Download wie oben unter Windows bzw. Linux. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie zweimal: im Installer und in der App, beim Start der Demo bzw. bei der Einrichtung.</p>
-    <p><a class="btn" data-drive href="#" rel="noopener" hidden>Volles Paket: Download-Ordner öffnen (Google Drive)</a></p>
 
     <h2 id="eula">Endnutzer-Lizenzvertrag</h2>
     <p>Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Setup zeigt ihn vor der Installation, das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.</p>

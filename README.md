@@ -6,7 +6,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | --- | --- |
 | `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), **Demo-Video** (`assets/video/`: MP4, Titelbild, deutsche Untertitel als VTT), Screenshots, Kontakt |
 | `install.sh`, `install.ps1` | Skripte der Einzeiler (`curl -fsSL …/install.sh \| sh`, `irm …/install.ps1 \| iex`); **Kopie** aus dem Hauptprojekt, nicht von Hand ändern (siehe Pflege) |
-| `download.html` | Installation für Windows und Linux: Einzeiler für die minimale Variante (aus dem GitHub-Release), volles Paket aus einem Google-Drive-Ordner, **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
+| `download.html` | Installation für Windows und Linux: Einzeiler für die minimale Variante (aus dem GitHub-Release), **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
 | `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste: im Hauptprojekt zu klären, `Support/docs/vergleich/` gibt es dort nicht mehr) |
 | `api.html` | API-Dokumentation aus `assets/api/openapi.json`: Einleitung, Ablauf, Endpunkte mit Parametern, Antworten und Codebeispielen (curl, C#, Python, JavaScript), Datentypen; Renderer `assets/api-doku.js`, Stile `assets/api-doku.css` |
@@ -42,8 +42,8 @@ Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-r
 
 - **Einzeiler-Skripte:** `install.sh` und `install.ps1` im Wurzelordner (Adresse `…/sovereignmind-website/install.sh`, `…/install.ps1`; `pages.yml` kopiert sie mit). Quelle ist `Support/installer/online/` im Hauptprojekt; dort `Support/scripts/sync-website-install.sh --website ../sovereignmind-website` ausführen (entfernt den Plan-Verweis im Kopf und prüft auf interne Pfade, private Adressen und Zugangsdaten; `--check` meldet nur, ob die Kopie aktuell ist). `tests/download.test.mjs` prüft die Kopie gegen die Quelle, wenn das Hauptprojekt daneben liegt. Die Befehle der Seite stehen in `assets/app.js` (`COMMANDS`, `EXTRA_COMMANDS`).
 - **Version, Release, Download-Ordner:** nur in `assets/downloads.json` (von Hand oder mit `release-checksums.sh --write` pflegen, sonst zeigt die Seite die alte Version; Prüfsummen werden derzeit bewusst nicht veröffentlicht):
-  `version`, `releaseTag` (`v<version>`), `releaseUrl` (Release-Seite auf GitHub, für die manuelle Variante), `driveFolderUrl` (nur noch für das **volle** Paket; Freigabe „Jeder mit dem Link“, nur ansehen).
-  Links müssen mit `https://` beginnen. Fehlt ein Link, blendet der Knopf sich aus; beim Drive-Ordner steht dann ein Hinweis da. Die Einzeiler brauchen die Datei nicht:
+  `version`, `releaseTag` (`v<version>`), `releaseUrl` (Release-Seite auf GitHub, für die manuelle Variante).
+  Links müssen mit `https://` beginnen. Fehlt ein Link, blendet der Knopf sich aus. Die Einzeiler brauchen die Datei nicht:
   sie fragen die neueste Version selbst bei GitHub ab. Das ist der letzte Schritt des Release-Ablaufs (`Support/docs/installer-lokal-bauen.md` im Hauptprojekt, `publish-release.sh`).
   Im Release liegen die Dateien der minimalen Variante: Windows-Setup (`.exe` plus `-N.bin`), Linux-Bundle (`sovereignmind-installer-minimal_<Version>_amd64.run.partNN`) und `SHA256SUMS.txt`.
   Die manuellen Befehle in `assets/app.js` mit dem README des Installer-Repos abgleichen.

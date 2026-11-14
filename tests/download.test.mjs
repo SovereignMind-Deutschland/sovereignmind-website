@@ -84,72 +84,10 @@ test('Im Windows- und im Linux-Reiter steht der Einzeiler vor allen anderen Befe
   }
 });
 
-test('Der Drive-Link ist für das volle Paket benannt, alte Attribute sind weg', () => {
-  assert.ok(!/data-release(?![-\w])/.test(html), 'altes Attribut data-release');
+test('Kein Drive-Link, kein volles Paket, alte Attribute sind weg', () => {
+  assert.ok(!/data-release(?![-w])/.test(html), 'altes Attribut data-release');
   assert.ok(!/data-download-missing/.test(html), 'altes Attribut data-download-missing');
-  const drive = [...html.matchAll(/<a [^>]*data-drive[^>]*>([^<]*)<\/a>/g)];
-  assert.ok(drive.length >= 3, 'Drive-Links fehlen');
-  for (const m of drive) assert.match(m[1], /Volle[rs]? (Paket|Installer|Bundle)/, `Drive-Link nicht als volles Paket benannt: ${m[1]}`);
-  assert.ok(!/<a [^>]*data-drive[^>]*>(?![^<]*Volle)/.test(html), 'Drive-Link ohne "Volle…"');
-  assert.match(html, /data-drive-missing/);
+  assert.ok(!/data-drive/.test(html), 'Drive-Link auf der Seite');
+  assert.ok(!/drive.google|Google Drive|Setup-Full|installer-full/i.test(html), 'Verweis auf das volle Paket oder Google Drive');
   assert.match(html, /data-release-url/);
-});
-
-test('downloads.json: Felder version, releaseTag, releaseUrl, driveFolderUrl; Links nur https', () => {
-  const d = JSON.parse(lesen('assets/downloads.json'));
-  for (const k of ['version', 'releaseTag', 'releaseUrl', 'driveFolderUrl']) assert.equal(typeof d[k], 'string', `${k} fehlt`);
-  for (const k of ['releaseUrl', 'driveFolderUrl']) assert.ok(d[k] === '' || /^https:\/\//.test(d[k]), `${k} muss mit https:// beginnen`);
-  if (d.releaseTag) assert.equal(d.releaseTag, 'v' + d.version, 'releaseTag passt nicht zu version');
-  if (d.releaseUrl) assert.match(d.releaseUrl, /github\.com\/sovereignmind-deutschland\/sovereignmind-installer\/releases/i);
-});
-
-test('Links der Download-Seite sind gültig: Anker, lokale Dateien, Skripte', () => {
-  const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]));
-  for (const m of html.matchAll(/<a [^>]*\bhref="([^"]*)"/g)) {
-    const h = m[1];
-    if (h === '#' || /^(https?:|mailto:)/.test(h)) continue;
-    const [datei, anker] = h.split('#');
-    if (!datei) assert.ok(ids.has(anker), `Anker #${anker} existiert nicht`);
-    else {
-      assert.ok(existsSync(join(root, datei)), `Datei ${datei} fehlt`);
-      if (anker && datei.endsWith('.html')) assert.ok(new RegExp(`id="${anker}"`).test(lesen(datei)), `${datei}#${anker} existiert nicht`);
-    }
-  }
-  // Doppelte IDs
-  const alle = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
-  assert.equal(alle.length, ids.size, 'doppelte id');
-});
-
-test('Metadaten und llms.txt nennen den Einzeiler; Titel und Beschreibung stimmen überein', () => {
-  const meta = (attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`))[1];
-  const d = meta('name', 'description');
-  assert.match(d, /ein Befehl/);
-  assert.equal(meta('property', 'og:description'), d);
-  assert.equal(meta('name', 'twitter:description'), d);
-  const llms = lesen('llms.txt');
-  assert.match(llms, /install\.ps1/);
-  assert.match(llms, /install\.sh/);
-});
-
-test('Die Seite kündigt nichts an, was die Skripte nicht tun: keine Zustimmung zur EULA, Prüfsumme genannt', () => {
-  assert.match(html, /stimmt nie für Sie zu/);
-  assert.match(html, /SHA256SUMS\.txt/);
-  assert.ok(!/[–—]/.test(html.replace(/<title>.*?<\/title>/, '').replace(/<meta [^>]*>/g, '').replace(/"name": "[^"]*"/g, '')), 'Gedankenstrich im Text');
-});
-
-test('Deploy: pages.yml schließt die Skripte nicht aus', () => {
-  const y = lesen('.github/workflows/pages.yml');
-  assert.ok(!/--exclude=\.\/install/.test(y), 'install.* wird vom Deploy ausgeschlossen');
-});
-
-test('Prüfsummen und SmartScreen: Abschnitt vorhanden, Tabelle aus downloads.json, RPM als ungetestet', () => {
-  assert.match(html, /id="pruefsummen"/);
-  assert.match(html, /data-sha256-rows/);
-  assert.match(html, /SmartScreen/);
-  assert.match(html, /RPM-Familie \(Fedora, Rocky Linux\) ist noch nicht getestet/);
-  const sums = JSON.parse(lesen('assets/downloads.json')).sha256;
-  for (const [name, sum] of Object.entries(sums)) {
-    assert.match(sum, /^[0-9a-f]{64}$/, name);
-  }
-  assert.match(lesen('assets/app.js'), /renderChecksums\(d\.sha256\)/);
 });

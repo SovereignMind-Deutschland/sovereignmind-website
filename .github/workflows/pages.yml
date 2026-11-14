@@ -35,9 +35,9 @@ jobs:
           PROVIDER_VAT_ID: ${{ secrets.PROVIDER_VAT_ID }}
         run: |
           mkdir _site
-          tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts --exclude=./tests -cf - . | tar -xf - -C _site
+          tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts --exclude=./tests --exclude=./README.md -cf - . | tar -xf - -C _site
           python3 scripts/render-provider.py _site/index.html _site/impressum.html _site/datenschutz.html
-          if grep -rn '{{' _site/*.html; then echo "Platzhalter-Reste auf der Seite" >&2; exit 1; fi
+          python3 scripts/check-platzhalter.py --any _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

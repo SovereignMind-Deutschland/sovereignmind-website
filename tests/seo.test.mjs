@@ -111,3 +111,15 @@ test('Vergleich: jede Quelle in kosten.json hat ein Datum, jede verwendete Quell
   for (const a of k.anbieter) assert.ok(ids.has(a.quelle), a.id);
   assert.ok(ids.has(k.azure_selbstbau.quelle));
 });
+
+test('Absolute Formulierungen („garantiert“, „100 %“, „immer“ usw.) stehen nur mit Beleg-Kommentar', () => {
+  // Beleg-Kommentar direkt davor: <!-- beleg: ... -->; Belege stehen in Support/docs/recht/belege.md (App-Repo)
+  const verboten = /(garantiert|100\s*(&nbsp;)?\s*%|hundertprozentig|niemals|ausnahmslos|vollständig sicher|DSGVO-konform)/i;
+  for (const f of ['index.html', 'on-premise-ki.html', 'vergleich.html', 'wissenspakete.html', 'llms.txt']) {
+    const zeilen = lesen(f).split('\n');
+    zeilen.forEach((z, i) => {
+      if (!verboten.test(z.replace(/<!--[\s\S]*?-->/g, ''))) return;
+      assert.ok(/<!--\s*beleg:/.test(zeilen[i - 1] || '') || /<!--\s*beleg:/.test(z), `${f}:${i + 1}: absolute Formulierung ohne Beleg-Kommentar`);
+    });
+  }
+});
