@@ -1,16 +1,16 @@
-﻿# SovereignMind: Installation unter Windows per PowerShell-Skript (ersetzt das frühere Inno-Setup SovereignMind-Setup-*.exe).
+# SovereignMind: Installation unter Windows per PowerShell-Skript (ersetzt das fruehere Inno-Setup SovereignMind-Setup-*.exe).
 #   irm https://sovereignmind-deutschland.github.io/sovereignmind-website/install.ps1 | iex
 # Vorab lesen: irm https://sovereignmind-deutschland.github.io/sovereignmind-website/install.ps1   (ohne "| iex")
 # Mit Optionen (wie bei Linux install.sh --port ...):
 #   & ([scriptblock]::Create((irm https://sovereignmind-deutschland.github.io/sovereignmind-website/install.ps1))) -Port 8443 -AcceptEula
 #   .\install.ps1 -Port 8443 -Frontend off -AcceptEula           (Datei, z. B. Offline-Ordner mit den Teilen daneben)
 #
-# Ablauf: Version bestimmen, Prüfsummen laden, EULA zeigen (Zustimmung), Teile laden oder im Ordner neben dem Skript finden und prüfen
-# (SHA-256), Ports prüfen, bei einem Update Sicherung und Dienste stoppen, Archiv nach %ProgramFiles%\SovereignMind entpacken,
-# tools\install-native.ps1 aufrufen (Konfiguration, Postgres, Python, Dienste, Firewall), Eintrag unter "Apps & Features", Startmenü,
+# Ablauf: Version bestimmen, Pruefsummen laden, EULA zeigen (Zustimmung), Teile laden oder im Ordner neben dem Skript finden und pruefen
+# (SHA-256), Ports pruefen, bei einem Update Sicherung und Dienste stoppen, Archiv nach %ProgramFiles%\SovereignMind entpacken,
+# tools\install-native.ps1 aufrufen (Konfiguration, Postgres, Python, Dienste, Firewall), Eintrag unter "Apps & Features", Startmenue,
 # danach Erstregistrierung, KI-Modelle (Variante minimal) und Recovery-Kit. Deinstallation: tools\uninstall.ps1.
 #
-# Optionen (die Schreibweise /PORT=8443 des früheren Setups gilt weiter, auch in SM_SETUP_ARGS, z. B. "/PORT=8443 /FRONTEND=off"):
+# Optionen (die Schreibweise /PORT=8443 des frueheren Setups gilt weiter, auch in SM_SETUP_ARGS, z. B. "/PORT=8443 /FRONTEND=off"):
 #   -Version <V>  -Variant minimal|full  -SourceDir <Ordner mit den Teilen>  -InstallDir <Ordner>  -DataDir <Ordner>
 #   -Port <n>[,<n>..]  -PortAuto  -Lan  -LanAddress <ip>  -LanBackend|-LanChat|-LanAdmin on|off
 #   -PublicHost <name>  -AdminHost <name>|none  -TlsMode internal|acme-http|acme-dns|wildcard|off  -DnsProvider <anbieter>  -Cors <liste>
@@ -19,17 +19,17 @@
 #   -LicenseEmail <mail> -LicenseToken <token> -AdminPassword <pw> [-TenantName <name>]   Erstregistrierung (Token und Passwort besser per
 #                 Umgebung SM_LICENSE_TOKEN und SM_ADMIN_PASSWORD); -Strict: Fehler beenden das Skript mit Code 15/16
 #   -RecoveryKit <ordner>  Passphrase aus -RecoveryPassphrase oder SM_RECOVERY_PASSPHRASE (mindestens 12 Zeichen)
-#   -AcceptEula   Zustimmung zum Endnutzer-Lizenzvertrag (nötig ohne Rückfrage-Möglichkeit); -Unattended: keine Rückfragen
-#   -Force        auch eine neuere installierte Version überschreiben;  -FullBackup  Update mit Sicherung der Dokumente
-#   -DryRun       nur prüfen und anzeigen;  -Uninstall [-RemoveData]  ruft tools\uninstall.ps1 auf
+#   -AcceptEula   Zustimmung zum Endnutzer-Lizenzvertrag (noetig ohne Rueckfrage-Moeglichkeit); -Unattended: keine Rueckfragen
+#   -Force        auch eine neuere installierte Version ueberschreiben;  -FullBackup  Update mit Sicherung der Dokumente
+#   -DryRun       nur pruefen und anzeigen;  -Uninstall [-RemoveData]  ruft tools\uninstall.ps1 auf
 # Umgebungsvariablen:
 #   SM_VERSION, SM_SOURCE_DIR, SM_DOWNLOAD_DIR (Arbeitsordner, Standard $env:TEMP\SovereignMind-Install), SM_KEEP=1, SM_SETUP_ARGS, SM_DRY_RUN=1,
 #   SM_ELEVATE y/n (Frage "in neuem Administrator-Fenster fortfahren?" vorab beantworten), SM_CHAT_HOST, SM_ADMIN_HOST
-#   Nur für Tests: SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_FREE_INSTALL_KB, SM_NO_ELEVATE=1, SM_IS_ADMIN=0/1, SM_ELEVATE_DRY=1, SM_NO_SERVICE_CHECK=1,
+#   Nur fuer Tests: SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_FREE_INSTALL_KB, SM_NO_ELEVATE=1, SM_IS_ADMIN=0/1, SM_ELEVATE_DRY=1, SM_NO_SERVICE_CHECK=1,
 #   SM_REGISTRY_ROOT (Standard HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall), SM_STARTMENU_DIR
-# Administratorrechte: Läuft PowerShell schon als Administrator, geht es ohne Abfrage weiter. Sonst fragt das Skript vor dem Download,
+# Administratorrechte: Laeuft PowerShell schon als Administrator, geht es ohne Abfrage weiter. Sonst fragt das Skript vor dem Download,
 # ob es in einem neuen Administrator-Fenster weitermachen soll (UAC sofort); bei "n" kommt die UAC-Abfrage nach dem Download.
-# Windows-Hinweis: eine heruntergeladene .ps1 blockiert SmartScreen/Ausführungsrichtlinie; "Unblock-File .\install.ps1" oder
+# Windows-Hinweis: eine heruntergeladene .ps1 blockiert SmartScreen/Ausfuehrungsrichtlinie; "Unblock-File .\install.ps1" oder
 # "powershell -ExecutionPolicy Bypass -File .\install.ps1" (der Einzeiler irm | iex umgeht beides).
 # Ergebnis: $global:LASTEXITCODE (0 Erfolg, 1 Fehler, 11-13 Einrichtung der Dienste fehlgeschlagen, 15 Modelle, 16 Registrierung); das Skript
 # beendet die Sitzung nie.
@@ -55,7 +55,7 @@ function Install-SovereignMind {
     $workDir = if ($env:SM_DOWNLOAD_DIR) { $env:SM_DOWNLOAD_DIR } else { Join-Path $env:TEMP "SovereignMind-Install" }
     $registryRoot = if ($env:SM_REGISTRY_ROOT) { $env:SM_REGISTRY_ROOT } else { "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" }
     $startMenuDir = if ($env:SM_STARTMENU_DIR) { $env:SM_STARTMENU_DIR } else { Join-Path $env:ProgramData "Microsoft\Windows\Start Menu\Programs" }
-    $innoKey = "{7B1E5C42-3D6A-4E0F-9A58-5C2B8F1D6E73}_is1"   # Eintrag der früheren Inno-Setup-Installation
+    $innoKey = "{7B1E5C42-3D6A-4E0F-9A58-5C2B8F1D6E73}_is1"   # Eintrag der frueheren Inno-Setup-Installation
     $keepOnError = $false
     $workCreated = $false
     $global:LASTEXITCODE = 0
@@ -123,7 +123,7 @@ function Install-SovereignMind {
         if ($c) { $c.Source } else { $null }
     }
 
-    # Download mit Wiederaufnahme: curl.exe (ab Windows 10 1803), Rückfall BITS
+    # Download mit Wiederaufnahme: curl.exe (ab Windows 10 1803), Rueckfall BITS
     function Receive-File([string]$url, [string]$target) {
         $curl = Get-Curl
         if ($curl) {
@@ -134,7 +134,7 @@ function Install-SovereignMind {
             Start-BitsTransfer -Source $url -Destination $target -DisplayName "SovereignMind"
         }
         else {
-            Fail "Weder curl.exe noch BITS vorhanden. Windows 10 ab Version 1803 wird benötigt."
+            Fail "Weder curl.exe noch BITS vorhanden. Windows 10 ab Version 1803 wird benoetigt."
         }
     }
 
@@ -175,7 +175,7 @@ function Install-SovereignMind {
         return $sums
     }
 
-    # Vier Teile einer Version "JJJJ.MM.TT.HHMM" als Zahl; fehlende oder ungültige Teile zählen 0 (alte Versionen "JJJJ.MM.TT").
+    # Vier Teile einer Version "JJJJ.MM.TT.HHMM" als Zahl; fehlende oder ungueltige Teile zaehlen 0 (alte Versionen "JJJJ.MM.TT").
     function Compare-Version([string]$a, [string]$b) {
         $pa = @($a.Split(".")); $pb = @($b.Split("."))
         for ($i = 0; $i -lt 4; $i++) {
@@ -195,7 +195,7 @@ function Install-SovereignMind {
         return [int64]((New-Object System.IO.DriveInfo($root)).AvailableFreeSpace / 1024)
     }
 
-    # Ausgabe geht an die Konsole, zurück kommt nur der Exit-Code. Windows PowerShell 5.1 führt die Skripte des Pakets aus.
+    # Ausgabe geht an die Konsole, zurueck kommt nur der Exit-Code. Windows PowerShell 5.1 fuehrt die Skripte des Pakets aus.
     function Invoke-Script([string]$script, [string[]]$arguments) {
         $shell = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
         if (-not (Test-Path -LiteralPath $shell)) { $shell = (Get-Process -Id $PID).Path }
@@ -212,9 +212,9 @@ function Install-SovereignMind {
     }
 
     # Dieses Skript in einem neuen PowerShell-Fenster mit Administratorrechten fortsetzen. Bei "irm | iex" gibt es keine
-    # Skriptdatei: die Funktion wird mit den aufgelösten Optionen in eine Datei unter %TEMP% geschrieben, die sich beim Start
-    # selbst löscht. Das erhöhte Fenster erbt die Umgebungsvariablen nicht sicher, daher stehen sie in der Datei.
-    # Rückgabe: $true, wenn das neue Fenster gestartet wurde.
+    # Skriptdatei: die Funktion wird mit den aufgeloesten Optionen in eine Datei unter %TEMP% geschrieben, die sich beim Start
+    # selbst loescht. Das erhoehte Fenster erbt die Umgebungsvariablen nicht sicher, daher stehen sie in der Datei.
+    # Rueckgabe: $true, wenn das neue Fenster gestartet wurde.
     function Start-Elevated([hashtable]$resolved) {
         $vars = [ordered]@{ SM_DOWNLOAD_DIR = $workDir; SM_ELEVATED = "1" }
         foreach ($k in "SM_KEEP", "SM_API_URL", "SM_BASE_URL", "SM_FREE_KB", "SM_FREE_INSTALL_KB", "SM_REGISTRY_ROOT", "SM_STARTMENU_DIR", "SM_NO_SERVICE_CHECK", "SM_NO_ELEVATE") {
@@ -222,7 +222,7 @@ function Install-SovereignMind {
             if ($v) { $vars[$k] = $v }
         }
         $lines = @(
-            "# Automatisch erzeugt von install.ps1 (SovereignMind); löscht sich beim Start selbst.",
+            "# Automatisch erzeugt von install.ps1 (SovereignMind); loescht sich beim Start selbst.",
             'Remove-Item -LiteralPath $PSCommandPath -Force -ErrorAction SilentlyContinue'
         )
         foreach ($k in $vars.Keys) { $lines += ('$env:{0} = ''{1}''' -f $k, ("$($vars[$k])" -replace "'", "''")) }
@@ -235,12 +235,12 @@ function Install-SovereignMind {
             else { $lines += ('$sm[''{0}''] = ''{1}''' -f $k, ("$($resolved[$k])" -replace "'", "''")) }
         }
         $lines += 'Install-SovereignMind @sm'
-        $lines += 'if ($env:SM_NO_ELEVATE -ne "1") { Write-Host ""; Read-Host "Enter drücken, um das Fenster zu schließen" | Out-Null }'
+        $lines += 'if ($env:SM_NO_ELEVATE -ne "1") { Write-Host ""; Read-Host "Enter druecken, um das Fenster zu schliessen" | Out-Null }'
         $lines += 'exit $global:LASTEXITCODE'
         $file = Join-Path ([IO.Path]::GetTempPath()) ("SovereignMind-Install-" + [guid]::NewGuid().ToString("N").Substring(0, 8) + ".ps1")
         [IO.File]::WriteAllText($file, ($lines -join "`r`n"), [Text.UTF8Encoding]::new($true))
         if ($env:SM_ELEVATE_DRY -eq "1") {
-            Status "Würde mit Administratorrechten fortsetzen: $file"
+            Status "Wuerde mit Administratorrechten fortsetzen: $file"
             return $true
         }
         $shell = (Get-Process -Id $PID).Path
@@ -255,7 +255,7 @@ function Install-SovereignMind {
         }
     }
 
-    # --- Archiv: Teile .zip.001 ... werden als ein Strom gelesen (kein zusammengesetztes Archiv auf der Platte nötig) ----------
+    # --- Archiv: Teile .zip.001 ... werden als ein Strom gelesen (kein zusammengesetztes Archiv auf der Platte noetig) ----------
     function Initialize-Archive {
         if ("SmArchive" -as [type]) { return }
         $source = @'
@@ -387,7 +387,7 @@ public static class SmArchive
                 string name = Normalize(e.FullName);
                 string target = Path.GetFullPath(Path.Combine(root, name.Replace('/', Path.DirectorySeparatorChar)));
                 if (!target.StartsWith(root, StringComparison.OrdinalIgnoreCase) && target + Path.DirectorySeparatorChar != root)
-                    throw new InvalidDataException("Ungültiger Pfad im Archiv: " + e.FullName);
+                    throw new InvalidDataException("Ungueltiger Pfad im Archiv: " + e.FullName);
                 if (name.EndsWith("/")) { Directory.CreateDirectory(target); continue; }
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
                 using (Stream input = e.Open())
@@ -413,7 +413,7 @@ public static class SmArchive
         Add-Type -TypeDefinition $source -ReferencedAssemblies "System.IO.Compression"
     }
 
-    # --- Eintrag unter "Apps & Features", Startmenü --------------------------------------------------------------------------------
+    # --- Eintrag unter "Apps & Features", Startmenue --------------------------------------------------------------------------------
     function Register-Installation([string]$dir, [string]$version, [string]$data, [string]$webPort, [long]$bytes) {
         $key = Join-Path $registryRoot "SovereignMind"
         New-Item -Path $key -Force | Out-Null
@@ -430,7 +430,7 @@ public static class SmArchive
         New-ItemProperty -Path $key -Name "NoModify" -Value 1 -PropertyType DWord -Force | Out-Null
         New-ItemProperty -Path $key -Name "NoRepair" -Value 1 -PropertyType DWord -Force | Out-Null
         if ($bytes -gt 0) { New-ItemProperty -Path $key -Name "EstimatedSize" -Value ([int][Math]::Min([int64][int]::MaxValue, [int64]($bytes / 1024))) -PropertyType DWord -Force | Out-Null }
-        # Alte Inno-Installation ablösen: Eintrag und Deinstallierer entfernen, sonst stünde SovereignMind doppelt unter "Apps".
+        # Alte Inno-Installation abloesen: Eintrag und Deinstallierer entfernen, sonst stuende SovereignMind doppelt unter "Apps".
         Remove-Item -LiteralPath (Join-Path $registryRoot $innoKey) -Recurse -Force -ErrorAction SilentlyContinue
         Get-ChildItem -LiteralPath $dir -Filter "unins000.*" -File -ErrorAction SilentlyContinue | Remove-Item -Force -ErrorAction SilentlyContinue
 
@@ -444,8 +444,8 @@ public static class SmArchive
                 $shortcut.Save()
             }
         }
-        catch { Write-Warning "Startmenü-Verknüpfungen konnten nicht angelegt werden: $($_.Exception.Message)" }
-        [IO.File]::WriteAllText((Join-Path $startMenuDir "SovereignMind öffnen.url"), "[InternetShortcut]`r`nURL=http://localhost:$webPort`r`n", [Text.Encoding]::ASCII)
+        catch { Write-Warning "Startmenue-Verknuepfungen konnten nicht angelegt werden: $($_.Exception.Message)" }
+        [IO.File]::WriteAllText((Join-Path $startMenuDir "SovereignMind $([char]0xF6)ffnen.url"), "[InternetShortcut]`r`nURL=http://localhost:$webPort`r`n", [Text.Encoding]::ASCII)
     }
 
     # --- KI-Modelle (Variante minimal): Lader im Hintergrund, Fortschritt als Text im Terminal ---------------------------------------
@@ -462,7 +462,7 @@ public static class SmArchive
         return $values
     }
 
-    # Rückgabe: done, failed, cancelled, skipped oder crashed (kein Lebenszeichen mehr)
+    # Rueckgabe: done, failed, cancelled, skipped oder crashed (kein Lebenszeichen mehr)
     function Invoke-ModelLoad([string]$dir, [string]$data, [string]$groups) {
         $python = Join-Path $dir "python\python.exe"
         $loader = Join-Path $dir "tools\load-models.py"
@@ -474,7 +474,7 @@ public static class SmArchive
         $errFile = Join-Path $logDir "model-load.err.log"
         $argText = '"{0}" --install-dir "{1}" --data-dir "{2}" --groups {3} --text-progress "{4}"' -f $loader, $dir, $data, $groups, ($progressBase + ".txt")
         $process = Start-Process -FilePath $python -ArgumentList $argText -WindowStyle Hidden -PassThru -RedirectStandardOutput $logFile -RedirectStandardError $errFile
-        Status "Lade KI-Modelle aus dem Internet (huggingface.co). Abbrechen mit Strg+C: bereits Geladenes bleibt, den Rest holt der Admin später im Admin-Bereich."
+        Status "Lade KI-Modelle aus dem Internet (huggingface.co). Abbrechen mit Strg+C: bereits Geladenes bleibt, den Rest holt der Admin spaeter im Admin-Bereich."
         $outcome = "crashed"
         $lastHeartbeat = ""; $lastChange = Get-Date; $lastLine = ""
         try {
@@ -519,7 +519,7 @@ public static class SmArchive
                 $kit = ($text -split "`n" | Where-Object { $_ -like "KIT=*" } | Select-Object -First 1)
                 $message.Value = if ($kit) { $kit.Substring(4).Trim() } else { $folder }
                 $ignored = ""
-                if ((Invoke-ScriptCaptured $script @("confirm") ([ref]$ignored)) -ne 0) { Write-Warning "Die Bestätigung des Recovery-Kits ist fehlgeschlagen (das Kit ist trotzdem gesichert)." }
+                if ((Invoke-ScriptCaptured $script @("confirm") ([ref]$ignored)) -ne 0) { Write-Warning "Die Bestaetigung des Recovery-Kits ist fehlgeschlagen (das Kit ist trotzdem gesichert)." }
                 return $true
             }
             $message.Value = $text.Trim()
@@ -536,17 +536,17 @@ public static class SmArchive
     }
 
     try {
-        # 1. Prüfungen
-        if ($PSVersionTable.PSVersion.Major -lt 5) { Fail "PowerShell 5.1 oder 7 wird benötigt (gefunden: $($PSVersionTable.PSVersion))." }
-        if ($PSVersionTable.PSEdition -eq "Core" -and -not $IsWindows) { Fail "Dieses Skript läuft nur unter Windows (Linux: install.sh)." }
-        if (-not [Environment]::Is64BitOperatingSystem) { Fail "Nur 64-Bit-Windows wird unterstützt." }
-        if ([Environment]::OSVersion.Version.Build -lt 17763) { Fail "Windows 10 (1809) oder neuer bzw. Server 2019 oder neuer wird benötigt (Build $([Environment]::OSVersion.Version.Build))." }
+        # 1. Pruefungen
+        if ($PSVersionTable.PSVersion.Major -lt 5) { Fail "PowerShell 5.1 oder 7 wird benoetigt (gefunden: $($PSVersionTable.PSVersion))." }
+        if ($PSVersionTable.PSEdition -eq "Core" -and -not $IsWindows) { Fail "Dieses Skript laeuft nur unter Windows (Linux: install.sh)." }
+        if (-not [Environment]::Is64BitOperatingSystem) { Fail "Nur 64-Bit-Windows wird unterstuetzt." }
+        if ([Environment]::OSVersion.Version.Build -lt 17763) { Fail "Windows 10 (1809) oder neuer bzw. Server 2019 oder neuer wird benoetigt (Build $([Environment]::OSVersion.Version.Build))." }
         try { [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12 } catch { }
         if ((Has "Variant") -and "$($o['Variant'])".ToLowerInvariant() -notin "minimal", "full") { Fail "-Variant erwartet minimal oder full." }
         foreach ($name in "Port", "PgPort", "QdrantPort", "QdrantGrpcPort", "IngestionPort", "VoicePort") {
             if ((Has $name) -and "$($o[$name])" -notmatch '^[0-9 ,;]+$') { Fail "-$name erwartet eine Portnummer (oder bei -Port eine Liste, z. B. 5043,8080)." }
         }
-        if ((Has "Version") -and "$($o['Version'])".TrimStart("v") -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') { Fail "Ungültige Version '$($o['Version'])'." }
+        if ((Has "Version") -and "$($o['Version'])".TrimStart("v") -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') { Fail "Ungueltige Version '$($o['Version'])'." }
 
         $dataDir = if (Has "DataDir") { "$($o['DataDir'])" } else { Join-Path $env:ProgramData "SovereignMind" }
 
@@ -571,7 +571,7 @@ public static class SmArchive
 
         if (Flag "Uninstall") {
             $uninstallScript = Join-Path $installDir "tools\uninstall.ps1"
-            if (-not (Test-Path -LiteralPath $uninstallScript)) { Fail "tools\uninstall.ps1 nicht gefunden ($uninstallScript): SovereignMind ist hier nicht (vollständig) installiert." }
+            if (-not (Test-Path -LiteralPath $uninstallScript)) { Fail "tools\uninstall.ps1 nicht gefunden ($uninstallScript): SovereignMind ist hier nicht (vollstaendig) installiert." }
             $uargs = @("-InstallDir", $installDir, "-DataDir", $dataDir)
             if (Flag "RemoveData") { $uargs += "-RemoveData" }
             if (Flag "Unattended") { $uargs += "-Quiet" }
@@ -590,7 +590,7 @@ public static class SmArchive
             $firsts = @(Get-ChildItem -LiteralPath $localDir -File -Filter "SovereignMind-Setup-*.zip.001" -ErrorAction SilentlyContinue | Where-Object { $_.Name -match $partPattern })
             if (Has "Variant") { $wantName = if ("$($o['Variant'])".ToLowerInvariant() -eq "full") { "Full" } else { "Minimal" }; $firsts = @($firsts | Where-Object { $_.Name -like "SovereignMind-Setup-$wantName-*" }) }
             if (Has "Version") { $wantVersion = "$($o['Version'])".TrimStart("v"); $firsts = @($firsts | Where-Object { $_.Name -like "*-$wantVersion.zip.001" }) }
-            if ($firsts.Count -gt 1) { Fail ("Im Ordner $localDir liegen mehrere Pakete (" + (($firsts | ForEach-Object Name) -join ", ") + "). -Variant und -Version wählen eines.") }
+            if ($firsts.Count -gt 1) { Fail ("Im Ordner $localDir liegen mehrere Pakete (" + (($firsts | ForEach-Object Name) -join ", ") + "). -Variant und -Version waehlen eines.") }
             if ($firsts.Count -eq 1) { $local = $firsts[0] }
             elseif (Has "SourceDir") { Fail "In $localDir liegt kein Paket (SovereignMind-Setup-<Variante>-<Version>.zip.001)." }
         }
@@ -627,7 +627,7 @@ public static class SmArchive
                 if (-not $tag) { Fail "Kein 'tag_name' in der Antwort der Release-API." }
                 $version = "$tag".TrimStart("v")
             }
-            if ($version -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') { Fail "Ungültige Version '$version'." }
+            if ($version -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') { Fail "Ungueltige Version '$version'." }
             $tagName = "v$version"
             Status "Version $version (Variante $variant)"
             if (-not (Get-Curl) -and -not (Get-Command Start-BitsTransfer -ErrorAction SilentlyContinue)) { Fail "Weder curl.exe noch BITS vorhanden." }
@@ -639,7 +639,7 @@ public static class SmArchive
         if ($installed) {
             $cmp = if ($installedVersion) { Compare-Version $version $installedVersion } else { 1 }
             if ($cmp -lt 0 -and -not (Flag "Force")) {
-                Status "Installiert ist schon die neuere Version $installedVersion (Paket: $version). Nichts zu tun (überschreiben mit -Force)."
+                Status "Installiert ist schon die neuere Version $installedVersion (Paket: $version). Nichts zu tun (ueberschreiben mit -Force)."
                 return
             }
             $mode = if ($cmp -eq 0) { "repair" } else { "update" }
@@ -653,34 +653,34 @@ public static class SmArchive
         if (-not $local) {
             $freeKb = if ($env:SM_FREE_KB) { [int64]$env:SM_FREE_KB } else { Get-FreeKb $workDir }
             if ($freeKb -lt $needWorkKb) {
-                Fail ("Zu wenig Platz in {0}: frei {1} MiB, nötig ca. {2} MiB. Anderen Ordner mit `$env:SM_DOWNLOAD_DIR wählen." -f $workDir, [int64]($freeKb / 1024), [int64]($needWorkKb / 1024))
+                Fail ("Zu wenig Platz in {0}: frei {1} MiB, noetig ca. {2} MiB. Anderen Ordner mit `$env:SM_DOWNLOAD_DIR waehlen." -f $workDir, [int64]($freeKb / 1024), [int64]($needWorkKb / 1024))
             }
         }
         $freeInstallKb = if ($env:SM_FREE_INSTALL_KB) { [int64]$env:SM_FREE_INSTALL_KB } else { Get-FreeKb $installDir }
         if ($freeInstallKb -lt $needInstallKb) {
-            Fail ("Zu wenig Platz für die Installation in {0}: frei {1} MiB, nötig ca. {2} MiB." -f $installDir, [int64]($freeInstallKb / 1024), [int64]($needInstallKb / 1024))
+            Fail ("Zu wenig Platz fuer die Installation in {0}: frei {1} MiB, noetig ca. {2} MiB." -f $installDir, [int64]($freeInstallKb / 1024), [int64]($needInstallKb / 1024))
         }
-        if ($variant -eq "minimal") { Write-Warning "Danach lädt die Installation ca. 11 GB KI-Modelle aus dem Internet; auf dem Systemlaufwerk ebenfalls genug Platz einplanen." }
+        if ($variant -eq "minimal") { Write-Warning "Danach laedt die Installation ca. 11 GB KI-Modelle aus dem Internet; auf dem Systemlaufwerk ebenfalls genug Platz einplanen." }
 
         if (Flag "DryRun") {
-            $what = if ($local) { "Teile aus $localDir prüfen" } else { "$base/SHA256SUMS.txt, EULA.de.txt und die Teile SovereignMind-Setup-$variantName-$version.zip.NNN nach $workDir laden" }
-            Status "Trockenlauf: würde $what, nach $installDir entpacken und tools\install-native.ps1 aufrufen ($mode). Nichts wurde geändert."
+            $what = if ($local) { "Teile aus $localDir pruefen" } else { "$base/SHA256SUMS.txt, EULA.de.txt und die Teile SovereignMind-Setup-$variantName-$version.zip.NNN nach $workDir laden" }
+            Status "Trockenlauf: wuerde $what, nach $installDir entpacken und tools\install-native.ps1 aufrufen ($mode). Nichts wurde geaendert."
             return
         }
 
-        # 4. Prüfsummen und Teile
+        # 4. Pruefsummen und Teile
         New-Item -ItemType Directory -Force $workDir | Out-Null
         $workCreated = $true
         $sums = @{}
         if ($local) {
             $sumsFile = Join-Path $localDir "SHA256SUMS.txt"
-            if (-not (Test-Path -LiteralPath $sumsFile)) { Fail "SHA256SUMS.txt fehlt in $localDir (ohne Prüfsummen wird nichts installiert)." }
+            if (-not (Test-Path -LiteralPath $sumsFile)) { Fail "SHA256SUMS.txt fehlt in $localDir (ohne Pruefsummen wird nichts installiert)." }
             $sums = Read-Sums $sumsFile
             $partDir = $localDir
         }
         else {
             $sumsFile = Join-Path $workDir "SHA256SUMS.txt"
-            Status "Lade Prüfsummen ..."
+            Status "Lade Pruefsummen ..."
             Remove-Item -LiteralPath $sumsFile -Force -ErrorAction SilentlyContinue
             Receive-File "$base/SHA256SUMS.txt" $sumsFile
             $sums = Read-Sums $sumsFile
@@ -693,13 +693,13 @@ public static class SmArchive
             if ([int]([regex]::Match($partNames[$n], '(\d{3})$').Groups[1].Value) -ne ($n + 1)) { Fail "Im Release $tagName fehlt Teil $($n + 1) des Pakets." }
         }
 
-        # EULA: eigene Datei im Release (klein, vor dem großen Download); sonst aus dem Paket (Offline-Ordner)
+        # EULA: eigene Datei im Release (klein, vor dem grossen Download); sonst aus dem Paket (Offline-Ordner)
         $eulaFile = Join-Path $partDir "EULA.de.txt"
         if (-not $local) {
             if (-not $sums.ContainsKey("EULA.de.txt")) { Fail "Im Release $tagName fehlt EULA.de.txt." }
             if (-not (Test-Sum $sums "EULA.de.txt" $eulaFile)) {
                 Receive-File "$base/EULA.de.txt" $eulaFile
-                if (-not (Test-Sum $sums "EULA.de.txt" $eulaFile)) { Remove-Item -LiteralPath $eulaFile -Force -ErrorAction SilentlyContinue; Fail "Prüfsumme von EULA.de.txt stimmt nicht." }
+                if (-not (Test-Sum $sums "EULA.de.txt" $eulaFile)) { Remove-Item -LiteralPath $eulaFile -Force -ErrorAction SilentlyContinue; Fail "Pruefsumme von EULA.de.txt stimmt nicht." }
             }
         }
         $eulaText = $null
@@ -716,23 +716,23 @@ public static class SmArchive
             else { Write-Host "Der Lizenztext liegt im Paket (licenses\EULA.de.txt) und wird nach dem Entpacken nicht mehr angezeigt; Text unter https://sovereignmind-deutschland.github.io/sovereignmind-website/." }
             if (-not (Read-YesNo "Stimmen Sie dem Endnutzer-Lizenzvertrag zu?" $false "SM_ACCEPT_EULA")) { Fail "Ohne Zustimmung zum Endnutzer-Lizenzvertrag wird nicht installiert." }
         }
-        else { Fail "Der Endnutzer-Lizenzvertrag braucht Ihre Zustimmung: mit -AcceptEula bestätigen (Text: $eulaFile)." }
+        else { Fail "Der Endnutzer-Lizenzvertrag braucht Ihre Zustimmung: mit -AcceptEula bestaetigen (Text: $eulaFile)." }
 
-        # Registrierungsangaben gehören zusammen
+        # Registrierungsangaben gehoeren zusammen
         $regCount = @("LicenseEmail", "LicenseToken", "AdminPassword" | Where-Object { Has $_ }).Count
         if ($regCount -gt 0 -and $regCount -lt 3) { Fail "Die Erstregistrierung braucht -LicenseEmail, -LicenseToken und -AdminPassword zusammen." }
 
-        # 6. Administratorrechte vor dem Download klären
+        # 6. Administratorrechte vor dem Download klaeren
         $isAdmin = Test-Admin
         if ($isAdmin) {
-            Status "PowerShell läuft als Administrator: die Installation läuft ohne Windows-Sicherheitsabfrage durch."
+            Status "PowerShell laeuft als Administrator: die Installation laeuft ohne Windows-Sicherheitsabfrage durch."
         }
         elseif ($env:SM_NO_ELEVATE -ne "1" -and $env:SM_ELEVATED -ne "1") {
             Write-Host ""
-            Write-Host "Die Installation braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) käme sonst erst nach dem Download."
-            Write-Host "Mit 'j' erscheint die Abfrage jetzt, und die Installation läuft in einem neuen Fenster mit Administratorrechten weiter."
+            Write-Host "Die Installation braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) kaeme sonst erst nach dem Download."
+            Write-Host "Mit 'j' erscheint die Abfrage jetzt, und die Installation laeuft in einem neuen Fenster mit Administratorrechten weiter."
             Write-Host "Mit 'n' geht es hier weiter; die Abfrage erscheint dann nach dem Download, bitte dann am Rechner sein."
-            Write-Host "Tipp: PowerShell gleich als Administrator öffnen, dann gibt es keine Abfrage."
+            Write-Host "Tipp: PowerShell gleich als Administrator oeffnen, dann gibt es keine Abfrage."
             if (Read-YesNo "Jetzt in einem neuen Administrator-Fenster fortfahren?" $false "SM_ELEVATE") {
                 $resolved = @{}
                 foreach ($e in $o.GetEnumerator()) { $resolved[$e.Key] = $e.Value }
@@ -741,18 +741,18 @@ public static class SmArchive
                 $resolved["AcceptEula"] = $true
                 if ($localDir -and -not (Has "SourceDir") -and $local) { $resolved["SourceDir"] = $localDir }
                 if (Start-Elevated $resolved) {
-                    Status "Die Installation läuft im neuen Fenster weiter. Dieses Fenster kann geschlossen werden."
+                    Status "Die Installation laeuft im neuen Fenster weiter. Dieses Fenster kann geschlossen werden."
                     return
                 }
             }
             Status "Weiter in diesem Fenster. Nach dem Download erscheint die Windows-Sicherheitsabfrage."
         }
         if (-not $isAdmin -and $env:SM_NO_ELEVATE -ne "1") {
-            # Ohne Administratorrechte kann nichts installiert werden: erhöht neu starten (nach dem Download, die Dateien bleiben liegen)
+            # Ohne Administratorrechte kann nichts installiert werden: erhoeht neu starten (nach dem Download, die Dateien bleiben liegen)
             $keepOnError = $true
         }
 
-        # 7. Download und Prüfung der Teile
+        # 7. Download und Pruefung der Teile
         $files = @($partNames)
         $i = 0
         foreach ($f in $files) {
@@ -760,43 +760,43 @@ public static class SmArchive
             $target = Join-Path $partDir $f
             Status "Teil $i von $($files.Count): $f"
             if (Test-Sum $sums $f $target) {
-                Status "bereits vollständig$(if ($local) { ' (geprüft)' } else { ' geladen' })"
+                Status "bereits vollstaendig$(if ($local) { ' (geprueft)' } else { ' geladen' })"
                 continue
             }
-            if ($local) { Fail "Prüfsumme von $f stimmt nicht (oder die Datei fehlt) in $localDir." }
-            $keepOnError = $true   # halbe Downloads bleiben für die Wiederaufnahme liegen
+            if ($local) { Fail "Pruefsumme von $f stimmt nicht (oder die Datei fehlt) in $localDir." }
+            $keepOnError = $true   # halbe Downloads bleiben fuer die Wiederaufnahme liegen
             Receive-File "$base/$f" $target
             $keepOnError = $false
             if (-not (Test-Sum $sums $f $target)) {
                 Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
-                Fail "Prüfsumme von $f stimmt nicht. Datei gelöscht; bitte erneut starten."
+                Fail "Pruefsumme von $f stimmt nicht. Datei geloescht; bitte erneut starten."
             }
         }
-        Status "Alle $($files.Count) Dateien geprüft."
+        Status "Alle $($files.Count) Dateien geprueft."
         $parts = @($files | ForEach-Object { Join-Path $partDir $_ })
 
         if (-not $isAdmin -and $env:SM_NO_ELEVATE -ne "1") {
-            # Der Download ist fertig; jetzt die Abfrage (UAC) für die eigentliche Installation.
+            # Der Download ist fertig; jetzt die Abfrage (UAC) fuer die eigentliche Installation.
             $resolved = @{}
             foreach ($e in $o.GetEnumerator()) { $resolved[$e.Key] = $e.Value }
             $resolved["Version"] = $version; $resolved["Variant"] = $variant; $resolved["AcceptEula"] = $true
             if ($local) { $resolved["SourceDir"] = $localDir } else { $resolved["SourceDir"] = $workDir }
             Status "Starte die Installation mit Administratorrechten (die Windows-Sicherheitsabfrage erscheint) ..."
             if (Start-Elevated $resolved) {
-                Status "Die Installation läuft im neuen Fenster weiter."
+                Status "Die Installation laeuft im neuen Fenster weiter."
                 return
             }
-            Fail "Ohne Administratorrechte kann nicht installiert werden. Erneut starten öffnet die Abfrage ohne neuen Download."
+            Fail "Ohne Administratorrechte kann nicht installiert werden. Erneut starten oeffnet die Abfrage ohne neuen Download."
         }
-        $keepOnError = $true   # bei Fehlern in der Einrichtung bleiben die geprüften Teile für einen neuen Start liegen
+        $keepOnError = $true   # bei Fehlern in der Einrichtung bleiben die geprueften Teile fuer einen neuen Start liegen
 
-        # 8. Installationsskript des Pakets vorab herausziehen (Portprüfung, Update-Vorbereitung laufen vor dem Entpacken)
+        # 8. Installationsskript des Pakets vorab herausziehen (Portpruefung, Update-Vorbereitung laufen vor dem Entpacken)
         Initialize-Archive
         $preDir = Join-Path $workDir "pre"
         $preScript = Join-Path $preDir "install-native.ps1"
-        if (-not [SmArchive]::ExtractOne($parts, "tools/install-native.ps1", $preScript)) { Fail "Das Paket enthält tools\install-native.ps1 nicht (unvollständiges Paket)." }
+        if (-not [SmArchive]::ExtractOne($parts, "tools/install-native.ps1", $preScript)) { Fail "Das Paket enthaelt tools\install-native.ps1 nicht (unvollstaendiges Paket)." }
 
-        # 9. Portprüfung (Neuinstallation immer; Update nur bei ausdrücklich übergebenen Ports)
+        # 9. Portpruefung (Neuinstallation immer; Update nur bei ausdruecklich uebergebenen Ports)
         $internal = [ordered]@{ PgPort = "-PostgresPort"; QdrantPort = "-QdrantPort"; QdrantGrpcPort = "-QdrantGrpcPort"; IngestionPort = "-IngestionPort"; VoicePort = "-VoicePort" }
         $internalValue = @{}
         foreach ($k in $internal.Keys) { if (Has $k) { $internalValue[$k] = "$($o[$k])".Trim() } }
@@ -815,7 +815,7 @@ public static class SmArchive
                 if (Flag "PortAuto") { $checkArgs += "-AutoWebPort" }
                 if ($hwAgentOn) { $checkArgs += "-HardwareAgent" }
                 if ($updating -and ($webList -or $internalValue.Count -gt 0)) { $checkArgs += "-CheckInstalled" }
-                Status "Prüfe die Ports ..."
+                Status "Pruefe die Ports ..."
                 $code = Invoke-Script $preScript $checkArgs
                 $lines = if (Test-Path -LiteralPath $resultFile) { @(Get-Content -LiteralPath $resultFile) } else { @() }
                 $chosen = ($lines | Where-Object { $_ -like "CHOSEN=*" } | Select-Object -First 1)
@@ -834,9 +834,9 @@ public static class SmArchive
                     $answer = "$(Read-Host 'Anderer Web-Port (Enter bricht ab)')".Trim()
                     if ($answer -match '^\d{1,5}$') { $webList = $answer; continue }
                 }
-                Fail "Portkonflikt: die belegenden Programme beenden oder einen anderen Port wählen (-Port <Liste>, -PortAuto) und erneut starten."
+                Fail "Portkonflikt: die belegenden Programme beenden oder einen anderen Port waehlen (-Port <Liste>, -PortAuto) und erneut starten."
             }
-            if ($code -ne 0) { Fail "Portprüfung nicht erfolgreich." }
+            if ($code -ne 0) { Fail "Portpruefung nicht erfolgreich." }
         }
         if (-not $resolvedPort) {
             if ($webList) { $resolvedPort = $webList.Split(",")[0] }
@@ -847,13 +847,13 @@ public static class SmArchive
             if (-not $resolvedPort -or $resolvedPort -eq "0") { $resolvedPort = "5043" }
         }
 
-        # Rückfragen für die Neuinstallation im Terminal (nur was nicht schon als Option kam)
+        # Rueckfragen fuer die Neuinstallation im Terminal (nur was nicht schon als Option kam)
         if (-not $updating -and (Test-Interactive)) {
             if (-not (Has "Lan") -and -not (Has "LanBackend") -and -not (Has "LanChat") -and -not (Has "LanAdmin")) {
                 $o["Lan"] = Read-YesNo "Zugriff aus dem lokalen Netzwerk erlauben (sonst nur auf diesem Rechner)?" $false
             }
             if (-not (Has "PublicHost") -and -not (Has "TlsMode")) {
-                $name = "$(Read-Host 'HTTPS-Name für den Zugriff im Netzwerk, z. B. sm.firma.de (Enter = keiner)')".Trim()
+                $name = "$(Read-Host 'HTTPS-Name fuer den Zugriff im Netzwerk, z. B. sm.firma.de (Enter = keiner)')".Trim()
                 if ($name) {
                     $o["PublicHost"] = $name
                     $o["TlsMode"] = "internal"
@@ -861,7 +861,7 @@ public static class SmArchive
                     if ($m -in "acme-http", "acme-dns", "internal") { $o["TlsMode"] = $m }
                     if ($o["TlsMode"] -eq "acme-dns") {
                         if (-not (Has "DnsProvider")) { $o["DnsProvider"] = "$(Read-Host 'DNS-Anbieter (z. B. cloudflare, ionos)')".Trim() }
-                        if (-not $env:SM_DNS_PROVIDER_TOKEN) { $env:SM_DNS_PROVIDER_TOKEN = Read-Secret "API-Schlüssel des DNS-Anbieters" }
+                        if (-not $env:SM_DNS_PROVIDER_TOKEN) { $env:SM_DNS_PROVIDER_TOKEN = Read-Secret "API-Schluessel des DNS-Anbieters" }
                     }
                 }
             }
@@ -869,12 +869,12 @@ public static class SmArchive
 
         # 10. Update: Sicherung, Dienste stoppen, Vorversion sichern (mit dem neuen Skript, bevor Dateien ersetzt werden)
         if ($updating) {
-            if (-not (Flag "FullBackup") -and -not (Has "FullBackup") -and (Test-Interactive)) { $o["FullBackup"] = Read-YesNo "Vor dem Update auch den Dokumentenspeicher sichern (dauert länger, braucht Platz)?" $false }
+            if (-not (Flag "FullBackup") -and -not (Has "FullBackup") -and (Test-Interactive)) { $o["FullBackup"] = Read-YesNo "Vor dem Update auch den Dokumentenspeicher sichern (dauert laenger, braucht Platz)?" $false }
             Status "Sicherung der Datenbank und Beenden der Dienste ..."
             $prep = @("-Action", "PrepareUpdate", "-InstallDir", $installDir, "-DataDir", $dataDir)
             if (Flag "FullBackup") { $prep += "-FullBackup" }
             $code = Invoke-Script $preScript $prep
-            if ($code -ne 0) { Fail "Die Vorbereitung des Updates ist fehlgeschlagen (Details: $dataDir\logs\install.log). Die bestehende Installation wurde nicht verändert." }
+            if ($code -ne 0) { Fail "Die Vorbereitung des Updates ist fehlgeschlagen (Details: $dataDir\logs\install.log). Die bestehende Installation wurde nicht veraendert." }
         }
 
         # 11. Entpacken
@@ -901,7 +901,7 @@ public static class SmArchive
             }
         }
         elseif (Has "Port") { $a += @("-Port", $resolvedPort) }
-        # LAN: standardmäßig nur localhost; ein Update behält die gespeicherte Wahl, solange nichts ausdrücklich gesetzt ist
+        # LAN: standardmaessig nur localhost; ein Update behaelt die gespeicherte Wahl, solange nichts ausdruecklich gesetzt ist
         if (Flag "Lan") { $a += "-Lan" }
         elseif ((Has "Lan") -or -not $updating) { $a += @("-LanMode", "off") }
         if (Has "LanAddress") { $a += @("-LanAddress", "$($o['LanAddress'])") }
@@ -928,24 +928,24 @@ public static class SmArchive
             elseif (-not $updating -and (-not $tlsMode -or $tlsMode -eq "wildcard")) {
                 # Mitgeliefertes Zertifikat: ohne -PublicHost setzt das Skript chat./admin. aus dem Zertifikat. Fehlt es im Paket, bleibt HTTPS aus.
                 if ((Test-Path -LiteralPath (Join-Path $installDir "tls\wildcard.crt")) -and (Test-Path -LiteralPath (Join-Path $installDir "tls\wildcard.key"))) { $a += @("-TlsMode", "wildcard") }
-                else { Status "HTTPS: kein Zertifikat im Paket, HTTPS bleibt aus. Nachträglich: tools\install-native.ps1 -Action SetHttps." }
+                else { Status "HTTPS: kein Zertifikat im Paket, HTTPS bleibt aus. Nachtraeglich: tools\install-native.ps1 -Action SetHttps." }
             }
         }
         Status "Richte die Dienste ein (Datenbank, Python-Umgebungen) - das dauert einige Minuten ..."
         $code = Invoke-Script $native $a
         if ($code -ne 0) {
             Write-Host "Die Einrichtung der Dienste ist fehlgeschlagen (Code $code). Details: $dataDir\logs\install.log" -ForegroundColor Red
-            Write-Host "Nach Behebung der Ursache kann dieses Skript erneut ausgeführt werden (Reparatur, Daten bleiben erhalten)."
-            # Skript-Code + 10: 11 allgemein, 12 Backend startet nicht, 13 Update zurückgerollt (wie beim früheren Setup)
+            Write-Host "Nach Behebung der Ursache kann dieses Skript erneut ausgefuehrt werden (Reparatur, Daten bleiben erhalten)."
+            # Skript-Code + 10: 11 allgemein, 12 Backend startet nicht, 13 Update zurueckgerollt (wie beim frueheren Setup)
             $global:LASTEXITCODE = $code + 10
             return
         }
 
-        # 13. Eintrag unter "Apps & Features", Startmenü
+        # 13. Eintrag unter "Apps & Features", Startmenue
         Register-Installation $installDir $version $dataDir $resolvedPort $bytes
-        Status "Eintrag unter 'Apps & Features' und Startmenü angelegt."
+        Status "Eintrag unter 'Apps & Features' und Startmenue angelegt."
 
-        # 14. Erstregistrierung ohne Weboberfläche
+        # 14. Erstregistrierung ohne Weboberflaeche
         if (Has "LicenseEmail") {
             $env:SM_LICENSE_TOKEN = "$($o['LicenseToken'])"; $env:SM_ADMIN_PASSWORD = "$($o['AdminPassword'])"
             try {
@@ -964,9 +964,9 @@ public static class SmArchive
         if ($packageVariant -eq "minimal") {
             $python = Join-Path $installDir "python\python.exe"
             if ((Has "Models") -and "$($o['Models'])".ToLowerInvariant() -eq "skip") {
-                Status "Modelle: übersprungen (-Models skip). Der Admin lädt sie später im Admin-Bereich."
+                Status "Modelle: uebersprungen (-Models skip). Der Admin laedt sie spaeter im Admin-Bereich."
                 if (Test-Path -LiteralPath $python) {
-                    & $python (Join-Path $installDir "tools\load-models.py") --install-dir $installDir --data-dir $dataDir --mark skipped --message "Modelle wurden bei der Installation übersprungen (-Models skip)." | Out-Null
+                    & $python (Join-Path $installDir "tools\load-models.py") --install-dir $installDir --data-dir $dataDir --mark skipped --message "Modelle wurden bei der Installation uebersprungen (-Models skip)." | Out-Null
                 }
             }
             else {
@@ -977,10 +977,10 @@ public static class SmArchive
                     $hint = switch ($outcome) {
                         "cancelled" { "Das Laden der KI-Modelle wurde abgebrochen." }
                         "crashed" { "Das Laden der KI-Modelle wurde unerwartet beendet (Protokoll: $dataDir\logs\model-load.log)." }
-                        default { "Nicht alle KI-Modelle konnten geladen werden (Internet, Proxy oder Firewall? Freigabe für huggingface.co)." }
+                        default { "Nicht alle KI-Modelle konnten geladen werden (Internet, Proxy oder Firewall? Freigabe fuer huggingface.co)." }
                     }
                     Write-Warning $hint
-                    Write-Host "Die Installation ist trotzdem fertig. Bis die Modelle geladen sind, kann SovereignMind keine Fragen beantworten: im Admin-Bereich erscheint ein Hinweis mit der Schaltfläche 'Jetzt laden' (oder unter Einstellungen > Lokale Modelle)."
+                    Write-Host "Die Installation ist trotzdem fertig. Bis die Modelle geladen sind, kann SovereignMind keine Fragen beantworten: im Admin-Bereich erscheint ein Hinweis mit der Schaltflaeche 'Jetzt laden' (oder unter Einstellungen > Lokale Modelle)."
                     if ((Flag "Strict") -and $outcome -ne "skipped") { $global:LASTEXITCODE = 15; return }
                 }
             }
@@ -993,7 +993,7 @@ public static class SmArchive
             $passphrase = if (Has "RecoveryPassphrase") { "$($o['RecoveryPassphrase'])" } else { "" }
             if (-not $folder -and (Test-Interactive)) {
                 Write-Host ""
-                Write-Host "WICHTIG: Recovery-Kit sichern. Ohne die Schlüssel (Datenbank-Passwort, Zertifikat, JWT) sind Connector-Geheimnisse und Paketschlüssel nicht wiederherstellbar."
+                Write-Host "WICHTIG: Recovery-Kit sichern. Ohne die Schluessel (Datenbank-Passwort, Zertifikat, JWT) sind Connector-Geheimnisse und Paketschluessel nicht wiederherstellbar."
                 if (Read-YesNo "Recovery-Kit jetzt in einen Ordner exportieren (z. B. auf einen USB-Stick)?" $false) {
                     $folder = "$(Read-Host 'Zielordner')".Trim()
                     while ($folder -and $passphrase.Length -lt 12) {
@@ -1003,11 +1003,11 @@ public static class SmArchive
                 }
             }
             if ($folder) {
-                if ($passphrase.Length -lt 12) { Write-Warning "Recovery-Kit nicht exportiert: Passphrase fehlt oder ist kürzer als 12 Zeichen (-RecoveryPassphrase oder SM_RECOVERY_PASSPHRASE)." }
+                if ($passphrase.Length -lt 12) { Write-Warning "Recovery-Kit nicht exportiert: Passphrase fehlt oder ist kuerzer als 12 Zeichen (-RecoveryPassphrase oder SM_RECOVERY_PASSPHRASE)." }
                 else {
                     $message = ""
                     if (Export-RecoveryKit $installDir $folder $passphrase ([ref]$message)) { Status "Recovery-Kit exportiert: $message" }
-                    else { Write-Warning "Recovery-Kit-Export fehlgeschlagen: $message (die Installation bleibt gültig; der Admin-Bereich erinnert daran)." }
+                    else { Write-Warning "Recovery-Kit-Export fehlgeschlagen: $message (die Installation bleibt gueltig; der Admin-Bereich erinnert daran)." }
                 }
             }
             else { Write-Host "Hinweis: Das Recovery-Kit ist noch nicht gesichert. Der Admin-Bereich erinnert daran; Export: tools\recovery-kit.ps1 export --out <Ordner>." }
@@ -1029,14 +1029,14 @@ public static class SmArchive
     finally {
         if ($workCreated) {
             if ($env:SM_KEEP -eq "1") { Status "Arbeitsordner bleibt erhalten: $workDir" }
-            elseif ($keepOnError) { Status "Geladene Dateien bleiben für einen neuen Start in $workDir." }
+            elseif ($keepOnError) { Status "Geladene Dateien bleiben fuer einen neuen Start in $workDir." }
             else { Remove-Item -LiteralPath $workDir -Recurse -Force -ErrorAction SilentlyContinue }
         }
     }
 }
 
-# Erst die letzten Zeilen führen aus: ein unvollständig geladenes Skript tut nichts.
-# Die alte Schreibweise des Setups ("install.ps1 /VERYSILENT /PORT=8443") geht als Textliste an -SetupArgs, PowerShell-Parameter ("-Port 8443") unverändert.
+# Erst die letzten Zeilen fuehren aus: ein unvollstaendig geladenes Skript tut nichts.
+# Die alte Schreibweise des Setups ("install.ps1 /VERYSILENT /PORT=8443") geht als Textliste an -SetupArgs, PowerShell-Parameter ("-Port 8443") unveraendert.
 $smArgs = @($args)
 if ($smArgs.Count -gt 0 -and @($smArgs | Where-Object { "$_" -match '^/[A-Za-z]' }).Count -gt 0) {
     $smText = ($smArgs | ForEach-Object { "$_" -replace '^(/[A-Za-z]+=)(.*\s.*)$', '$1"$2"' }) -join " "
