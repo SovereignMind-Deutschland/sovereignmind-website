@@ -82,12 +82,12 @@
           <div class="hero-copy">
             <p class="pill">Läuft auf Ihrer eigenen Hardware</p>
             <h1>Der KI-Assistent, der Ihre Daten <em>nie verlässt</em>.</h1>
-            <p>Stellen Sie Fragen an Ihre eigenen Dokumente und erhalten Sie Antworten mit Quellenbeleg. Die KI läuft auf Ihrer Hardware, es gibt keine Anbindung an Cloud-KI. Für den DACH-Mittelstand.</p>
+            <p>Fragen Sie Ihre eigenen Dokumente. Die Antwort kommt mit Quellenbeleg, die KI läuft auf Ihrer Hardware.</p>
             <div class="actions">
               <a class="btn" href="download.html#demo">Demo ausprobieren</a>
               <a class="btn ghost" href="download.html">Installation ansehen</a>
             </div>
-            <p class="hint">Kostenlose Demo: 24 Stunden Laufzeit, ohne Lizenzschlüssel, mit einem Sitzplatz, nur auf dem eigenen Rechner. Bitte keine vertraulichen Daten einsetzen.</p>
+            <p class="hint">Kostenlose Demo, 24 Stunden, nur auf dem eigenen Rechner. Keine vertraulichen Daten einsetzen.</p>
             <p class="version" data-version hidden></p>
           </div>
           <div class="net" id="ausprobieren">
@@ -116,166 +116,50 @@
       </div>
     </div>
 
-    <section class="wrap benefits-wrap" aria-labelledby="nutzen-h">
-      <h2 class="sr-only" id="nutzen-h">Das Wichtigste in drei Punkten</h2>
-      <div class="benefits">
-        <article class="benefit"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Datenhoheit</h3><p>Alles läuft auf Ihrer Hardware, ohne Anbindung an Cloud-KI.</p></article>
-        <article class="benefit"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg></div><h3>Belegte Antworten</h3><p>Verweise führen ins Originaldokument. Nachprüfbar statt geraten.</p></article>
-        <article class="benefit"><div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><h3>Betrieb ohne Aufwand</h3><p>Installer, Updates und Wissenspakete aus einer Hand, mit Tray-App oder Kommando.</p></article>
-      </div>
-    </section>
-
-    <section class="block" id="problem">
+    <section class="block calm" id="gruende">
       <div class="wrap">
-        <h2>Wofür setzen Sie es ein?</h2>
-        <p class="lead">Sensible Dokumente dürfen nicht in eine US-Cloud, und die Suche in Ordnern kostet täglich Zeit. Ohne freigegebene Alternative landen Inhalte oft in privaten ChatGPT-Konten. SovereignMind beantwortet Fragen im eigenen Haus und zeigt, wo die Antwort steht.</p>
-        <dl class="rows">
-          <div><dt>Kanzleien</dt><dd>Verträge und Akten durchsuchen, ohne Mandantendaten aus der Hand zu geben.<span class="beispiel">Beispielfrage: „Welche Kündigungsfrist gilt im Wartungsvertrag mit der Müller GmbH?“</span></dd></div>
-          <div><dt>Personalabteilungen</dt><dd>Richtlinien und Personalunterlagen befragen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie viele Urlaubstage stehen neuen Mitarbeitenden im ersten Jahr zu?“</span></dd></div>
-          <div><dt>Gesundheitswesen</dt><dd>Handbücher und Dokumentation per Frage nutzbar machen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie ist laut Handbuch das Gerät zwischen zwei Patienten aufzubereiten?“</span></dd></div>
-          <div><dt>Industrie</dt><dd>Handbücher und Fertigungspläne per Frage finden statt per Ordnersuche.<span class="beispiel">Beispielfrage: „Welches Anzugsdrehmoment gilt laut Wartungshandbuch für die Spannplatte?“</span></dd></div>
-        </dl>
-        <p class="actions-row"><a class="btn secondary" href="vergleich.html">Lokal oder Cloud? Zum Vergleich</a> <a class="btn secondary" href="wissenspakete.html">Wissenspakete ansehen</a></p>
+        <h2>Warum lokal?</h2>
+        <ol class="reasons">
+          <li><h3>Ihre Daten bleiben im Haus.</h3><p>Keine Anbindung an Cloud-KI.</p></li>
+          <li><h3>Jede Antwort nennt ihre Quelle.</h3><p>Klickbar im Originaldokument.</p></li>
+          <li><h3>Läuft als Dienst im Hintergrund.</h3><p>Ohne Docker, mit Tray-App oder Kommando.</p></li>
+        </ol>
+        <p class="more"><a href="on-premise-ki.html#einsatz">Wofür setzen Sie es ein?</a> · <a href="vergleich.html">Lokal oder Cloud?</a></p>
       </div>
     </section>
 
-    <section class="block" id="funktionen">
+    <section class="block calm" id="so-funktioniert-es">
+      <div class="wrap">
+        <h2>Von der Akte zur Antwort</h2>
+        <ol class="flow" data-flow>
+          <li><h3>Dokument ablegen</h3><p>PDF, DOCX und Tabellen werden gelesen.</p></li>
+          <li><h3>Aufteilen</h3><p>Der Text wird in kurze, durchsuchbare Abschnitte geteilt.</p></li>
+          <li><h3>Suchen</h3><p>Zur Frage werden die passenden Stellen gefunden.</p></li>
+          <li><h3>Antwort mit Quelle</h3><p>Das Modell antwortet auf Deutsch, Beleg inklusive.</p></li>
+        </ol>
+        <p class="more"><a href="on-premise-ki.html#architektur">Architektur im Überblick</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="funktionen">
       <div class="wrap">
         <h2>Funktionen</h2>
-        <div class="feature-main">
-          <h3>Fragen an die eigenen Dokumente</h3>
-          <div>
-            <p>Fragen in natürlicher Sprache, Antworten immer auf Deutsch, mit klickbaren Verweisen ins Originaldokument. PDF, DOCX, Tabellen und mehr werden automatisch gelesen und durchsuchbar gemacht, mit Kategorien, Duplikaterkennung und Verarbeitungsstatus.</p>
-          </div>
-        </div>
-        <dl class="rows">
-          <div><dt>Lokale KI</dt><dd>Sprachmodell und Embeddings laufen auf Ihrer Hardware (llama.cpp). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, Intel, sonst CPU).</dd></div>
-          <div><dt>Nutzer und Rollen</dt><dd>Admin und Member, eigenes Branding pro Unternehmen.</dd></div>
-          <div><dt>Assistenten und Prompt-Bibliothek</dt><dd>Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.</dd></div>
-          <div><dt>Anbindung interner Systeme</dt><dd>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</dd></div>
-          <div><dt>Antwort-Cache</dt><dd>Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Betreiber kann den Cache leeren oder auf Standard zurücksetzen.</dd></div>
-          <div><dt>Dateien im Chat</dt><dd>Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.</dd></div>
-          <div><dt>Sprache</dt><dd>Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.</dd></div>
-          <div><dt>Wissenspakete</dt><dd>Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Betreiber aus dem Katalog installiert oder als Datei importiert.</dd></div>
-          <div><dt>Themes</dt><dd>Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.</dd></div>
-          <div><dt>Support-Nachrichten</dt><dd>Nutzer schreiben dem Betreiber über ein Kontaktformular direkt aus der App.</dd></div>
-          <div><dt>Admin-Bereich</dt><dd>Nutzer, Dokumente, Branding, Lizenz, KI-Einstellungen, Wissenspakete, Support, Nutzungsstatistik, Logs und Dashboard mit Hardware-Auslastung.</dd></div>
-        </dl>
+        <ul class="features">
+          <li><h3>Fragen an Dokumente</h3><p>Antworten mit Verweis ins Original.</p></li>
+          <li><h3>Lokale KI</h3><p>Das Modell wird nach verfügbarem Grafikspeicher gewählt.</p></li>
+          <li><h3>Rollen und Rechte</h3><p>Admin und Member, eigenes Branding.</p></li>
+          <li><h3>Assistenten</h3><p>Rolle, Charakter, Avatar und Stimme je Assistent.</p></li>
+          <li><h3>Systeme anbinden</h3><p>HTTP-Schnittstellen als Werkzeuge, nur lesend.</p></li>
+          <li><h3>Wissenspakete</h3><p>Gesetze und Regelwerke fertig installierbar.</p></li>
+        </ul>
+        <p class="more"><a href="on-premise-ki.html#funktionen">Alle Funktionen</a> · <a href="on-premise-ki.html#assistenten">Assistenten, Stimmen und Schnittstellen</a> · <a href="wissenspakete.html">Wissenspakete</a> · <a href="api.html">API-Dokumentation</a></p>
       </div>
     </section>
 
-    <section class="block" id="assistenten">
+    <section class="block calm" id="ansehen">
       <div class="wrap">
-        <h2>Assistenten, Stimmen und Schnittstellen</h2>
-        <p class="lead">Jedes Unternehmen stellt sich seine Assistenten selbst zusammen: mit Fachwissen, Charakter, Gesicht und Stimme, und mit Zugriff auf die Systeme, die im Haus schon laufen. Den Beispiel-Chat oben gibt es mit vier Assistenten.</p>
-
-        <h3 class="sub">Assistenten konfigurieren</h3>
-        <dl class="rows">
-          <div><dt>Rollen</dt><dd>Eine Rolle trägt die Fachanweisung, zum Beispiel „Vertragsprüfer“. Jeder Assistent hat höchstens eine; wird die Rolle gelöscht, bleiben die Assistenten bestehen.</dd></div>
-          <div><dt>Persönlichkeit</dt><dd>Ton und Charakter legt der Betreiber pro Assistent fest, dazu Anzeigename und eine Zusatzanweisung. Mitgeliefert sind Clara, Jonas, Sam und Robin.</dd></div>
-          <div><dt>Avatar</dt><dd>Eine von 20 mitgelieferten Vorlagen (KI-generierte Gesichter und Illustrationen) oder ein eigenes Bild. Im Chat erscheint der Avatar neben jeder Antwort, mit Hinweis „KI-Assistent“.</dd></div>
-          <div><dt>Wissen und Werkzeuge</dt><dd>Pro Assistent lassen sich Dokumentkategorien als Wissensbasis und Schnittstellen als Werkzeuge zuordnen.</dd></div>
-          <div><dt>Eigene Stimme</dt><dd>Der Betreiber weist jedem Assistenten eine Stimme zu. Mitglieder wählen: Standard, Stimme des Assistenten oder eigene Stimme.</dd></div>
-          <div><dt>Prompt-Bibliothek</dt><dd>Wiederverwendbare Vorlagen, die Nutzer im Chat mit einem Klick einfügen.</dd></div>
-        </dl>
-
-        <h3 class="sub">Anbindung per API</h3>
-        <p class="lead">Das Modell ruft angebundene Systeme bei Bedarf selbst auf. Die Aufrufe erscheinen als aufklappbare Karte im Chat, Zugangsdaten werden verschlüsselt gespeichert, erlaubte Ziel-Hosts begrenzt eine Allowlist.</p>
-        <dl class="rows">
-          <div><dt>Anbieter-Vorlagen</dt><dd>Fertige Vorlagen für HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (Handwerkersoftware) und Microsoft 365 mit OAuth2. Alle nur lesend.</dd></div>
-          <div><dt>Eigene Schnittstellen</dt><dd>Generische Gerüste für Volltextsuche, Terminabfrage und Ticketstatus, anpassbar an jedes interne HTTP-System wie DMS oder ERP.</dd></div>
-          <div><dt>Geführte Einrichtung</dt><dd>Die Vorlagenauswahl bietet Suche, Kategorie-Filter, Funktionsauswahl sowie Hinweise zu Zugangsdaten und Einrichtung.</dd></div>
-        </dl>
-
-        <h3 class="sub">Stimmen</h3>
-        <p class="lead">Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Betreiber, ihre Unterstützung wird dann nachgeladen.</p>
-        <dl class="rows">
-          <div><dt>Mehrere Stimmen</dt><dd>Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.</dd></div>
-          <div><dt>Diktat (noch nicht verfügbar)</dt><dd>Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.</dd></div>
-          <div><dt>Pro Unternehmen und Nutzer</dt><dd>Der Betreiber schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</dd></div>
-        </dl>
-        <div class="voices">
-          <h4>Stimmenproben (Qwen3-TTS)</h4>
-          <div class="voice-row">
-            <figure><figcaption>Ramona (Standard)</figcaption><audio controls preload="none" src="assets/voices/ramona.wav"></audio></figure>
-            <figure><figcaption>Karlsson</figcaption><audio controls preload="none" src="assets/voices/karlsson.wav"></audio></figure>
-            <figure><figcaption>Thorsten</figcaption><audio controls preload="none" src="assets/voices/thorsten.wav"></audio></figure>
-          </div>
-          <p class="demo-note">Quellen: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Das Vorlesen im Beispiel-Chat nutzt die Sprachausgabe Ihres Browsers als Vorschau, im Produkt liest die gewählte Stimme vor.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="block" id="architektur">
-      <div class="wrap">
-        <h2>Architektur in Kürze</h2>
-        <p class="lead">Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Den KI-Server (llama.cpp) und die Modelle liefert der Installer mit.</p>
-        <div class="arch">
-        <picture class="light">
-          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-hell.svg" width="340" height="520">
-          <img src="assets/architektur-hell.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360">
-        </picture>
-        <picture class="dark">
-          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-dunkel.svg" width="340" height="520">
-          <img src="assets/architektur-dunkel.svg" alt=""  width="760" height="360">
-        </picture>
-      </div>
-      </div>
-    </section>
-
-    <section class="block" id="betrieb">
-      <div class="wrap">
-        <h2>Betrieb im Alltag</h2>
-        <p class="lead">Nach der Installation läuft SovereignMind als Dienst im Hintergrund und startet mit dem Rechner.
-          Für Start, Stopp und Status braucht niemand Systemkenntnisse: unter Windows übernimmt das die Tray-App, unter Linux ein einzelnes Kommando.</p>
-        <div class="ops">
-          <div class="ops-text">
-            <dl class="rows">
-            <div><dt>Windows: Tray-App</dt><dd>„SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.</dd></div>
-            <div><dt>Linux: <code>sovereignmind</code></dt><dd>Ein Kommando für <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> und <code>backup</code>. Befehle mit Rechtebedarf rufen selbst <code>sudo</code> auf.</dd></div>
-            <div><dt>HTTPS-Proxy</dt><dd>Der Installer bringt einen HTTPS-Proxy mit: interne CA, Let's Encrypt oder ein mitgeliefertes Wildcard-Zertifikat ohne Browserwarnung. Chat und Admin-Bereich laufen unter eigenen Namen, die Demo startet auch dort.</dd></div>
-            <div><dt>API für Fachsysteme</dt><dd>Jede Installation enthält eine Schnittstelle zum Anbinden eigener Oberflächen und Fachsysteme. Alle Endpunkte, Anmeldung, Fehler und Codebeispiele lesen Sie ohne Installation nach.</dd></div>
-            </dl>
-            <p class="actions-row"><a class="btn secondary" href="download.html#linux">Alle Befehle ansehen</a> <a class="btn secondary" href="api.html">API-Dokumentation lesen</a></p>
-          </div>
-          <figure class="term-fig">
-            <div class="term" role="img" aria-label="Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner">
-              <div class="term-bar"><span></span><span></span><span></span><b>Terminal</b></div>
-<pre class="term-body" aria-hidden="true"><span class="p">$</span> <span class="c">sovereignmind status</span>
-<b>SovereignMind</b> 2026.10.19.1606   <span class="g">● läuft</span>
-
-Weboberfläche:           http://localhost:5043
-Im Netzwerk:             http://192.168.0.42:5043
-Gesundheit:              <span class="g">antwortet</span>
-
-Dienste:
-  Datenbank (PostgreSQL)        <span class="g">● aktiv</span>
-  Vektordatenbank (Qdrant)      <span class="g">● aktiv</span>
-  Dokumentenimport              <span class="g">● aktiv</span>
-  Sprache                       <span class="g">● aktiv</span>
-  KI-Server Chat                <span class="g">● aktiv</span>
-  KI-Server Embeddings          <span class="g">● aktiv</span>
-  Backend und Weboberfläche     <span class="g">● aktiv</span>
-
-Autostart:               an
-KI-Server:               llama.cpp b12191, GPU (Vulkan): NVIDIA GeForce RTX 5070 Laptop GPU
-Nächste Sicherung:       Tue 2026-10-20
-
-Programme:               /opt/sovereignmind
-Daten:                   /var/lib/sovereignmind
-Konfiguration:           /etc/sovereignmind
-Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind-*')</pre>
-            </div>
-            <figcaption>Ausgabe von <code>sovereignmind status</code> (Beispieldaten)</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="block" id="video">
-      <div class="wrap">
-        <h2>Demo-Video</h2>
-        <p class="lead">Rundgang in zehn Kapiteln, gut elf Minuten: Anmeldung, Chat mit Quellenbelegen, Einstellungen, Admin-Bereich und die Nutzung auf dem Telefon (Beispieldaten, mit deutschen Untertiteln).</p>
+        <h2>Ansehen</h2>
+        <p class="lead">Rundgang in elf Minuten, Beispieldaten, mit deutschen Untertiteln.</p>
         <figure class="video">
           <video controls preload="none" playsinline poster="assets/video/sovereignmind-demo-poster.webp" width="1920" height="1080">
             <source src="assets/video/sovereignmind-demo.mp4" type="video/mp4">
@@ -283,28 +167,7 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
             Ihr Browser kann das Video nicht abspielen. <a href="assets/video/sovereignmind-demo.mp4">Video herunterladen (MP4, 41 MB)</a>.
           </video>
         </figure>
-      </div>
-    </section>
-
-    <section class="block" id="screenshots">
-      <div class="wrap">
-        <h2>Screenshots</h2>
-        <p class="lead">Chat, Admin-Bereich und Dashboard (Beispieldaten). Ein Klick vergrößert das Bild.</p>
-        <div class="gallery-controls" data-gallery-controls hidden>
-          <div class="seg" role="group" aria-label="Design">
-            <button type="button" data-variant="standard">Obsidian</button>
-            <button type="button" data-variant="mono">Mono</button>
-            <button type="button" data-variant="aurora">Aurora</button>
-            <button type="button" data-variant="echo">Echo</button>
-            <button type="button" data-variant="lumen">Lumen</button>
-            <button type="button" data-variant="corporate">Corporate</button>
-          </div>
-          <div class="seg" role="group" aria-label="Farbschema">
-            <button type="button" data-theme="light">Hell</button>
-            <button type="button" data-theme="dark">Dunkel</button>
-          </div>
-        </div>
-        <div class="shots" data-gallery>
+        <div class="shots" data-gallery data-limit="3">
           <figure class="shot">
             <a href="assets/screenshots/standard/light/chat.webp" target="_blank" rel="noopener"><img src="assets/screenshots/standard/light/chat.webp" alt="Chat mit Antwort und Quellenangabe" width="1440" height="900" loading="lazy"></a>
             <figcaption>Chat mit Quellenbelegen</figcaption>
@@ -317,6 +180,22 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
             <a href="assets/screenshots/standard/light/admin-dashboard.webp" target="_blank" rel="noopener"><img src="assets/screenshots/standard/light/admin-dashboard.webp" alt="Admin-Bereich: Dashboard" width="1440" height="900" loading="lazy"></a>
             <figcaption>Dashboard</figcaption>
           </figure>
+        </div>
+        <p class="more"><a href="on-premise-ki.html#screenshots">Alle Screenshots in sechs Designs</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="entwickler">
+      <div class="wrap">
+        <h2>Wer baut das?</h2>
+        <div class="dev">
+          <img src="assets/entwickler-240.webp" srcset="assets/entwickler-240.webp 240w, assets/entwickler-400.webp 400w" sizes="(max-width: 760px) 200px, 240px" alt="Porträt von Benjamin Richter, Entwickler von SovereignMind" width="240" height="240" loading="lazy">
+          <div class="dev-text">
+            <h3>Benjamin Richter</h3>
+            <p class="dev-role">Entwickler von SovereignMind</p>
+            <p>Ich baue SovereignMind als lokale KI für Dokumente, die im Haus bleiben. Entwickelt wird in Deutschland. Der Stand ist eine Demo, Rückmeldungen sind willkommen.</p>
+            <p class="dev-links"><a href="mailto:{{PROVIDER_EMAIL}}">E-Mail schreiben</a> · <a href="impressum.html">Impressum</a></p>
+          </div>
         </div>
       </div>
     </section>
@@ -331,7 +210,7 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
       <button type="button" class="lb-nav lb-next" data-lb="next" aria-label="Nächstes Bild">›</button>
     </dialog>
 
-    <section class="block" id="kontakt">
+    <section class="block calm" id="kontakt">
       <div class="wrap">
         <h2>Kontakt und Rückmeldung</h2>
         <p class="lead">Fragen zur Einführung oder Rückmeldung zur Demo: <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a>. Ob und wann Lizenzen angeboten werden, ist offen.</p>
@@ -344,7 +223,7 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
   <footer class="site">
     <div class="wrap">
       <span>© SovereignMind</span>
-      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="on-premise-ki.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </footer>
   <script src="assets/app.js" defer></script>

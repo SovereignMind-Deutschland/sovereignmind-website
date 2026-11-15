@@ -103,6 +103,128 @@
     <h2>Was braucht ein lokaler Assistent an Hardware?</h2>
     <p>SovereignMind empfiehlt 8 GB Grafikspeicher (VRAM) und 16 GB Arbeitsspeicher; der Installer prüft diese Werte nicht. Das Modell wird nach dem verfügbaren VRAM gewählt; ein Betrieb nur mit dem Prozessor ist möglich, aber langsamer. Qualität und Tempo hängen von der Hardware ab.</p>
 
+    <h2>Mehr zum Produkt</h2>
+    <p>Die Details, die auf der <a href="index.html">Startseite</a> bewusst fehlen: Einsatzfälle, alle Funktionen, Assistenten mit Stimmen und Schnittstellen, Architektur und die volle Screenshot-Galerie.</p>
+    <section class="block" id="einsatz">
+        <h2>Wofür setzen Sie es ein?</h2>
+        <p class="lead">Sensible Dokumente dürfen nicht in eine US-Cloud, und die Suche in Ordnern kostet täglich Zeit. Ohne freigegebene Alternative landen Inhalte oft in privaten ChatGPT-Konten. SovereignMind beantwortet Fragen im eigenen Haus und zeigt, wo die Antwort steht.</p>
+        <dl class="rows">
+          <div><dt>Kanzleien</dt><dd>Verträge und Akten durchsuchen, ohne Mandantendaten aus der Hand zu geben.<span class="beispiel">Beispielfrage: „Welche Kündigungsfrist gilt im Wartungsvertrag mit der Müller GmbH?“</span></dd></div>
+          <div><dt>Personalabteilungen</dt><dd>Richtlinien und Personalunterlagen befragen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie viele Urlaubstage stehen neuen Mitarbeitenden im ersten Jahr zu?“</span></dd></div>
+          <div><dt>Gesundheitswesen</dt><dd>Handbücher und Dokumentation per Frage nutzbar machen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie ist laut Handbuch das Gerät zwischen zwei Patienten aufzubereiten?“</span></dd></div>
+          <div><dt>Industrie</dt><dd>Handbücher und Fertigungspläne per Frage finden statt per Ordnersuche.<span class="beispiel">Beispielfrage: „Welches Anzugsdrehmoment gilt laut Wartungshandbuch für die Spannplatte?“</span></dd></div>
+        </dl>
+        <p class="actions-row"><a class="btn secondary" href="vergleich.html">Lokal oder Cloud? Zum Vergleich</a> <a class="btn secondary" href="wissenspakete.html">Wissenspakete ansehen</a></p>
+    </section>
+
+    <section class="block" id="funktionen">
+        <h2>Funktionen</h2>
+        <div class="feature-main">
+          <h3>Fragen an die eigenen Dokumente</h3>
+          <div>
+            <p>Fragen in natürlicher Sprache, Antworten immer auf Deutsch, mit klickbaren Verweisen ins Originaldokument. PDF, DOCX, Tabellen und mehr werden automatisch gelesen und durchsuchbar gemacht, mit Kategorien, Duplikaterkennung und Verarbeitungsstatus.</p>
+          </div>
+        </div>
+        <dl class="rows">
+          <div><dt>Lokale KI</dt><dd>Sprachmodell und Embeddings laufen auf Ihrer Hardware (llama.cpp). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, Intel, sonst CPU).</dd></div>
+          <div><dt>Nutzer und Rollen</dt><dd>Admin und Member, eigenes Branding pro Unternehmen.</dd></div>
+          <div><dt>Assistenten und Prompt-Bibliothek</dt><dd>Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.</dd></div>
+          <div><dt>Anbindung interner Systeme</dt><dd>HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.</dd></div>
+          <div><dt>Antwort-Cache</dt><dd>Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Betreiber kann den Cache leeren oder auf Standard zurücksetzen.</dd></div>
+          <div><dt>Dateien im Chat</dt><dd>Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.</dd></div>
+          <div><dt>Sprache</dt><dd>Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.</dd></div>
+          <div><dt>Wissenspakete</dt><dd>Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Betreiber aus dem Katalog installiert oder als Datei importiert.</dd></div>
+          <div><dt>Themes</dt><dd>Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.</dd></div>
+          <div><dt>Support-Nachrichten</dt><dd>Nutzer schreiben dem Betreiber über ein Kontaktformular direkt aus der App.</dd></div>
+          <div><dt>Admin-Bereich</dt><dd>Nutzer, Dokumente, Branding, Lizenz, KI-Einstellungen, Wissenspakete, Support, Nutzungsstatistik, Logs und Dashboard mit Hardware-Auslastung.</dd></div>
+        </dl>
+    </section>
+
+    <section class="block" id="assistenten">
+        <h2>Assistenten, Stimmen und Schnittstellen</h2>
+        <p class="lead">Jedes Unternehmen stellt sich seine Assistenten selbst zusammen: mit Fachwissen, Charakter, Gesicht und Stimme, und mit Zugriff auf die Systeme, die im Haus schon laufen. Den Beispiel-Chat oben gibt es mit vier Assistenten.</p>
+
+        <h3 class="sub">Assistenten konfigurieren</h3>
+        <dl class="rows">
+          <div><dt>Rollen</dt><dd>Eine Rolle trägt die Fachanweisung, zum Beispiel „Vertragsprüfer“. Jeder Assistent hat höchstens eine; wird die Rolle gelöscht, bleiben die Assistenten bestehen.</dd></div>
+          <div><dt>Persönlichkeit</dt><dd>Ton und Charakter legt der Betreiber pro Assistent fest, dazu Anzeigename und eine Zusatzanweisung. Mitgeliefert sind Clara, Jonas, Sam und Robin.</dd></div>
+          <div><dt>Avatar</dt><dd>Eine von 20 mitgelieferten Vorlagen (KI-generierte Gesichter und Illustrationen) oder ein eigenes Bild. Im Chat erscheint der Avatar neben jeder Antwort, mit Hinweis „KI-Assistent“.</dd></div>
+          <div><dt>Wissen und Werkzeuge</dt><dd>Pro Assistent lassen sich Dokumentkategorien als Wissensbasis und Schnittstellen als Werkzeuge zuordnen.</dd></div>
+          <div><dt>Eigene Stimme</dt><dd>Der Betreiber weist jedem Assistenten eine Stimme zu. Mitglieder wählen: Standard, Stimme des Assistenten oder eigene Stimme.</dd></div>
+          <div><dt>Prompt-Bibliothek</dt><dd>Wiederverwendbare Vorlagen, die Nutzer im Chat mit einem Klick einfügen.</dd></div>
+        </dl>
+
+        <h3 class="sub">Anbindung per API</h3>
+        <p class="lead">Das Modell ruft angebundene Systeme bei Bedarf selbst auf. Die Aufrufe erscheinen als aufklappbare Karte im Chat, Zugangsdaten werden verschlüsselt gespeichert, erlaubte Ziel-Hosts begrenzt eine Allowlist.</p>
+        <dl class="rows">
+          <div><dt>Anbieter-Vorlagen</dt><dd>Fertige Vorlagen für HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (Handwerkersoftware) und Microsoft 365 mit OAuth2. Alle nur lesend.</dd></div>
+          <div><dt>Eigene Schnittstellen</dt><dd>Generische Gerüste für Volltextsuche, Terminabfrage und Ticketstatus, anpassbar an jedes interne HTTP-System wie DMS oder ERP.</dd></div>
+          <div><dt>Geführte Einrichtung</dt><dd>Die Vorlagenauswahl bietet Suche, Kategorie-Filter, Funktionsauswahl sowie Hinweise zu Zugangsdaten und Einrichtung.</dd></div>
+        </dl>
+
+        <h3 class="sub">Stimmen</h3>
+        <p class="lead">Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Betreiber, ihre Unterstützung wird dann nachgeladen.</p>
+        <dl class="rows">
+          <div><dt>Mehrere Stimmen</dt><dd>Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.</dd></div>
+          <div><dt>Diktat (noch nicht verfügbar)</dt><dd>Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.</dd></div>
+          <div><dt>Pro Unternehmen und Nutzer</dt><dd>Der Betreiber schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.</dd></div>
+        </dl>
+        <div class="voices">
+          <h4>Stimmenproben (Qwen3-TTS)</h4>
+          <div class="voice-row">
+            <figure><figcaption>Ramona (Standard)</figcaption><audio controls preload="none" src="assets/voices/ramona.wav"></audio></figure>
+            <figure><figcaption>Karlsson</figcaption><audio controls preload="none" src="assets/voices/karlsson.wav"></audio></figure>
+            <figure><figcaption>Thorsten</figcaption><audio controls preload="none" src="assets/voices/thorsten.wav"></audio></figure>
+          </div>
+          <p class="demo-note">Quellen: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Das Vorlesen im Beispiel-Chat nutzt die Sprachausgabe Ihres Browsers als Vorschau, im Produkt liest die gewählte Stimme vor.</p>
+        </div>
+    </section>
+
+    <section class="block" id="architektur">
+        <h2>Architektur in Kürze</h2>
+        <p class="lead">Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Den KI-Server (llama.cpp) und die Modelle liefert der Installer mit.</p>
+        <div class="arch">
+        <picture class="light">
+          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-hell.svg" width="340" height="520">
+          <img src="assets/architektur-hell.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360">
+        </picture>
+        <picture class="dark">
+          <source media="(max-width: 640px)" srcset="assets/architektur-schmal-dunkel.svg" width="340" height="520">
+          <img src="assets/architektur-dunkel.svg" alt=""  width="760" height="360">
+        </picture>
+      </div>
+    </section>
+
+    <section class="block" id="screenshots">
+        <h2>Screenshots</h2>
+        <p class="lead">Chat, Admin-Bereich und Dashboard (Beispieldaten). Ein Klick vergrößert das Bild.</p>
+        <div class="gallery-controls" data-gallery-controls hidden>
+          <div class="seg" role="group" aria-label="Design">
+            <button type="button" data-variant="standard">Obsidian</button>
+            <button type="button" data-variant="mono">Mono</button>
+            <button type="button" data-variant="aurora">Aurora</button>
+            <button type="button" data-variant="echo">Echo</button>
+            <button type="button" data-variant="lumen">Lumen</button>
+            <button type="button" data-variant="corporate">Corporate</button>
+          </div>
+          <div class="seg" role="group" aria-label="Farbschema">
+            <button type="button" data-theme="light">Hell</button>
+            <button type="button" data-theme="dark">Dunkel</button>
+          </div>
+        </div>
+        <div class="shots" data-gallery><p><a href="index.html#ansehen">Ohne Skript: Auswahl auf der Startseite</a></p></div>
+    </section>
+
+    <dialog class="lightbox" data-lightbox aria-label="Screenshot-Ansicht">
+      <button type="button" class="lb-close" data-lb="close" aria-label="Schließen">×</button>
+      <button type="button" class="lb-nav lb-prev" data-lb="prev" aria-label="Vorheriges Bild">‹</button>
+      <figure>
+        <img alt="" data-lb-img>
+        <figcaption data-lb-cap></figcaption>
+      </figure>
+      <button type="button" class="lb-nav lb-next" data-lb="next" aria-label="Nächstes Bild">›</button>
+    </dialog>
+
     <h2>Wie kann man es ausprobieren?</h2>
     <p>Die Demo läuft 24 Stunden ohne Lizenzschlüssel und nur auf dem eigenen Rechner. Bitte keine echten oder vertraulichen Daten verwenden. <a href="download.html#demo">Zur Demo</a> · <a href="index.html#kontakt">Rückmeldung geben</a></p>
 
@@ -112,8 +234,9 @@
   <footer class="site">
     <div class="wrap">
       <span>© SovereignMind</span>
-      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="on-premise-ki.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </footer>
+  <script src="assets/app.js" defer></script>
 </body>
 </html>

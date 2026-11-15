@@ -64,8 +64,14 @@
   <main id="main" class="wrap">
     <h1 class="page-title">SovereignMind installieren</h1>
     <div class="note warn" data-status-note><strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.</div>
-    <div class="note"><strong>Die Demo in Kürze:</strong> kostenlos, 24 Stunden Betriebszeit, ein Sitzplatz, nur auf dem eigenen Rechner erreichbar, danach werden die Daten gelöscht. Empfohlen sind 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht) sowie Platz für den Installer (ca. 3&nbsp;GB plus Modelle). <a href="#demo">Demo</a></div>
-    <p>Ein Installer richtet alles ein, ohne Docker und ohne WSL. Es ist <strong>eine Software</strong>: Der Installer fragt nicht nach Demo oder Lizenz. Erst beim ersten Aufruf der App im Browser wählen Sie, ob Sie die <a href="#demo">Demo</a> starten oder mit einem Lizenzschlüssel einrichten. Wählen Sie Ihr Betriebssystem: Ein Befehl lädt den minimalen Installer aus dem Release und startet ihn.</p>
+    <p class="lead">Ein Befehl richtet alles ein, ohne Docker und ohne WSL. Ob Demo oder Lizenz, entscheiden Sie erst beim ersten Aufruf der App im Browser.</p>
+    <ul class="facts" aria-label="Die Demo in Kürze">
+      <li><strong>Kostenlos</strong>Demo ohne Lizenzschlüssel</li>
+      <li><strong>24 Stunden</strong>Betriebszeit, danach werden Daten gelöscht</li>
+      <li><strong>1 Sitzplatz</strong>nur auf dem eigenen Rechner erreichbar</li>
+      <li><strong>8&nbsp;GB VRAM · 16&nbsp;GB RAM</strong>empfohlen; ca. 3&nbsp;GB Installer plus Modelle</li>
+    </ul>
+    <p class="muted">Mehr zur Demo <a href="#demo">weiter unten</a>. Der Installer prüft die empfohlene Hardware nicht.</p>
     <p class="version" data-version hidden></p>
 
     <div class="tabs" role="tablist" aria-label="Betriebssystem">
@@ -78,7 +84,17 @@
       <h2 id="windows-einzeiler">Minimal: ein Befehl, Modelle werden geladen</h2>
       <p>PowerShell öffnen (am besten „Als Administrator ausführen“, dann gibt es keine weitere Abfrage), den Befehl einfügen und mit Enter bestätigen:</p>
       <div class="cmd"><pre><code data-cmd="windows"></code></pre><button type="button" data-copy="windows">Kopieren</button></div>
-      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt das Installationspaket (ZIP-Teile, rund 0,9&nbsp;GB), vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code>, entpackt das Paket und startet die Installation. Läuft PowerShell nicht als Administrator, fragt das Skript vor dem Download, ob es in einem neuen Administrator-Fenster weitermachen soll (<code>y</code>: die Windows-Sicherheitsabfrage kommt sofort; <code>n</code>: sie kommt erst nach dem Download). Wird die Abfrage abgelehnt, bleiben die geladenen Dateien liegen, und ein neuer Start lädt nichts doppelt. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Terminal, das Skript stimmt nie für Sie zu. Die KI-Modelle (ca. 11&nbsp;GB) lädt das Setup danach aus dem Internet nach.</p>
+      <p>Das Skript erledigt der Reihe nach:</p>
+      <ol class="steps">
+        <li>ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a> und lädt das Installationspaket (rund 0,9&nbsp;GB),</li>
+        <li>vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code>, entpackt das Paket und startet die Installation,</li>
+        <li>zeigt den <a href="#eula">Endnutzer-Lizenzvertrag</a>; Sie bestätigen ihn im Terminal, das Skript stimmt nie für Sie zu,</li>
+        <li>lädt danach die KI-Modelle (ca. 11&nbsp;GB) aus dem Internet nach.</li>
+      </ol>
+      <details>
+        <summary>Ohne Administratorrechte: was passiert?</summary>
+        <p>Läuft PowerShell nicht als Administrator, fragt das Skript vor dem Download, ob es in einem neuen Administrator-Fenster weitermachen soll (<code>y</code>: die Windows-Sicherheitsabfrage kommt sofort; <code>n</code>: erst nach dem Download). Wird die Abfrage abgelehnt, bleiben die geladenen Dateien liegen, ein neuer Start lädt nichts doppelt.</p>
+      </details>
       <details>
         <summary>Skript vorab lesen</summary>
         <p>Ohne <code>| iex</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.ps1">install.ps1</a>.</p>
@@ -89,29 +105,44 @@
         <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.zip.001</code> (und weitere <code>.zip.NNN</code>, falls vorhanden), <code>EULA.de.txt</code> und <code>SHA256SUMS.txt</code> sowie das Skript <a href="install.ps1" download>install.ps1</a> in einen Ordner laden. Die Summe jedes Teils mit der Zeile in <code>SHA256SUMS.txt</code> vergleichen, dann <code>install.ps1</code> in einer PowerShell als Administrator mit <code>-SourceDir</code> auf diesen Ordner starten. Das Skript entpackt das Paket und fragt nach dem <a href="#eula">Endnutzer-Lizenzvertrag</a>.</p>
         <div class="cmd"><pre><code data-cmd="windows-manuell"></code></pre><button type="button" data-copy="windows-manuell">Kopieren</button></div>
       </details>
-      <h2 id="windows-eigenes-frontend-einzeiler">Einzeiler mit Optionen</h2>
-      <p>Optionen für das Setup übergeben Sie vor dem Befehl in <code>SM_SETUP_ARGS</code>, zum Beispiel für eine eigene Oberfläche ohne Weboberfläche (mehr dazu <a href="#windows-api">weiter unten</a>). <code>SM_VERSION</code> wählt eine bestimmte Version.</p>
-      <div class="cmd"><pre><code data-cmd="windows-eigenes-frontend"></code></pre><button type="button" data-copy="windows-eigenes-frontend">Kopieren</button></div>
-      <p>Der Installer enthält die Weboberfläche und die API.
-        Die Sprachausgabe läuft standardmäßig auf der CPU. Wer sie auf der Grafikkarte betreiben möchte, wählt das im Admin-Bereich unter „Voice“; die dafür nötige GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf aus dem Internet nach.</p>
-      <p>Fehlt beim minimalen Installer das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich einen Hinweis mit der Schaltfläche „Jetzt laden“. Das größere 14B-Chat-Modell lädt der Admin bei Bedarf selbst (Admin-Bereich, Lokale Modelle).</p>
-      <h2 id="windows-api">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
-      <p>Die Weboberfläche ist standardmäßig an und lässt sich abschalten: im Setup die Aufgabe „Weboberfläche ausliefern“ abwählen (still: <code>/FRONTEND=off</code>) oder später im Tray-Menü „Weboberfläche“.
-        Dann stellt SovereignMind nur die API bereit, für eigene Oberflächen und die Anbindung an Fachsysteme; das Setup nennt statt eines Browserlinks die API-Adresse und legt
-        die Dokumentation der Endpunkte im Startmenü ab. Für Browser-Oberflächen auf anderer Adresse gibt es <code>/CORS=https://app.example</code>; Mandant und Admin lassen sich still mit
-        <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> anlegen. Beschreibung aller Endpunkte, Anmeldung und Beispiele:
-        <a href="api.html">API-Dokumentation auf dieser Webseite</a> (Endpunkte, Anmeldung, Codebeispiele).</p>
+      <p>Der Installer enthält Weboberfläche, API und den KI-Server. Fehlt das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich den Hinweis „Jetzt laden“.</p>
+
       <h2>Voraussetzungen</h2>
       <ul class="req">
         <li>Windows 10 (1809), Windows 11 oder Server 2019+ (x64)</li>
         <li>Administratorrechte</li>
-        <li>KI-Server (llama.cpp) ist enthalten, die Modelle (ca. 11&nbsp;GB) lädt der Installer aus dem Internet nach</li>
-        <li>Empfohlen: 8&nbsp;GB VRAM und 16&nbsp;GB RAM (der Installer prüft das nicht); ohne GPU läuft alles auf der CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
-        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+        <li>Platz für den Installer (ca. 3&nbsp;GB) und die Modelle (ca. 11&nbsp;GB)</li>
+        <li>Empfohlen: 8&nbsp;GB VRAM und 16&nbsp;GB RAM. Ohne GPU läuft alles auf der CPU, deutlich langsamer.</li>
       </ul>
-      <div class="note">Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Dashboard) ist im Setup als Aufgabe wählbar.</div>
-      <p>Bedienung nach der Installation: Die <strong>Tray-App „SovereignMind Control“</strong> im Infobereich der Taskleiste startet und stoppt alle Dienste,
-        zeigt den Status und öffnet die Weboberfläche. Sie startet auf Wunsch mit Windows.</p>
+      <details>
+        <summary>Weitere Hinweise zu Hardware und Lizenz</summary>
+        <ul class="req">
+          <li>Die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM. Mac mit Unified Memory ist nicht getestet.</li>
+          <li>Für die Demo ist nichts weiter nötig. Einen Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), brauchen Sie nur, wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat.</li>
+          <li>Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Dashboard) ist im Setup als Aufgabe wählbar.</li>
+        </ul>
+      </details>
+      <p>Bedienung danach: Die <strong>Tray-App „SovereignMind Control“</strong> im Infobereich der Taskleiste startet und stoppt alle Dienste, zeigt den Status und öffnet die Weboberfläche.</p>
+
+      <h2 id="windows-eigenes-frontend-einzeiler">Für Fortgeschrittene</h2>
+      <details>
+        <summary>Einzeiler mit Optionen (<code>SM_SETUP_ARGS</code>, <code>SM_VERSION</code>)</summary>
+        <p>Optionen für das Setup übergeben Sie vor dem Befehl in <code>SM_SETUP_ARGS</code>, zum Beispiel für eine eigene Oberfläche ohne Weboberfläche. <code>SM_VERSION</code> wählt eine bestimmte Version.</p>
+        <div class="cmd"><pre><code data-cmd="windows-eigenes-frontend"></code></pre><button type="button" data-copy="windows-eigenes-frontend">Kopieren</button></div>
+      </details>
+      <details>
+        <summary>Sprachausgabe auf der Grafikkarte</summary>
+        <p>Die Sprachausgabe läuft standardmäßig auf der CPU. Für die Grafikkarte wählen Sie im Admin-Bereich „Voice“; die GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf nach. Das größere 14B-Chat-Modell lädt der Admin ebenfalls selbst (Admin-Bereich, Lokale Modelle).</p>
+      </details>
+      <details id="windows-api">
+        <summary>Eigenes Frontend oder nur die API</summary>
+        <p>Die Weboberfläche ist standardmäßig an. Abschalten: im Setup „Weboberfläche ausliefern“ abwählen (still: <code>/FRONTEND=off</code>) oder später im Tray-Menü. Dann stellt SovereignMind nur die API bereit; das Setup nennt die API-Adresse und legt die Endpunkt-Dokumentation im Startmenü ab.</p>
+        <ul class="req">
+          <li><code>/CORS=https://app.example</code> erlaubt Browser-Oberflächen auf anderer Adresse.</li>
+          <li><code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> legt Mandant und Admin still an.</li>
+        </ul>
+        <p>Alle Endpunkte, Anmeldung und Beispiele: <a href="api.html">API-Dokumentation</a>.</p>
+      </details>
     </div>
 
     <!-- Linux -->
@@ -119,7 +150,14 @@
       <h2 id="linux-variante">Minimal: ein Befehl, Modelle werden geladen</h2>
       <p>Terminal öffnen, den Befehl einfügen und mit Enter bestätigen:</p>
       <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Kopieren</button></div>
-      <p>Das Skript ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt die Teile des minimalen Bundles (rund 0,9&nbsp;GB), prüft jeden Teil gegen <code>SHA256SUMS.txt</code>, fügt sie zusammen und startet das Bundle mit <code>sudo</code>. Das <code>sudo</code>-Passwort fragt es gleich zu Beginn ab, vor dem Download; danach läuft alles ohne weitere Rückfrage. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Bundle (Eingabe vom Terminal), das Skript stimmt nie für Sie zu. Das Bundle enthält den KI-Server (llama.cpp), aber keine KI-Modelle: Es lädt sie beim Installieren aus dem Internet (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt dabei im Terminal den Fortschritt („Modell 2 von 4: … 63&nbsp;%“). Das Skript arbeitet standardmäßig unter <code>/var/tmp/sovereignmind-install</code> und löscht den Ordner am Ende. Es braucht dort ca. 6&nbsp;GB frei; <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ordner.</p>
+      <p>Das Skript erledigt der Reihe nach:</p>
+      <ol class="steps">
+        <li>fragt gleich zu Beginn das <code>sudo</code>-Passwort ab; danach läuft alles ohne weitere Rückfrage,</li>
+        <li>ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt die Teile des minimalen Bundles (rund 0,9&nbsp;GB), prüft jeden Teil gegen <code>SHA256SUMS.txt</code> und fügt sie zusammen,</li>
+        <li>startet das Bundle; den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Terminal, das Skript stimmt nie für Sie zu,</li>
+        <li>lädt die KI-Modelle (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt den Fortschritt im Terminal („Modell 2 von 4: … 63&nbsp;%“).</li>
+      </ol>
+      <p class="muted">Das Skript arbeitet unter <code>/var/tmp/sovereignmind-install</code> (ca. 6&nbsp;GB frei nötig) und löscht den Ordner am Ende. <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ordner.</p>
       <details>
         <summary>Skript vorab lesen</summary>
         <p>Ohne <code>| sh</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> prüft nur und ändert nichts.</p>
@@ -130,30 +168,45 @@
         <p>Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> und <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:</p>
         <div class="cmd"><pre><code data-cmd="linux-manuell-minimal"></code></pre><button type="button" data-copy="linux-manuell-minimal">Kopieren</button></div>
       </details>
-      <p>Das Bundle enthält Weboberfläche und API. Die GPU-Unterstützung der Sprachausgabe ist nicht enthalten und wird bei Bedarf im Admin-Bereich nachgeladen.</p>
-      <h2 id="linux-eigenes-frontend">Eigenes Frontend oder nur die API (für Entwickler und Integratoren)</h2>
-      <p>Der Einzeiler reicht Optionen für das Bundle über <code>SM_BUNDLE_ARGS</code> weiter (Beispiel unten). Die Weboberfläche ist bei beiden Bundles standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar, für eigene Oberflächen und die Anbindung an Fachsysteme. Optionen: <code>--cors https://app.example</code> (Browser-Herkunft fremder Oberflächen),
-        <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung (legt Mandant und Admin an). Die Dokumentation der Endpunkte liegt nach der Installation unter
-        <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online: <a href="api.html">API-Dokumentation auf dieser Webseite</a> (Endpunkte, Anmeldung, Codebeispiele).</p>
-      <div class="cmd"><pre><code data-cmd="linux-eigenes-frontend"></code></pre><button type="button" data-copy="linux-eigenes-frontend">Kopieren</button></div>
-      <p>Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.
-        <code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen.</p>
-      <p>Wird ein USB-Stick oder ein eigener Download-Server genutzt, entfällt das Zusammenfügen.
-        Optionen wie <code>--accept-eula</code>, <code>--yes</code> oder <code>--port</code> zeigt <code>bash &lt;datei&gt;.run --help</code>.</p>
+      <p>Das Bundle enthält Weboberfläche, API und KI-Server. Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.</p>
+
       <h2>Voraussetzungen</h2>
       <ul class="req">
-        <li>Ubuntu oder Debian (x64), aktuelle Version. Die RPM-Familie (Fedora, Rocky Linux) ist noch nicht getestet; das Bundle kann dort funktionieren, ist aber nicht freigegeben</li>
+        <li>Ubuntu oder Debian (x64), aktuelle Version</li>
         <li><code>sudo</code>-Rechte</li>
-        <li>Platz, Bundle: ca. 0,9&nbsp;GB Download, 0,9&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB geladene Modelle</li>
-        <li>Den KI-Server (llama.cpp, nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU) liefert der Installer mit, die KI-Modelle lädt er nach; eine frühere Ollama-Installation des Pakets wird übernommen</li>
-        <li>Empfohlen: 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM (der Installer prüft das nicht); sonst CPU, deutlich langsamer (die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM). Mac mit Unified Memory nicht getestet.</li>
-        <li>Für die Demo nichts weiter; ein Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), nur wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat</li>
+        <li>Platz: ca. 0,9&nbsp;GB Download, 0,9&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB Modelle</li>
+        <li>Empfohlen: 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM. Sonst läuft alles auf der CPU, deutlich langsamer.</li>
       </ul>
-      <div class="note">Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</div>
+      <details>
+        <summary>Weitere Hinweise zu Hardware, Distributionen und Lizenz</summary>
+        <ul class="req">
+          <li>Die RPM-Familie (Fedora, Rocky Linux) ist noch nicht getestet; das Bundle kann dort funktionieren, ist aber nicht freigegeben.</li>
+          <li>Der KI-Server (llama.cpp) nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU. Eine frühere Ollama-Installation des Pakets wird übernommen.</li>
+          <li>Der Installer prüft die empfohlene Hardware nicht. Die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM; ihre GPU-Unterstützung wird bei Bedarf im Admin-Bereich nachgeladen. Mac mit Unified Memory ist nicht getestet.</li>
+          <li>Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.</li>
+          <li>Für die Demo ist nichts weiter nötig. Einen Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), brauchen Sie nur, wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat.</li>
+        </ul>
+      </details>
+
+      <h2 id="linux-eigenes-frontend">Für Fortgeschrittene</h2>
+      <details>
+        <summary>Eigenes Frontend oder nur die API</summary>
+        <p>Die Weboberfläche ist standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar.</p>
+        <ul class="req">
+          <li><code>--cors https://app.example</code> erlaubt Browser-Oberflächen auf anderer Adresse.</li>
+          <li><code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung legt Mandant und Admin an.</li>
+        </ul>
+        <p>Die Endpunkt-Dokumentation liegt nach der Installation unter <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online: <a href="api.html">API-Dokumentation</a>.</p>
+        <p>Der Einzeiler reicht Optionen über <code>SM_BUNDLE_ARGS</code> weiter:</p>
+        <div class="cmd"><pre><code data-cmd="linux-eigenes-frontend"></code></pre><button type="button" data-copy="linux-eigenes-frontend">Kopieren</button></div>
+      </details>
+      <details>
+        <summary>Modelle, USB-Stick und weitere Optionen</summary>
+        <p><code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen. Bei einem USB-Stick oder eigenem Download-Server entfällt das Zusammenfügen. Weitere Optionen wie <code>--accept-eula</code>, <code>--yes</code> oder <code>--port</code> zeigt <code>bash &lt;datei&gt;.run --help</code>.</p>
+      </details>
 
       <h2 id="kommando">Bedienung auf der Kommandozeile</h2>
-      <p>Unter Linux gibt es keine Tray-App. Stattdessen installiert das Paket das Kommando <code>sovereignmind</code> für die Alltagsaufgaben.
-        Befehle, die Rechte brauchen, rufen selbst <code>sudo</code> auf. Beispielausgabe: <a href="index.html#betrieb">Startseite</a>.</p>
+      <p>Unter Linux gibt es keine Tray-App. Stattdessen installiert das Paket das Kommando <code>sovereignmind</code>. Befehle, die Rechte brauchen, rufen selbst <code>sudo</code> auf. Beispielausgabe: <a href="#betrieb">Betrieb im Alltag</a>.</p>
       <div class="overflow">
         <table>
           <thead><tr><th>Befehl</th><th>Wirkung</th></tr></thead>
@@ -175,6 +228,54 @@
           </tbody>
         </table>
       </div>
+
+    <section id="betrieb">
+        <h2>Betrieb im Alltag</h2>
+        <p>Nach der Installation läuft SovereignMind als Dienst im Hintergrund und startet mit dem Rechner.
+          Für Start, Stopp und Status braucht niemand Systemkenntnisse: unter Windows übernimmt das die Tray-App, unter Linux ein einzelnes Kommando.</p>
+        <div class="ops">
+          <div class="ops-text">
+            <dl class="rows">
+            <div><dt>Windows: Tray-App</dt><dd>„SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.</dd></div>
+            <div><dt>Linux: <code>sovereignmind</code></dt><dd>Ein Kommando für <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> und <code>backup</code>. Befehle mit Rechtebedarf rufen selbst <code>sudo</code> auf.</dd></div>
+            <div><dt>HTTPS-Proxy</dt><dd>Der Installer bringt einen HTTPS-Proxy mit: interne CA, Let's Encrypt oder ein mitgeliefertes Wildcard-Zertifikat ohne Browserwarnung. Chat und Admin-Bereich laufen unter eigenen Namen, die Demo startet auch dort.</dd></div>
+            <div><dt>API für Fachsysteme</dt><dd>Jede Installation enthält eine Schnittstelle zum Anbinden eigener Oberflächen und Fachsysteme. Alle Endpunkte, Anmeldung, Fehler und Codebeispiele lesen Sie ohne Installation nach.</dd></div>
+            </dl>
+            <p class="actions-row"><a class="btn secondary" href="api.html">API-Dokumentation lesen</a></p>
+          </div>
+          <figure class="term-fig">
+            <div class="term" role="img" aria-label="Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner">
+              <div class="term-bar"><span></span><span></span><span></span><b>Terminal</b></div>
+<pre class="term-body" aria-hidden="true"><span class="p">$</span> <span class="c">sovereignmind status</span>
+<b>SovereignMind</b> 2026.10.19.1606   <span class="g">● läuft</span>
+
+Weboberfläche:           http://localhost:5043
+Im Netzwerk:             http://192.168.0.42:5043
+Gesundheit:              <span class="g">antwortet</span>
+
+Dienste:
+  Datenbank (PostgreSQL)        <span class="g">● aktiv</span>
+  Vektordatenbank (Qdrant)      <span class="g">● aktiv</span>
+  Dokumentenimport              <span class="g">● aktiv</span>
+  Sprache                       <span class="g">● aktiv</span>
+  KI-Server Chat                <span class="g">● aktiv</span>
+  KI-Server Embeddings          <span class="g">● aktiv</span>
+  Backend und Weboberfläche     <span class="g">● aktiv</span>
+
+Autostart:               an
+KI-Server:               llama.cpp b12191, GPU (Vulkan): NVIDIA GeForce RTX 5070 Laptop GPU
+Nächste Sicherung:       Tue 2026-10-20
+
+Programme:               /opt/sovereignmind
+Daten:                   /var/lib/sovereignmind
+Konfiguration:           /etc/sovereignmind
+Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind-*')</pre>
+            </div>
+            <figcaption>Ausgabe von <code>sovereignmind status</code> (Beispieldaten)</figcaption>
+          </figure>
+        </div>
+    </section>
+
     </div>
 
     <h2 id="demo">Demo (ohne Lizenz, 24 Stunden)</h2>
@@ -245,7 +346,7 @@
   <footer class="site">
     <div class="wrap">
       <span>© SovereignMind</span>
-      <span><a href="index.html#funktionen">Funktionen</a><a href="index.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+      <span><a href="index.html#funktionen">Funktionen</a><a href="on-premise-ki.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
     </div>
   </footer>
   <script src="assets/app.js" defer></script>

@@ -199,6 +199,7 @@
     var src = function (id) { return BASE + state.variant + '/' + state.theme + '/' + id + '.webp'; };
 
     function syncControls() {
+      if (!controls) return;
       controls.querySelectorAll('button').forEach(function (x) {
         var on = x.dataset.variant === state.variant || x.dataset.theme === state.theme;
         x.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -223,6 +224,7 @@
 
     function render() {
       current = SHOTS.filter(function (s) { return state.variant === 'standard' || BRANDED.indexOf(s[0]) !== -1; });
+      if (gallery.dataset.limit) current = current.filter(function (s) { return ['chat', 'admin-nutzung', 'admin-dashboard'].indexOf(s[0]) !== -1; });
       gallery.textContent = '';
       current.forEach(function (s, i) {
         var fig = document.createElement('figure');
@@ -244,15 +246,17 @@
       });
     }
 
-    controls.hidden = false;
-    controls.addEventListener('click', function (e) {
-      var b = e.target.closest('button');
-      if (!b) return;
-      if (b.dataset.variant) state.variant = b.dataset.variant;
-      if (b.dataset.theme) state.theme = b.dataset.theme;
-      syncControls();
-      render();
-    });
+    if (controls) {
+      controls.hidden = false;
+      controls.addEventListener('click', function (e) {
+        var b = e.target.closest('button');
+        if (!b) return;
+        if (b.dataset.variant) state.variant = b.dataset.variant;
+        if (b.dataset.theme) state.theme = b.dataset.theme;
+        syncControls();
+        render();
+      });
+    }
     box.addEventListener('click', function (e) {
       var a = e.target.dataset && e.target.dataset.lb;
       if (a === 'prev') step(-1);
@@ -265,5 +269,32 @@
     });
     syncControls();
     render();
+  }
+  // Animationen: Einblenden beim Scrollen und Pipeline "So funktioniert es". Ohne JS, ohne IntersectionObserver
+  // oder bei "Bewegung reduzieren" wird nichts versteckt (Startzustand setzt nur dieses Skript).
+  var calmMotion = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if (calmMotion && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('section.calm .wrap > h2, section.calm .wrap > .lead, section.calm .wrap > .more, .reasons li, .features li, .video, .dev').forEach(function (el, i) {
+      var sibling = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.style.transitionDelay = Math.min(sibling, 5) * 80 + 'ms';
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+    var flow = document.querySelector('[data-flow]');
+    if (flow) {
+      Array.prototype.forEach.call(flow.children, function (li, i) { li.style.setProperty('--i', i); });
+      flow.classList.add('js-flow');
+      var fo = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { flow.classList.add('run'); fo.disconnect(); }
+      }, { threshold: 0.4 });
+      fo.observe(flow);
+    }
   }
 })();
