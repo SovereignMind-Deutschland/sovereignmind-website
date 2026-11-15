@@ -50,7 +50,12 @@ test('Die Skripte gleichen den Quellen im Hauptprojekt (falls daneben ausgecheck
   for (const f of ['install.sh', 'install.ps1']) {
     const quelle = join(root, '..', 'sovereignmind', 'Support', 'installer', 'online', f);
     if (!existsSync(quelle)) return t.skip('Hauptprojekt nicht neben der Seite ausgecheckt');
-    const erwartet = readFileSync(quelle, 'utf8').split('\n').filter((z) => !z.includes('docs/pläne/')).join('\n');
+    let erwartet = readFileSync(quelle, 'utf8').split('\n').filter((z) => !z.includes('docs/pläne/')).join('\n');
+    if (f === 'install.ps1') {
+      // wie sync-website-install.sh: kein BOM, nur ASCII (Windows PowerShell 5.1 liest "irm | iex" ohne charset als Latin-1)
+      erwartet = erwartet.replace(/^﻿/, '').replace('SovereignMind öffnen.url', 'SovereignMind $([char]0xF6)ffnen.url');
+      for (const [a, b] of [['ä', 'ae'], ['ö', 'oe'], ['ü', 'ue'], ['Ä', 'Ae'], ['Ö', 'Oe'], ['Ü', 'Ue'], ['ß', 'ss'], ['…', '...'], ['–', '-'], ['—', '-']]) erwartet = erwartet.replaceAll(a, b);
+    }
     assert.equal(lesen(f), erwartet, `${f} ist veraltet: Support/scripts/sync-website-install.sh ausführen`);
   }
 });
