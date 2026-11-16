@@ -1,0 +1,6 @@
+# Skripte müssen LF haben (install.sh läuft per curl | sh; Tests vergleichen Byte für Byte mit der Quelle im Hauptprojekt)
+*.sh text eol=lf
+*.py text eol=lf
+*.mjs text eol=lf
+install.sh text eol=lf
+install.ps1 text eol=lf

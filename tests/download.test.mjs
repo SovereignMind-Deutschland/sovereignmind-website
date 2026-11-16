@@ -96,3 +96,15 @@ test('Kein Drive-Link, kein volles Paket, alte Attribute sind weg', () => {
   assert.ok(!/drive.google|Google Drive|Setup-Full|installer-full/i.test(html), 'Verweis auf das volle Paket oder Google Drive');
   assert.match(html, /data-release-url/);
 });
+
+test('minisign: Schlüssel der Seite gleich dem in install.sh und install.ps1 (leer, solange dort der Platzhalter steht)', () => {
+  const seite = (lesen('assets/app.js').match(/var MINISIGN_PUBKEY = '([^']*)';/) || [])[1];
+  assert.notEqual(seite, undefined, 'MINISIGN_PUBKEY fehlt in assets/app.js');
+  const sh = (lesen('install.sh').match(/^MINISIGN_PUBKEY="\$\{SM_MINISIGN_PUBKEY:-([^}]*)\}"$/m) || [])[1];
+  const ps1 = (lesen('install.ps1').match(/\$minisignPubKey = if \(\$env:SM_MINISIGN_PUBKEY\) \{ \$env:SM_MINISIGN_PUBKEY \} else \{ "([^"]*)" \}/) || [])[1];
+  assert.ok(sh && ps1, 'Schlüssel in install.sh bzw. install.ps1 nicht gefunden');
+  assert.equal(sh, ps1, 'install.sh und install.ps1 haben verschiedene Schlüssel');
+  if (sh.startsWith('PLATZHALTER')) assert.equal(seite, '', 'Seite nennt einen Schlüssel, die Skripte noch den Platzhalter');
+  else assert.equal(seite, sh, 'Schlüssel der Seite weicht von den Skripten ab');
+  assert.ok(/data-minisign-missing/.test(html) && /data-cmd="signatur-linux"/.test(html), 'Abschnitt zur Signatur fehlt');
+});

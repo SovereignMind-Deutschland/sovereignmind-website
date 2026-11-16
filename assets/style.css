@@ -156,6 +156,10 @@ header.site .btn:focus-visible { outline-color: #fff; }
 .hero-copy .pill { max-width: none; color: #c5d0df; font-size: .8125rem; }
 .textlink { color: var(--accent-hi); font-weight: 600; text-underline-offset: 4px; padding: 10px 0; }
 .version { margin-top: 14px; color: var(--muted); font-size: .9rem; }
+/* Die Versionszeile füllt app.js erst nach dem Laden von downloads.json. Ihr Platz ist vorab reserviert, damit nichts springt
+   (CLS, Entscheidung E24); ohne downloads.json bleibt eine leere Zeile. */
+[data-version] { min-height: 1lh; }
+[data-version][hidden] { display: block !important; visibility: hidden; }
 
 /* Der eine Bewegungsmoment: die Grenze "Ihr Netz" zieht sich beim Laden um den Chat (einmalig) */
 .net { position: relative; padding: var(--s-5) var(--s-4) var(--s-4); min-width: 0; }

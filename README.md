@@ -34,7 +34,7 @@ Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-r
 
 ## Impressum und Datenschutz (Anbieterdaten)
 
-`index.html` (Kontakt), `impressum.html` und `datenschutz.html` enthalten nur Platzhalter (`{{PROVIDER_NAME}}`, `{{PROVIDER_STREET}}`, `{{PROVIDER_CITY}}`, `{{PROVIDER_EMAIL}}`, `{{PROVIDER_PHONE}}`, `{{PROVIDER_VAT_ID}}`). Die Anschrift steht nicht im Repo: `pages.yml` setzt sie mit `scripts/render-provider.py` aus den Actions-**Variablen** der Organisation (nicht Secrets) in eine Kopie ein und bricht ab, wenn ein Pflichtwert (Name, Straße, Ort, E-Mail) fehlt. Lokal zeigt die Seite die Platzhalter; für eine Vorschau mit Testwerten in einer Kopie: `python3 scripts/render-provider.py --test-values <kopie>/index.html <kopie>/impressum.html <kopie>/datenschutz.html`.
+`index.html` (Kontakt), `impressum.html` und `datenschutz.html` enthalten nur Platzhalter (`{{PROVIDER_NAME}}`, `{{PROVIDER_STREET}}`, `{{PROVIDER_CITY}}`, `{{PROVIDER_EMAIL}}`, `{{PROVIDER_PHONE}}`, `{{PROVIDER_VAT_ID}}`). Die Anschrift steht nicht im Repo: `pages.yml` setzt sie mit `scripts/render-provider.py` aus den Actions-**Variablen** der Organisation (nicht Secrets) in eine Kopie ein und bricht ab, wenn ein Pflichtwert (Name, Straße, Ort, E-Mail) fehlt. Auch `.well-known/security.txt` (RFC 9116, Meldestelle für Sicherheitslücken) trägt `{{PROVIDER_EMAIL}}` und wird mit eingesetzt; `Expires` jährlich erneuern (`tests/security-txt.test.mjs` schlägt nach Ablauf an). `SECURITY.md` nennt die Adresse direkt und wird nicht veröffentlicht. Lokal zeigt die Seite die Platzhalter; für eine Vorschau mit Testwerten in einer Kopie: `python3 scripts/render-provider.py --test-values <kopie>/index.html <kopie>/impressum.html <kopie>/datenschutz.html`.
 
 ## Pflege
 
@@ -50,7 +50,7 @@ Die Seite folgt dem Auftritt „Obsidian“ (Plan: `Support/docs/pläne/design-r
 - **Demo:** Es gibt nur **eine** Software und einen Installer. Der Abschnitt `#demo` in `download.html` beschreibt, was beim ersten Start
   zur Wahl steht („Demo starten“ oder „Mit Lizenz einrichten“), die Grenzen (24 Stunden, ein Sitzplatz, nur localhost, Löschung, Neustart
   möglich, Freischaltung mit Schlüssel) und die öffentlichen Zugangsdaten. Mit dem Plan `docs/pläne/demo-willkommen` im Hauptprojekt
-  abgleichen (Phase 6). Die Seite „Demo abgelaufen“ in der App verlinkt auf den Drive-Ordner (Repository-Variable `DEMO_DOWNLOAD_URL`).
+  abgleichen (Phase 6). Die Seite „Demo abgelaufen“ in der App verlinkt auf die Download-Seite der Website (Repository-Variable `DEMO_DOWNLOAD_URL`, im Hauptrepo zu setzen).
 - **Hinweis „Entwurf / derzeit nur Demo“:** steht gut sichtbar auf `index.html` und `download.html` (Klasse `note warn`, Attribut
   `data-status-note`) mit demselben Wortlaut wie der Absatz „STAND DER SOFTWARE“ in `Support/installer/EULA.de.txt` und der Willkommensseite
   der App. Ändert sich einer, alle drei anpassen.

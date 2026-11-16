@@ -1,0 +1,7 @@
+# Meldestelle für Sicherheitslücken in SovereignMind (RFC 9116).
+# Ablauf und Zusagen: https://github.com/SovereignMind-Deutschland/sovereignmind/blob/main/SECURITY.md
+Contact: mailto:{{PROVIDER_EMAIL}}
+Expires: 2027-11-14T23:00:00.000Z
+Preferred-Languages: de, en
+Canonical: https://sovereignmind-deutschland.github.io/sovereignmind-website/.well-known/security.txt
+Policy: https://github.com/SovereignMind-Deutschland/sovereignmind/blob/main/SECURITY.md

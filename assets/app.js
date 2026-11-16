@@ -11,6 +11,9 @@
     windows: 'irm ' + PS1 + ' | iex',
     linux: 'curl -fsSL ' + SH + ' | sh'
   };
+  // Öffentlicher minisign-Schlüssel für SHA256SUMS.txt.minisig, derselbe wie in install.sh und install.ps1 (Zeile 2 von minisign.pub).
+  // Leer, solange der Schlüssel noch nicht erzeugt ist: dann bleibt [data-minisign] ausgeblendet und [data-minisign-missing] sichtbar.
+  var MINISIGN_PUBKEY = '';
 
   // Weitere Befehle ohne eigenen Reiter; sie zählen nicht für die Reiterauswahl (COMMANDS).
   var EXTRA_COMMANDS = {
@@ -30,6 +33,8 @@
       'sha256sum -c --ignore-missing SHA256SUMS.txt',
       'sudo bash sovereignmind-installer-minimal_<Version>_amd64.run'
     ].join('\n'),
+    'signatur-linux': 'minisign -Vm SHA256SUMS.txt -P <Schlüssel>',
+    'signatur-windows': 'minisign.exe -Vm SHA256SUMS.txt -P <Schlüssel>',
     'linux-manuell-voll': [
       'cat sovereignmind-installer-full_<Version>_amd64.run.part* > sovereignmind-installer-full_<Version>_amd64.run',
       'sudo bash sovereignmind-installer-full_<Version>_amd64.run'
@@ -41,11 +46,18 @@
     [COMMANDS, EXTRA_COMMANDS].forEach(function (commands) {
       Object.keys(commands).forEach(function (key) {
         var code = document.querySelector('[data-cmd="' + key + '"]');
-        if (code) code.textContent = version ? commands[key].split('<Version>').join(version) : commands[key];
+        if (!code) return;
+        var text = version ? commands[key].split('<Version>').join(version) : commands[key];
+        code.textContent = MINISIGN_PUBKEY ? text.split('<Schlüssel>').join(MINISIGN_PUBKEY) : text;
       });
     });
   }
   renderCommands('');
+  if (/^RW[A-Za-z0-9+/]{54}$/.test(MINISIGN_PUBKEY)) {
+    document.querySelectorAll('[data-minisign-key]').forEach(function (el) { el.textContent = MINISIGN_PUBKEY; });
+    document.querySelectorAll('[data-minisign]').forEach(function (el) { el.hidden = false; });
+    document.querySelectorAll('[data-minisign-missing]').forEach(function (el) { el.hidden = true; });
+  }
 
   // Version und Release-Seite aus downloads.json. Die Einzeiler brauchen die Datei nicht. Fehlt ein Link,
   // bleibt er ausgeblendet (kein toter Link).

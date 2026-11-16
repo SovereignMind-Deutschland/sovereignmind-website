@@ -1,41 +1,417 @@
 WEBVTT
 
 1
-00:00:08.800 --> 00:00:14.800
-Die Anmeldung läuft lokal auf Ihrem Server, es gibt kein Cloud-Konto.
+00:00:08.468 --> 00:00:12.569
+Willkommen bei SovereignMind, Ihrer Assistenz für Fragen rund um die eigenen Dokumente.
 
 2
-00:00:51.333 --> 00:00:57.333
-Antworten stammen aus Ihren eigenen Dokumenten, jede Aussage hat eine Quelle.
+00:00:12.819 --> 00:00:16.751
+Ich bin Ramona und zeige Ihnen in diesem Film die wichtigsten Funktionen.
 
 3
-00:02:10.467 --> 00:02:16.467
-Assistenten, Dokumente, Sprache und Darstellung passen Sie selbst an.
+00:00:17.001 --> 00:00:21.122
+Alles, was Sie gleich sehen, läuft auf einem Server in Ihrem eigenen Haus.
 
 4
-00:03:13.867 --> 00:03:19.867
-Jede Person steuert ihr Profil und ihre Darstellung selbst.
+00:00:21.372 --> 00:00:27.271
+Die Beispieldaten stammen aus einer erfundenen Firma, der Musterfirma GmbH.
 
 5
-00:03:42.267 --> 00:03:48.267
-Sie sehen, wie ausgelastet das System ist und was die Belegschaft fragt.
+00:00:27.542 --> 00:00:31.421
+Die Anmeldung läuft lokal auf Ihrem Server, es gibt kein Cloud-Konto.
 
 6
-00:04:37.867 --> 00:04:43.867
-Das Erscheinungsbild gehört Ihrem Haus, Zugänge verwalten Sie selbst.
+00:00:31.671 --> 00:00:35.567
+Hier meldet sich Anna Beispiel an, eine Mitarbeiterin der Musterfirma.
 
 7
-00:05:38.800 --> 00:05:44.800
-Wissen kommt aus Ihren Dokumenten, aus Paketen und aus angebundenen Systemen.
+00:00:35.817 --> 00:00:39.874
+Benutzername und Passwort genügen, es braucht keinen Zugang zu fremden Diensten.
 
 8
-00:06:48.533 --> 00:06:54.533
-Das Sprachmodell läuft bei Ihnen, Sie legen fest, wie es antwortet.
+00:00:42.460 --> 00:00:45.834
+Danach sehen Sie sofort den Chat und können Ihre erste Frage stellen.
 
 9
-00:08:49.900 --> 00:08:55.900
-Betrieb, Lizenz und Support sind in derselben Oberfläche erreichbar.
+00:00:52.687 --> 00:00:57.051
+Stellen Sie Ihre Frage ganz normal, so wie Sie sie einem Kollegen stellen würden.
 
 10
-00:10:35.467 --> 00:10:41.467
-Auch auf dem Telefon im Firmennetz nutzbar.
+00:00:57.301 --> 00:01:00.361
+Wir fragen, wie lange man pro Tag höchstens arbeiten darf.
+
+11
+00:01:00.611 --> 00:01:05.058
+Die Statusanzeige zeigt, dass das System gerade in Ihren Dokumenten sucht.
+
+12
+00:01:05.308 --> 00:01:09.910
+Das Sprachmodell läuft auf Ihrem eigenen Server, kein Wort verlässt Ihr Haus.
+
+13
+00:01:10.160 --> 00:01:13.280
+Die Antwort erscheint Stück für Stück, während sie entsteht.
+
+14
+00:01:13.548 --> 00:01:18.103
+Antworten stammen aus Ihren eigenen Dokumenten, jede Aussage hat eine Quelle.
+
+15
+00:01:18.353 --> 00:01:20.933
+Ein Klick auf die Quelle öffnet die Stelle im Dokument.
+
+16
+00:01:21.183 --> 00:01:24.948
+So prüfen Sie jede Aussage selbst, statt einer Antwort blind zu vertrauen.
+
+17
+00:01:25.211 --> 00:01:29.088
+Auch Folgefragen sind kein Problem, die Unterhaltung bleibt im Zusammenhang.
+
+18
+00:01:29.338 --> 00:01:33.336
+Diesmal fragen wir nach den Urlaubstagen und nach dem Verfall des Urlaubs.
+
+19
+00:01:33.586 --> 00:01:36.886
+Wieder nennt die Antwort das Dokument, aus dem die Angaben stammen.
+
+20
+00:01:42.341 --> 00:01:45.860
+Links sehen Sie den Verlauf aller bisherigen Unterhaltungen.
+
+21
+00:01:46.110 --> 00:01:50.257
+Jede Unterhaltung lässt sich umbenennen, damit Sie sie später schnell wiederfinden.
+
+22
+00:01:50.507 --> 00:01:55.207
+Ein Klick genügt, und Sie setzen ein früheres Gespräch dort fort, wo Sie aufgehört haben.
+
+23
+00:01:55.471 --> 00:01:59.485
+Wenn Sie eine Unterhaltung nicht mehr brauchen, löschen Sie sie mit einem Klick.
+
+24
+00:01:59.735 --> 00:02:03.420
+Gelöschte Unterhaltungen sind danach auch für das System nicht mehr sichtbar.
+
+25
+00:02:10.148 --> 00:02:13.906
+Für verschiedene Aufgaben können Sie verschiedene Assistenten auswählen.
+
+26
+00:02:14.156 --> 00:02:18.214
+Jeder Assistent hat eigene Anweisungen und antwortet in seinem eigenen Stil.
+
+27
+00:02:18.464 --> 00:02:22.610
+Ein Assistent für den Einkauf klingt anders als einer für die Personalabteilung.
+
+28
+00:02:22.872 --> 00:02:26.676
+Sie müssen nicht tippen, Sie können Ihre Frage auch einfach sprechen.
+
+29
+00:02:26.926 --> 00:02:31.022
+Die Sprache wird auf Ihrem Server in Text umgewandelt, nicht in der Cloud.
+
+30
+00:02:31.283 --> 00:02:33.891
+Sie können ein Dokument direkt in den Chat ziehen.
+
+31
+00:02:34.141 --> 00:02:37.649
+Dann antwortet der Assistent mit Blick auf genau diese Datei.
+
+32
+00:02:37.899 --> 00:02:42.194
+Das ist praktisch, wenn Sie schnell einen Vertrag oder ein Protokoll prüfen möchten.
+
+33
+00:02:42.455 --> 00:02:45.851
+Und weil jeder anders arbeitet, gibt es mehrere Darstellungen.
+
+34
+00:02:46.101 --> 00:02:50.783
+Hell, dunkel oder in einem anderen Farbschema: Sie entscheiden, was Ihnen gefällt.
+
+35
+00:02:51.033 --> 00:02:54.873
+Assistenten, Dokumente, Sprache und Darstellung passen Sie selbst an.
+
+36
+00:03:16.493 --> 00:03:19.807
+In den Einstellungen verwaltet jede Person ihr eigenes Konto.
+
+37
+00:03:20.057 --> 00:03:22.528
+Hier ändern Sie Ihr Profil und Ihr Passwort.
+
+38
+00:03:22.778 --> 00:03:26.403
+Ein sicheres Passwort schützt Ihre Unterhaltungen vor fremdem Zugriff.
+
+39
+00:03:26.653 --> 00:03:30.008
+Auch die Darstellung und die Benachrichtigungen stellen Sie selbst ein.
+
+40
+00:03:30.258 --> 00:03:33.858
+Sie entscheiden, worüber Sie informiert werden möchten und worüber nicht.
+
+41
+00:03:34.108 --> 00:03:37.668
+Jede Person steuert ihr Profil und ihre Darstellung selbst.
+
+42
+00:03:41.955 --> 00:03:45.735
+Mit Administratorrechten finden Sie im Menü den Bereich für die Verwaltung.
+
+43
+00:03:45.985 --> 00:03:49.434
+Die Übersicht zeigt auf einen Blick, wie es dem System gerade geht.
+
+44
+00:03:49.684 --> 00:03:54.038
+Das Live-Dashboard aktualisiert sich laufend, ohne dass Sie die Seite neu laden müssen.
+
+45
+00:03:54.288 --> 00:03:58.085
+So sehen Sie sofort, wie viele Personen gerade mit dem Assistenten arbeiten.
+
+46
+00:04:03.384 --> 00:04:08.055
+Unter Hardware sehen Sie Prozessor, Arbeitsspeicher und Grafikkarte Ihres Servers.
+
+47
+00:04:08.305 --> 00:04:11.544
+So erkennen Sie rechtzeitig, wenn das System an seine Grenzen kommt.
+
+48
+00:04:11.802 --> 00:04:15.071
+Die Nutzung zeigt, wie oft der Assistent gefragt wird.
+
+49
+00:04:15.321 --> 00:04:19.092
+Außerdem sehen Sie, welche Dokumente am häufigsten als Quelle dienen.
+
+50
+00:04:19.342 --> 00:04:22.962
+Daran erkennen Sie, welches Wissen Ihre Belegschaft wirklich braucht.
+
+51
+00:04:23.212 --> 00:04:26.998
+Sie sehen, wie ausgelastet das System ist und was die Belegschaft fragt.
+
+52
+00:04:37.720 --> 00:04:40.115
+Das Erscheinungsbild gehört Ihrem Haus.
+
+53
+00:04:40.365 --> 00:04:43.938
+Sie legen den Titel der Anwendung und die Akzentfarbe selbst fest.
+
+54
+00:04:44.188 --> 00:04:48.348
+Schon nach wenigen Sekunden sieht die Oberfläche aus wie ein Werkzeug Ihrer Firma.
+
+55
+00:04:53.976 --> 00:04:57.263
+Auch Ihr Firmenprofil pflegen Sie an einer zentralen Stelle.
+
+56
+00:05:04.602 --> 00:05:08.767
+Das Impressum hinterlegen Sie direkt hier, und es erscheint für alle Nutzer.
+
+57
+00:05:09.017 --> 00:05:12.981
+So erfüllen Sie die Pflichtangaben, ohne dafür eine andere Software zu brauchen.
+
+58
+00:05:13.244 --> 00:05:16.700
+Neue Kolleginnen und Kollegen legen Sie in wenigen Schritten an.
+
+59
+00:05:16.950 --> 00:05:20.657
+Name, E-Mail-Adresse und Rolle genügen, den Rest erledigt das System.
+
+60
+00:05:20.907 --> 00:05:24.928
+Zugänge verwalten Sie selbst, ganz ohne externen Dienstleister.
+
+61
+00:05:38.451 --> 00:05:41.102
+Das Wissen Ihres Hauses ordnen Sie in Kategorien.
+
+62
+00:05:41.352 --> 00:05:45.419
+Eine Kategorie kann zum Beispiel Personal, Einkauf oder Technik heißen.
+
+63
+00:05:47.118 --> 00:05:51.227
+Dokumente laden Sie einfach hoch, per Auswahl oder per Ziehen und Ablegen.
+
+64
+00:05:51.477 --> 00:05:55.323
+Unterstützt werden die gängigen Formate, von Textdateien bis zu Tabellen.
+
+65
+00:05:55.587 --> 00:05:59.330
+Danach liest das System den Inhalt und bereitet ihn für die Suche auf.
+
+66
+00:05:59.580 --> 00:06:02.282
+Den Fortschritt dieser Verarbeitung sehen Sie live.
+
+67
+00:06:02.532 --> 00:06:05.631
+Auch dieser Schritt geschieht vollständig auf Ihrem Server.
+
+68
+00:06:05.895 --> 00:06:09.190
+Jedes Dokument bekommt eine Kategorie und eine Freigabe.
+
+69
+00:06:09.440 --> 00:06:12.880
+So bestimmen Sie, wer welches Wissen sehen und befragen darf.
+
+70
+00:06:14.517 --> 00:06:18.932
+Zusätzlich gibt es fertige Wissenspakete, die Sie mit einem Klick einspielen.
+
+71
+00:06:19.182 --> 00:06:22.972
+Sie sparen sich damit die Arbeit, bekannte Texte selbst einzupflegen.
+
+72
+00:06:23.227 --> 00:06:26.243
+Und über Schnittstellen binden Sie weitere Systeme an.
+
+73
+00:06:26.493 --> 00:06:30.499
+Wissen kommt aus Ihren Dokumenten, aus Paketen und aus angebundenen Systemen.
+
+74
+00:06:48.201 --> 00:06:51.109
+Hier legen Sie fest, wie das Sprachmodell antwortet.
+
+75
+00:06:51.359 --> 00:06:55.513
+Jeder Assistent erhält einen Namen, eine Aufgabe und eigene Anweisungen.
+
+76
+00:06:55.763 --> 00:06:59.444
+Damit lässt sich zum Beispiel festlegen, dass er sachlich und kurz antwortet.
+
+77
+00:07:19.624 --> 00:07:22.905
+Mit Rollen bestimmen Sie, wer welche Assistenten benutzen darf.
+
+78
+00:07:23.155 --> 00:07:27.139
+So sehen Mitarbeitende nur die Werkzeuge, die zu ihrer Aufgabe passen.
+
+79
+00:07:54.539 --> 00:07:58.895
+Prompt-Vorlagen sind fertige Fragen, die Ihrem Team wiederkehrende Arbeit abnehmen.
+
+80
+00:07:59.145 --> 00:08:03.782
+Einmal formuliert, steht eine gute Vorlage allen Kolleginnen und Kollegen zur Verfügung.
+
+81
+00:08:18.749 --> 00:08:21.113
+Die Modelle liegen auf Ihrem eigenen Server.
+
+82
+00:08:21.363 --> 00:08:24.936
+Das Sprachmodell läuft bei Ihnen, Ihre Daten bleiben im Haus.
+
+83
+00:08:27.908 --> 00:08:31.480
+Auch die Spracheingabe und die Sprachausgabe werden hier eingestellt.
+
+84
+00:08:31.730 --> 00:08:35.708
+Diese Stimme, die Sie gerade hören, kommt ebenfalls von Ihrem Server.
+
+85
+00:08:35.965 --> 00:08:39.841
+Der Antwort-Cache merkt sich häufige Fragen und liefert die Antwort sofort.
+
+86
+00:08:40.091 --> 00:08:43.330
+Das spart Rechenzeit und sorgt für gleichbleibende Antworten.
+
+87
+00:08:49.572 --> 00:08:52.201
+Zum Betrieb gehört zuerst das Netzwerk.
+
+88
+00:08:52.451 --> 00:08:56.230
+Sie sehen, welche Geräte auf das System zugreifen, und geben sie frei.
+
+89
+00:08:56.480 --> 00:09:00.207
+Unbekannte Geräte kommen so gar nicht erst an Ihre Dokumente heran.
+
+90
+00:09:07.304 --> 00:09:11.771
+Mit API-Token erlauben Sie anderen Programmen den Zugriff auf Ihre Assistenz.
+
+91
+00:09:12.021 --> 00:09:15.781
+Jeder Token lässt sich einzeln anlegen und jederzeit wieder entziehen.
+
+92
+00:09:30.369 --> 00:09:34.480
+Die Lizenz zeigt Ihnen, bis wann Ihre Installation gültig ist.
+
+93
+00:09:34.730 --> 00:09:38.287
+Rechtzeitig vor dem Ablauf erinnert Sie das System daran, sie zu verlängern.
+
+94
+00:09:38.542 --> 00:09:41.552
+In den Protokollen sehen Sie, was im System passiert ist.
+
+95
+00:09:41.802 --> 00:09:44.803
+Bei einer Störung finden Sie hier schnell die Ursache.
+
+96
+00:09:57.358 --> 00:10:01.111
+Nachrichten informieren Sie über Neuigkeiten und wichtige Hinweise.
+
+97
+00:10:02.681 --> 00:10:06.310
+Brauchen Sie Hilfe, erreichen Sie den Support direkt aus der Oberfläche.
+
+98
+00:10:06.560 --> 00:10:10.530
+Sie müssen dafür weder eine andere Seite öffnen noch ein Formular suchen.
+
+99
+00:10:23.302 --> 00:10:26.853
+Und mit der Wiederherstellung sichern Sie Ihren Zugang für den Notfall.
+
+100
+00:10:27.103 --> 00:10:31.103
+Betrieb, Lizenz und Support sind in derselben Oberfläche erreichbar.
+
+101
+00:10:39.004 --> 00:10:42.145
+SovereignMind funktioniert auch auf dem Smartphone.
+
+102
+00:10:42.395 --> 00:10:46.212
+Sie stellen dieselbe Frage und erhalten dieselbe Antwort mit Quelle.
+
+103
+00:10:46.462 --> 00:10:50.607
+Im Firmennetz ist sie auch auf dem Telefon nutzbar, ohne zusätzliche App.
+
+104
+00:10:50.857 --> 00:10:54.194
+Damit endet unser Rundgang, vielen Dank fürs Zuschauen.

@@ -25,8 +25,15 @@
 # Umgebungsvariablen:
 #   SM_VERSION, SM_SOURCE_DIR, SM_DOWNLOAD_DIR (Arbeitsordner, Standard $env:TEMP\SovereignMind-Install), SM_KEEP=1, SM_SETUP_ARGS, SM_DRY_RUN=1,
 #   SM_ELEVATE y/n (Frage "in neuem Administrator-Fenster fortfahren?" vorab beantworten), SM_CHAT_HOST, SM_ADMIN_HOST
-#   Nur fuer Tests: SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_FREE_INSTALL_KB, SM_NO_ELEVATE=1, SM_IS_ADMIN=0/1, SM_ELEVATE_DRY=1, SM_NO_SERVICE_CHECK=1,
-#   SM_REGISTRY_ROOT (Standard HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall), SM_STARTMENU_DIR
+#   SM_REQUIRE_SIGNATURE  leer (Standard): Signatur von SHA256SUMS.txt mit minisign.exe pruefen, wenn vorhanden, sonst Warnung und nur
+#                 Pruefsummen; 1: Pruefung erzwingen; 0: Release ohne Signatur zulassen (aeltere Versionen). Ungueltige Signatur bricht immer ab.
+#   SM_SKIP_HW_CHECK=1  Hardware-Hinweis (empfohlen: 16 GB RAM, 8 GB Grafikspeicher) ueberspringen; der Hinweis bricht nie ab
+#   Nur fuer Tests: SM_RAM_KB, SM_VRAM_MB, SM_API_URL, SM_BASE_URL, SM_FREE_KB, SM_FREE_INSTALL_KB, SM_NO_ELEVATE=1, SM_IS_ADMIN=0/1, SM_ELEVATE_DRY=1, SM_NO_SERVICE_CHECK=1,
+#   SM_REGISTRY_ROOT (Standard HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall), SM_STARTMENU_DIR, SM_MINISIGN_PUBKEY,
+#   SM_ACL_DRY=1 (Rechte des Installationsordners nur anzeigen)
+# Zielordner: neu, leer oder eine SovereignMind-Installation; ein fremder, nicht leerer Ordner wird abgelehnt. Die Installation legt dort die
+# Markerdatei .sovereignmind-installdir an (nur dann loescht tools\uninstall.ps1 den Ordner). Ausserhalb von %ProgramFiles% bekommt der Ordner
+# die Rechte wie unter Program Files (Administratoren und SYSTEM Vollzugriff, Benutzer und Dienste nur Lesen und Ausfuehren).
 # Administratorrechte: Laeuft PowerShell schon als Administrator, geht es ohne Abfrage weiter. Sonst fragt das Skript vor dem Download,
 # ob es in einem neuen Administrator-Fenster weitermachen soll (UAC sofort); bei "n" kommt die UAC-Abfrage nach dem Download.
 # Windows-Hinweis: eine heruntergeladene .ps1 blockiert SmartScreen/Ausfuehrungsrichtlinie; "Unblock-File .\install.ps1" oder
@@ -58,6 +65,11 @@ function Install-SovereignMind {
     $innoKey = "{7B1E5C42-3D6A-4E0F-9A58-5C2B8F1D6E73}_is1"   # Eintrag der frueheren Inno-Setup-Installation
     $keepOnError = $false
     $workCreated = $false
+    $installMarkerName = ".sovereignmind-installdir"
+    # Oeffentlicher minisign-Schluessel fuer SHA256SUMS.txt; derselbe steht in install.sh, in minisign.pub und auf der Download-Seite
+    # (Abschnitt Pruefsummen). Solange hier der Platzhalter steht, wird die Signatur nicht geprueft.
+    $minisignPubKey = if ($env:SM_MINISIGN_PUBKEY) { $env:SM_MINISIGN_PUBKEY } else { "PLATZHALTER_MINISIGN_PUBKEY" }
+    $secretNames = "LicenseToken", "AdminPassword", "RecoveryPassphrase"
     $global:LASTEXITCODE = 0
 
     function Status($text) { Write-Host ">>> $text" }
@@ -167,6 +179,90 @@ function Install-SovereignMind {
         return ((Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -eq $sums[$name])
     }
 
+    # Signatur von SHA256SUMS.txt (minisign, Entscheidung E4). Ohne minisign.exe nur eine Warnung (SM_REQUIRE_SIGNATURE=1 erzwingt die
+    # Pruefung), ein Release ohne Signatur nur mit SM_REQUIRE_SIGNATURE=0; eine ungueltige Signatur bricht immer ab.
+    function Test-SumsSignature([string]$sumsFile, [string]$sigFile, [string]$sigUrl) {
+        $require = "$env:SM_REQUIRE_SIGNATURE"
+        if ($minisignPubKey -like "PLATZHALTER*") {
+            if ($require -eq "1") { Fail "SM_REQUIRE_SIGNATURE=1, aber dieses Skript enthaelt noch keinen oeffentlichen minisign-Schluessel." }
+            Write-Warning "Signaturpruefung uebersprungen: dieses Skript enthaelt noch keinen oeffentlichen minisign-Schluessel. Geprueft werden nur die SHA-256-Pruefsummen."
+            return
+        }
+        $minisign = Get-Command minisign -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $minisign) {
+            if ($require -eq "1") { Fail "minisign fehlt (SM_REQUIRE_SIGNATURE=1). Installieren: winget install jedisct1.minisign" }
+            Write-Warning "minisign ist nicht installiert: die Signatur von SHA256SUMS.txt wird nicht geprueft, nur die SHA-256-Pruefsummen. Empfohlen: 'winget install jedisct1.minisign' und erneut starten; `$env:SM_REQUIRE_SIGNATURE = '1' erzwingt die Pruefung."
+            return
+        }
+        if ($sigUrl) {
+            Remove-Item -LiteralPath $sigFile -Force -ErrorAction SilentlyContinue
+            try { Receive-File $sigUrl $sigFile } catch { Remove-Item -LiteralPath $sigFile -Force -ErrorAction SilentlyContinue }
+        }
+        if (-not (Test-Path -LiteralPath $sigFile)) {
+            if ($require -eq "0") { Write-Warning "Keine Signatur (SHA256SUMS.txt.minisig); SM_REQUIRE_SIGNATURE=0: nur Pruefsummen."; return }
+            Fail "Keine Signatur gefunden (SHA256SUMS.txt.minisig). Aeltere Versionen ohne Signatur nur mit `$env:SM_REQUIRE_SIGNATURE = '0'."
+        }
+        $previousPreference = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+        & $minisign.Source -V -q -P $minisignPubKey -m $sumsFile -x $sigFile *> $null
+        $code = $LASTEXITCODE
+        $ErrorActionPreference = $previousPreference
+        if ($code -ne 0) { Fail "Die Signatur von SHA256SUMS.txt ist ungueltig. Nichts wurde installiert. Bitte nicht erneut versuchen, sondern den Anbieter informieren (Download-Seite, Abschnitt Pruefsummen)." }
+        Status "Signatur von SHA256SUMS.txt geprueft (minisign)."
+    }
+
+    # Pfade, die weder Installations- noch Datenordner sein duerfen (Installer-Review, Fund 7): Laufwerkswurzeln, Windows, Program Files,
+    # ProgramData, der Benutzerordner und das eigene Profil.
+    function Test-DangerousDir([string]$dir) {
+        if (-not $dir -or $dir -match '^[A-Za-z]:\\?$') { return $true }   # Laufwerk ohne Pfad (GetFullPath machte aus "C:" den aktuellen Ordner)
+        try { $full = [IO.Path]::GetFullPath($dir).TrimEnd("\") } catch { return $true }
+        if ($full -match '^[A-Za-z]:$' -or $full -match '^\\\\[^\\]+\\[^\\]+$' -or $full.Length -lt 4) { return $true }
+        $profileParent = if ($env:USERPROFILE) { Split-Path -Parent $env:USERPROFILE } else { "" }
+        $blocked = @($env:SystemRoot, $env:ProgramFiles, ${env:ProgramFiles(x86)}, $env:ProgramData, $env:USERPROFILE, $profileParent, $env:SystemDrive) |
+            Where-Object { $_ } | ForEach-Object { $_.TrimEnd("\") }
+        return [bool]($blocked | Where-Object { $_ -ieq $full })
+    }
+
+    # Zielordner (Fund 7): neu, leer, mit Markerdatei oder eine fruehere SovereignMind-Installation (eingetragener Ort unter "Apps & Features"
+    # bzw. VERSION und tools\install-native.ps1).
+    # Ein fremder, nicht leerer Ordner wird abgelehnt: die Deinstallation loeschte sonst fremde Dateien mit.
+    function Test-InstallTarget([string]$dir) {
+        if (Test-DangerousDir $dir) { Fail "$dir ist als Installationsordner nicht erlaubt (Laufwerk, Systemordner). Bitte einen eigenen Ordner angeben, z. B. D:\SovereignMind." }
+        if (-not (Test-Path -LiteralPath $dir)) { return $false }
+        $item = Get-Item -LiteralPath $dir -Force
+        if (-not $item.PSIsContainer) { Fail "$dir ist eine Datei, kein Ordner." }
+        if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { Fail "$dir ist eine Verknuepfung (Junction oder Symlink). Bitte einen echten Ordner angeben." }
+        if (Test-Path -LiteralPath (Join-Path $dir $installMarkerName)) { return $true }
+        if ($installedDir -and $installedDir.TrimEnd("\") -ieq $dir.TrimEnd("\")) { return $true }
+        if ((Test-Path -LiteralPath (Join-Path $dir "VERSION")) -and (Test-Path -LiteralPath (Join-Path $dir "tools\install-native.ps1"))) { return $true }
+        if (@(Get-ChildItem -LiteralPath $dir -Force -ErrorAction SilentlyContinue | Select-Object -First 1).Count -eq 0) { return $true }
+        Fail "Der Zielordner $dir ist nicht leer und enthaelt keine SovereignMind-Installation. Bitte einen leeren oder neuen Ordner angeben (-InstallDir)."
+    }
+
+    # Eigener Installationsordner ausserhalb von %ProgramFiles% (Fund 4): vor dem Entpacken dieselben Rechte wie unter Program Files.
+    # Administratoren und SYSTEM Vollzugriff, Benutzer und Dienste (S-1-5-6) nur Lesen und Ausfuehren, keine geerbten Rechte des
+    # Laufwerks (dort oft "Authentifizierte Benutzer: Aendern"). Vorhandene Dateien (Update) gehen an die Administratoren und erben nur noch.
+    function Protect-InstallDir([string]$dir, [bool]$existed) {
+        $full = ([IO.Path]::GetFullPath($dir)).TrimEnd("\") + "\"
+        foreach ($pf in @($env:ProgramFiles, ${env:ProgramFiles(x86)}) | Where-Object { $_ }) {
+            if ($full.StartsWith($pf.TrimEnd("\") + "\", [StringComparison]::OrdinalIgnoreCase)) { return }
+        }
+        $steps = @()
+        if ($existed) { $steps += , @(@($dir, "/setowner", "*S-1-5-32-544", "/T", "/C", "/Q"), $false) }
+        $steps += , @(@($dir, "/inheritance:r", "/grant:r", "*S-1-5-18:(OI)(CI)F", "*S-1-5-32-544:(OI)(CI)F", "*S-1-5-32-545:(OI)(CI)RX", "*S-1-5-6:(OI)(CI)RX", "/C", "/Q"), $true)
+        if ($existed) { $steps += , @(@((Join-Path $dir "*"), "/reset", "/T", "/C", "/Q"), $false) }
+        foreach ($step in $steps) {
+            $arguments = $step[0]
+            if ($env:SM_ACL_DRY -eq "1") { Status "Wuerde Rechte setzen: icacls $($arguments -join ' ')"; continue }
+            & icacls.exe @arguments | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                if ($step[1]) { Fail "Die Rechte fuer $dir liessen sich nicht setzen (icacls Exit $LASTEXITCODE)." }
+                Write-Warning "icacls $($arguments[1]) fuer $dir endete mit Exit $LASTEXITCODE (einzelne Dateien gesperrt?)."
+            }
+        }
+        Status "Rechte fuer $dir gesetzt: Administratoren und SYSTEM Vollzugriff, Benutzer und Dienste nur Lesen und Ausfuehren."
+    }
+
     function Read-Sums([string]$file) {
         $sums = @{}
         foreach ($line in (Get-Content -LiteralPath $file)) {
@@ -186,6 +282,35 @@ function Install-SovereignMind {
             if ($x -gt $y) { return 1 }
         }
         return 0
+    }
+
+    # Hinweis, kein Abbruch: SovereignMind laeuft auch mit weniger, aber Antworten und Dokumentenverarbeitung werden dann langsam oder scheitern.
+    # Empfohlen (Website): 16 GB RAM, 8 GB Grafikspeicher; etwas Spielraum, weil Windows weniger als den eingebauten Speicher meldet.
+    function Test-Hardware {
+        if ($env:SM_SKIP_HW_CHECK -eq "1") { return }
+        $ramKb = [int64]0
+        if ($env:SM_RAM_KB) { [void][int64]::TryParse($env:SM_RAM_KB, [ref]$ramKb) }
+        else {
+            try { $ramKb = [int64]((Get-CimInstance -ClassName Win32_ComputerSystem -ErrorAction Stop).TotalPhysicalMemory / 1024) } catch { $ramKb = 0 }
+        }
+        # Grafikspeicher: nur nvidia-smi ist verlaesslich (Win32_VideoController.AdapterRAM laeuft bei 4 GB ueber).
+        $vramMb = [int64]0
+        if ($env:SM_VRAM_MB) { [void][int64]::TryParse($env:SM_VRAM_MB, [ref]$vramMb) }
+        elseif (Get-Command nvidia-smi -ErrorAction SilentlyContinue) {
+            try {
+                $values = & nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits 2>$null | ForEach-Object { $n = [int64]0; if ([int64]::TryParse($_.Trim(), [ref]$n)) { $n } }
+                if ($values) { $vramMb = [int64]($values | Measure-Object -Maximum).Maximum }
+            } catch { $vramMb = 0 }
+        }
+        if ($ramKb -gt 0 -and $ramKb -lt [int64]15 * 1024 * 1024) {
+            Write-Warning ("Arbeitsspeicher: {0} GB erkannt, empfohlen sind 16 GB. Die Installation laeuft weiter; mit weniger Speicher koennen grosse Dokumente und lange Antworten scheitern." -f [int64]($ramKb / 1024 / 1024))
+        }
+        if ($vramMb -le 0) {
+            Status "Grafikspeicher nicht ermittelt (keine NVIDIA-Karte mit nvidia-smi gefunden). Empfohlen sind 8 GB; ohne passende Grafikkarte antwortet die KI deutlich langsamer."
+        }
+        elseif ($vramMb -lt [int64]7 * 1024) {
+            Write-Warning ("Grafikspeicher: {0} GB erkannt, empfohlen sind 8 GB. Die Installation laeuft weiter; die KI antwortet dann langsamer oder nutzt den Prozessor." -f [int64]($vramMb / 1024))
+        }
     }
 
     function Get-FreeKb([string]$path) {
@@ -215,14 +340,29 @@ function Install-SovereignMind {
     # Skriptdatei: die Funktion wird mit den aufgeloesten Optionen in eine Datei unter %TEMP% geschrieben, die sich beim Start
     # selbst loescht. Das erhoehte Fenster erbt die Umgebungsvariablen nicht sicher, daher stehen sie in der Datei.
     # Rueckgabe: $true, wenn das neue Fenster gestartet wurde.
+    # Geheimnisse (Lizenztoken, Admin-Passwort, Recovery-Passphrase) stehen nie im Klartext in dieser Datei (Installer-Review, Fund 6):
+    # sie gehen als DPAPI-Blob (nur dieses Windows-Konto kann ihn lesen) in eine eigene Datei, die das neue Fenster sofort liest und
+    # loescht. Erhoeht ein anderes Administratorkonto (Anmeldedaten in der UAC-Abfrage), fragt das neue Fenster erneut. Beide Dateien
+    # raeumt zusaetzlich ein Hilfsprozess nach zwei Minuten weg, falls das neue Fenster nie startet (z. B. Gruppenrichtlinie, AppLocker).
     function Start-Elevated([hashtable]$resolved) {
         $vars = [ordered]@{ SM_DOWNLOAD_DIR = $workDir; SM_ELEVATED = "1" }
-        foreach ($k in "SM_KEEP", "SM_API_URL", "SM_BASE_URL", "SM_FREE_KB", "SM_FREE_INSTALL_KB", "SM_REGISTRY_ROOT", "SM_STARTMENU_DIR", "SM_NO_SERVICE_CHECK", "SM_NO_ELEVATE") {
+        foreach ($k in "SM_KEEP", "SM_API_URL", "SM_BASE_URL", "SM_FREE_KB", "SM_FREE_INSTALL_KB", "SM_REGISTRY_ROOT", "SM_STARTMENU_DIR", "SM_NO_SERVICE_CHECK", "SM_NO_ELEVATE",
+            "SM_REQUIRE_SIGNATURE", "SM_MINISIGN_PUBKEY", "SM_ACL_DRY") {
             $v = [Environment]::GetEnvironmentVariable($k)
             if ($v) { $vars[$k] = $v }
         }
+        $stem = Join-Path ([IO.Path]::GetTempPath()) ("SovereignMind-Install-" + [guid]::NewGuid().ToString("N").Substring(0, 8))
+        $file = "$stem.ps1"
+        $secretFile = "$stem.secrets"
+        $secretLines = @()
+        foreach ($k in $secretNames) {
+            if (-not $resolved.ContainsKey($k) -or "$($resolved[$k])" -eq "") { continue }
+            $secure = New-Object Security.SecureString
+            foreach ($c in "$($resolved[$k])".ToCharArray()) { $secure.AppendChar($c) }
+            $secretLines += "$k=$(ConvertFrom-SecureString -SecureString $secure)"
+        }
         $lines = @(
-            "# Automatisch erzeugt von install.ps1 (SovereignMind); loescht sich beim Start selbst.",
+            "# Automatisch erzeugt von install.ps1 (SovereignMind); loescht sich beim Start selbst. Enthaelt keine Geheimnisse.",
             'Remove-Item -LiteralPath $PSCommandPath -Force -ErrorAction SilentlyContinue'
         )
         foreach ($k in $vars.Keys) { $lines += ('$env:{0} = ''{1}''' -f $k, ("$($vars[$k])" -replace "'", "''")) }
@@ -231,13 +371,39 @@ function Install-SovereignMind {
         $lines += "}"
         $lines += '$sm = @{}'
         foreach ($k in $resolved.Keys) {
+            if ($secretNames -contains $k) { continue }
             if ($resolved[$k] -is [bool]) { $lines += ('$sm[''{0}''] = ${1}' -f $k, $resolved[$k].ToString().ToLowerInvariant()) }
             else { $lines += ('$sm[''{0}''] = ''{1}''' -f $k, ("$($resolved[$k])" -replace "'", "''")) }
+        }
+        if ($secretLines.Count -gt 0) {
+            $lines += ('$smSecretFile = ''{0}''' -f ($secretFile -replace "'", "''"))
+            $lines += ('$smSecretNames = @({0})' -f ((@($secretLines | ForEach-Object { "'" + $_.Split("=")[0] + "'" })) -join ", "))
+            $lines += @'
+$smSecrets = @{}
+if (Test-Path -LiteralPath $smSecretFile) {
+    foreach ($smLine in @(Get-Content -LiteralPath $smSecretFile)) {
+        $smPair = $smLine.Split("=", 2)
+        try { $smSecrets[$smPair[0]] = [Net.NetworkCredential]::new("", (ConvertTo-SecureString $smPair[1])).Password } catch { }
+    }
+    Remove-Item -LiteralPath $smSecretFile -Force -ErrorAction SilentlyContinue
+}
+foreach ($smName in $smSecretNames) {
+    if ($smSecrets.ContainsKey($smName)) { continue }
+    $smLabel = @{ LicenseToken = "Lizenzschluessel"; AdminPassword = "Admin-Passwort"; RecoveryPassphrase = "Passphrase des Recovery-Kits" }[$smName]
+    Write-Warning "$smLabel liess sich nicht uebernehmen (anderes Administratorkonto oder Datei fehlt)."
+    try { $smInteractive = [Environment]::UserInteractive -and -not [Console]::IsInputRedirected } catch { $smInteractive = $false }
+    if ($smInteractive) {
+        $smSecure = Read-Host "$smLabel bitte erneut eingeben" -AsSecureString
+        $smSecrets[$smName] = [Net.NetworkCredential]::new("", $smSecure).Password
+    }
+}
+foreach ($smName in $smSecrets.Keys) { $sm[$smName] = $smSecrets[$smName] }
+'@
         }
         $lines += 'Install-SovereignMind @sm'
         $lines += 'if ($env:SM_NO_ELEVATE -ne "1") { Write-Host ""; Read-Host "Enter druecken, um das Fenster zu schliessen" | Out-Null }'
         $lines += 'exit $global:LASTEXITCODE'
-        $file = Join-Path ([IO.Path]::GetTempPath()) ("SovereignMind-Install-" + [guid]::NewGuid().ToString("N").Substring(0, 8) + ".ps1")
+        if ($secretLines.Count -gt 0) { [IO.File]::WriteAllLines($secretFile, [string[]]$secretLines, [Text.UTF8Encoding]::new($false)) }
         [IO.File]::WriteAllText($file, ($lines -join "`r`n"), [Text.UTF8Encoding]::new($true))
         if ($env:SM_ELEVATE_DRY -eq "1") {
             Status "Wuerde mit Administratorrechten fortsetzen: $file"
@@ -246,13 +412,20 @@ function Install-SovereignMind {
         $shell = (Get-Process -Id $PID).Path
         try {
             Start-Process -FilePath $shell -Verb RunAs -ArgumentList "-NoProfile -ExecutionPolicy Bypass -File `"$file`"" | Out-Null
-            return $true
         }
         catch {
-            Remove-Item -LiteralPath $file -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $file, $secretFile -Force -ErrorAction SilentlyContinue
             Write-Host "Die Windows-Sicherheitsabfrage wurde abgelehnt oder abgebrochen." -ForegroundColor Yellow
             return $false
         }
+        # Aufraeumen auch dann, wenn das neue Fenster das Skript nie ausfuehrt (Ausfuehrungsrichtlinie per Gruppenrichtlinie, AppLocker).
+        $quoted = @($file, $secretFile | ForEach-Object { "'" + ($_ -replace "'", "''") + "'" }) -join ", "
+        try {
+            Start-Process -FilePath $shell -WindowStyle Hidden -ArgumentList @("-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command",
+                "Start-Sleep -Seconds 120; Remove-Item -LiteralPath $quoted -Force -ErrorAction SilentlyContinue") | Out-Null
+        }
+        catch { Write-Warning "Hilfsprozess zum Aufraeumen nicht gestartet; bitte $stem.* in %TEMP% loeschen, falls die Installation nicht startet." }
+        return $true
     }
 
     # --- Archiv: Teile .zip.001 ... werden als ein Strom gelesen (kein zusammengesetztes Archiv auf der Platte noetig) ----------
@@ -580,6 +753,9 @@ public static class SmArchive
             return
         }
 
+        # Zielordner pruefen, bevor etwas geladen wird (Fund 7)
+        $installDirExisted = Test-InstallTarget $installDir
+
         # 3. Quelle: Teile im Ordner neben dem Skript (Offline) oder aus dem GitHub-Release
         $localDir = ""
         if (Has "SourceDir") { $localDir = "$($o['SourceDir'])" }
@@ -660,6 +836,7 @@ public static class SmArchive
         if ($freeInstallKb -lt $needInstallKb) {
             Fail ("Zu wenig Platz fuer die Installation in {0}: frei {1} MiB, noetig ca. {2} MiB." -f $installDir, [int64]($freeInstallKb / 1024), [int64]($needInstallKb / 1024))
         }
+        Test-Hardware
         if ($variant -eq "minimal") { Write-Warning "Danach laedt die Installation ca. 11 GB KI-Modelle aus dem Internet; auf dem Systemlaufwerk ebenfalls genug Platz einplanen." }
 
         if (Flag "DryRun") {
@@ -669,12 +846,19 @@ public static class SmArchive
         }
 
         # 4. Pruefsummen und Teile
-        New-Item -ItemType Directory -Force $workDir | Out-Null
-        $workCreated = $true
+        # Nur einen selbst angelegten Arbeitsordner spaeter loeschen (Fund 2). Die Markerdatei kennzeichnet ihn auch fuer einen spaeteren
+        # Lauf (Wiederaufnahme nach einem Abbruch) und fuer die Fortsetzung im Administrator-Fenster; ein fremder Ordner bleibt stehen.
+        $workMarker = Join-Path $workDir ".sovereignmind-download"
+        if (-not (Test-Path -LiteralPath $workDir)) {
+            New-Item -ItemType Directory -Force $workDir | Out-Null
+            [IO.File]::WriteAllText($workMarker, "Arbeitsordner von install.ps1 (SovereignMind); wird nach der Installation geloescht.`r`n")
+        }
+        $workCreated = Test-Path -LiteralPath $workMarker
         $sums = @{}
         if ($local) {
             $sumsFile = Join-Path $localDir "SHA256SUMS.txt"
             if (-not (Test-Path -LiteralPath $sumsFile)) { Fail "SHA256SUMS.txt fehlt in $localDir (ohne Pruefsummen wird nichts installiert)." }
+            Test-SumsSignature $sumsFile (Join-Path $localDir "SHA256SUMS.txt.minisig") ""
             $sums = Read-Sums $sumsFile
             $partDir = $localDir
         }
@@ -683,6 +867,7 @@ public static class SmArchive
             Status "Lade Pruefsummen ..."
             Remove-Item -LiteralPath $sumsFile -Force -ErrorAction SilentlyContinue
             Receive-File "$base/SHA256SUMS.txt" $sumsFile
+            Test-SumsSignature $sumsFile "$sumsFile.minisig" "$base/SHA256SUMS.txt.minisig"
             $sums = Read-Sums $sumsFile
             $partDir = $workDir
         }
@@ -877,9 +1062,12 @@ public static class SmArchive
             if ($code -ne 0) { Fail "Die Vorbereitung des Updates ist fehlgeschlagen (Details: $dataDir\logs\install.log). Die bestehende Installation wurde nicht veraendert." }
         }
 
-        # 11. Entpacken
-        Status "Entpacke nach $installDir ..."
+        # 11. Entpacken: Zielordner erneut pruefen, sperren (eigener Ordner ausserhalb von Program Files) und markieren, dann entpacken
+        $installDirExisted = Test-InstallTarget $installDir
         New-Item -ItemType Directory -Force $installDir | Out-Null
+        Protect-InstallDir $installDir $installDirExisted
+        [IO.File]::WriteAllText((Join-Path $installDir $installMarkerName), "SovereignMind-Installationsordner (angelegt von install.ps1). tools\uninstall.ps1 loescht diesen Ordner nur, wenn diese Datei vorhanden ist.`r`n", (New-Object Text.UTF8Encoding($false)))
+        Status "Entpacke nach $installDir ..."
         $progress = [SmProgress] { param($done, $total, $name)
             if ($total -gt 0) { Write-Host ("    {0} von {1} MiB ({2} %)" -f [int64]($done / 1MB), [int64]($total / 1MB), [int]($done * 100 / $total)) }
         }

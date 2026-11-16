@@ -56,7 +56,7 @@ test('Nach dem Einsetzen (Testwerte) bleibt in der veröffentlichten Kopie kein 
   const tmp = mkdtempSync(join(tmpdir(), 'sm-site-'));
   try {
     // gleiche Ausschlüsse wie das tar in pages.yml
-    const EXCLUDE = new Set(['.git', '.github', 'scripts', 'tests', 'README.md', 'node_modules']);
+    const EXCLUDE = new Set(['.git', '.github', 'scripts', 'tests', 'README.md', 'SECURITY.md', 'node_modules']);
     const copy = (from, to) => {
       for (const name of readdirSync(from)) {
         if (from === root && EXCLUDE.has(name)) continue;

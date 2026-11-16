@@ -157,7 +157,7 @@
         <li>startet das Bundle; den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Terminal, das Skript stimmt nie für Sie zu,</li>
         <li>lädt die KI-Modelle (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt den Fortschritt im Terminal („Modell 2 von 4: … 63&nbsp;%“).</li>
       </ol>
-      <p class="muted">Das Skript arbeitet unter <code>/var/tmp/sovereignmind-install</code> (ca. 6&nbsp;GB frei nötig) und löscht den Ordner am Ende. <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ordner.</p>
+      <p class="muted">Das Skript legt unter <code>/var/tmp</code> einen eigenen, nur für Sie lesbaren Arbeitsordner an (ca. 6&nbsp;GB frei nötig) und löscht ihn am Ende. <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ort; ein vorhandener Ordner bleibt dabei stehen, das Skript löscht nur seinen eigenen Unterordner.</p>
       <details>
         <summary>Skript vorab lesen</summary>
         <p>Ohne <code>| sh</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> prüft nur und ändert nichts.</p>
@@ -328,6 +328,16 @@ Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind
       </table>
     </div>
     <p data-sha256-missing>Die Prüfsummen der aktuellen Version stehen in <code>SHA256SUMS.txt</code> auf der Release-Seite.</p>
+    <p id="signatur"><strong>Signatur der Prüfsummen (minisign):</strong> Prüfsummen erkennen beschädigte Downloads, aber kein ausgetauschtes Release: Wer das Release austauscht, kann auch <code>SHA256SUMS.txt</code> austauschen. Darum liegt daneben die Signatur <code>SHA256SUMS.txt.minisig</code>. Sie entsteht offline mit unserem privaten Schlüssel; den öffentlichen Schlüssel enthalten die Einzeiler-Skripte und diese Seite, also ein anderer Ort als das Release.</p>
+    <p>Die Einzeiler prüfen die Signatur selbst, wenn <a href="https://jedisct1.github.io/minisign/" rel="noopener" target="_blank">minisign</a> installiert ist (Linux: <code>sudo apt install minisign</code>, Windows: <code>winget install jedisct1.minisign</code>). Ohne minisign warnen sie und prüfen nur die Prüfsummen; mit <code>SM_REQUIRE_SIGNATURE=1</code> brechen sie dann ab. Eine ungültige Signatur bricht die Installation immer ab.</p>
+    <div data-minisign hidden>
+      <p>Öffentlicher Schlüssel: <code data-minisign-key></code></p>
+      <p>Von Hand prüfen, im Ordner mit <code>SHA256SUMS.txt</code> und <code>SHA256SUMS.txt.minisig</code> (danach die Summen der Dateien wie oben):</p>
+      <div class="cmd"><pre><code data-cmd="signatur-linux"></code></pre><button type="button" data-copy="signatur-linux">Kopieren</button></div>
+      <div class="cmd"><pre><code data-cmd="signatur-windows"></code></pre><button type="button" data-copy="signatur-windows">Kopieren</button></div>
+      <p>Die Ausgabe muss „Signature and comment signature verified“ lauten. Bei jeder anderen Ausgabe nichts installieren und uns über die <a href="index.html#kontakt">Kontaktadresse</a> informieren.</p>
+    </div>
+    <p data-minisign-missing>Die Signatur wird gerade eingeführt. Solange hier kein öffentlicher Schlüssel steht, haben die Releases noch keine Signatur, und die Einzeiler prüfen nur die Prüfsummen.</p>
     <p><strong>Windows-Warnung (SmartScreen):</strong> Das Installationspaket und <code>install.ps1</code> sind nicht mit einem Zertifikat signiert. Windows kann deshalb „Der Computer wurde durch Windows geschützt“ anzeigen. Prüfen Sie die Prüfsumme der Datei; stimmt sie, wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“. Das Setup bleibt eine Verwaltungsaufgabe und braucht ohnehin Administratorrechte.</p>
 
     <h2>Lizenz und Wissenspakete</h2>

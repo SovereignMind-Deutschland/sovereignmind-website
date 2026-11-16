@@ -35,8 +35,8 @@ jobs:
           PROVIDER_VAT_ID: ${{ secrets.PROVIDER_VAT_ID }}
         run: |
           mkdir _site
-          tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts --exclude=./tests --exclude=./README.md -cf - . | tar -xf - -C _site
-          python3 scripts/render-provider.py _site/index.html _site/impressum.html _site/datenschutz.html
+          tar --exclude=./_site --exclude=./.git --exclude=./.github --exclude=./scripts --exclude=./tests --exclude=./README.md --exclude=./SECURITY.md -cf - . | tar -xf - -C _site
+          python3 scripts/render-provider.py _site/index.html _site/impressum.html _site/datenschutz.html _site/.well-known/security.txt _site/assets/api/openapi.json
           python3 scripts/check-platzhalter.py --any _site
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -47,3 +47,15 @@ test('Keine toten Anker auf der Startseite', () => {
   const tot = [...index.matchAll(/href="#([^"]+)"/g)].map((m) => m[1]).filter((a) => !ids.has(a));
   assert.deepEqual(tot, [], `tote Anker: ${tot.join(', ')}`);
 });
+
+test('Versionszeile und Statushinweis springen nicht (CLS, Entscheidung E24)', () => {
+  // Der Statushinweis steht statisch im HTML, nicht per JS eingefügt.
+  for (const seite of ['index.html', 'download.html', 'api.html']) {
+    assert.match(lesen(seite), /<div class="note warn" data-status-note><strong>Entwurf:<\/strong>/, `${seite}: Statushinweis fehlt im HTML`);
+  }
+  assert.ok(!/data-status-note/.test(js), 'app.js fasst den Statushinweis an');
+  // Die Versionszeile füllt app.js nach dem Laden von downloads.json; ihr Platz ist vorab reserviert.
+  assert.match(index, /<p class="version" data-version hidden><\/p>/);
+  assert.match(css, /\[data-version\] \{ min-height: 1lh; \}/);
+  assert.match(css, /\[data-version\]\[hidden\] \{ display: block !important; visibility: hidden; \}/);
+});
