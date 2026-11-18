@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 const BASE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
 const INDEXIERBAR = { 'index.html': '', 'download.html': 'download.html', 'wissenspakete.html': 'wissenspakete.html', 'vergleich.html': 'vergleich.html', 'on-premise-ki.html': 'on-premise-ki.html', 'api.html': 'api.html' };
+// Seiten mit englischer Fassung unter en/ (Plan website-stil-animationen, Phase 2)
+const EN_SEITEN = ['index.html', 'download.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
 const NOINDEX = ['impressum.html', 'datenschutz.html', '404.html'];
 const lesen = (f) => readFileSync(join(root, f), 'utf8');
 const meta = (html, attr, name) => (html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`)) || [])[1];
@@ -79,7 +81,8 @@ test('JSON-LD enthält weder Preis noch Bewertung; Anbietername bleibt Platzhalt
 test('Sitemap listet genau die indexierbaren Seiten; robots.txt verweist darauf, sperrt nur KI-Trainings-Crawler', () => {
   const sitemap = lesen('sitemap.xml');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
-  assert.deepEqual(urls, Object.values(INDEXIERBAR).map((p) => BASE + p).sort());
+  const en = Object.entries(INDEXIERBAR).filter(([f]) => EN_SEITEN.includes(f)).map(([, p]) => BASE + 'en/' + p);
+  assert.deepEqual(urls, [...Object.values(INDEXIERBAR).map((p) => BASE + p), ...en].sort());
   const robots = lesen('robots.txt');
   assert.match(robots, new RegExp(`^Sitemap: ${BASE}sitemap\.xml$`, 'm'));
   // Gruppen (durch Leerzeile getrennt): "*" darf nichts sperren (noindex muss lesbar bleiben), KI-Trainings-Crawler sind komplett gesperrt.

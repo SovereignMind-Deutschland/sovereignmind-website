@@ -12,6 +12,17 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | `api.html` | API-Dokumentation aus `assets/api/openapi.json`: Einleitung, Ablauf, Endpunkte mit Parametern, Antworten und Codebeispielen (curl, C#, Python, JavaScript), Datentypen; Renderer `assets/api-doku.js`, Stile `assets/api-doku.css` |
 | `praesentation/` | Präsentation (18 Folien, mit „Ausprobieren“) |
 
+## Sprachen (Deutsch und Englisch)
+
+Deutsch ist die Quelle und bleibt unter der Wurzel-URL; die englischen Seiten liegen unter `en/` (Start, Download, Vergleich, On-Premise-KI, API-Einleitung). Wissenspaket-Katalog, Impressum, Datenschutz, 404 und Präsentation sind nur deutsch; im englischen Footer sind Rechtstexte als „(German)“ gekennzeichnet.
+
+- **`en/*.html` wird erzeugt, nicht von Hand bearbeitet:** `node scripts/build-i18n.mjs` (ohne Abhängigkeiten) erzeugt `en/` aus den deutschen Seiten und `i18n/en.txt`, pflegt den Sprachumschalter `DE | EN` (zwischen `<!--lang-switch-->`-Markern) und die `hreflang`-Links in den deutschen Seiten und schreibt `sitemap.xml`. Das Ergebnis wird eingecheckt; `pages.yml` bleibt ein reines Kopieren (kein Build beim Ausliefern, `i18n/` wird nicht veröffentlicht).
+- **Übersetzungstabelle `i18n/en.txt`:** je Eintrag eine Zeile `> deutscher Text` und eine Zeile `< englischer Text`. Der deutsche Text ist der Schlüssel (Element-Inhalt inklusive Inline-Markup, Leerraum normalisiert). Wird ein deutscher Text geändert, fehlt der Eintrag: `node scripts/build-i18n.mjs --missing` listet die Lücken, der Test schlägt an. Fehlt eine Übersetzung, bleibt der deutsche Text stehen, nie ein Schlüssel. Begriffe wie im App-Glossar (`Support/docs/i18n-glossar.md` im Hauptprojekt).
+- **Skripte:** `assets/theme.js` setzt `window.SM` (`en`, `root`, `t(de, en)`); `en/` hat `<html lang="en" data-root="../">`. Texte in `app.js`, `demo.js`, `vergleich.js` kommen über `SM.t(...)`, Pfade über `SM.root`. Englische Zusatzfelder der Kostendaten: `typ_en`, `text_en` in `assets/kosten.json`.
+- **Umschalter:** zwei Links in der Navigation, führen zur gleichen Seite der anderen Sprache; auf Seiten ohne englische Fassung ist EN ausgegraut (`<span class="lang-off" aria-disabled="true">`, Hinweis „Only available in German“). Keine Zwangsumleitung, keine Cookies, keine Abfrage der Browsersprache.
+- **Neue Seite oder neuer Text:** deutsch schreiben, `node scripts/build-i18n.mjs --missing`, Einträge in `i18n/en.txt` ergänzen, dann `node scripts/build-i18n.mjs`. Neue englische Seite: in `EN_PAGES` (`scripts/build-i18n.mjs`) eintragen.
+- Bekannte Grenzen: Screenshots und Demo-Video sind deutsch; Sprachproben im Beispiel-Chat sprechen auf der englischen Seite mit der Browser-Stimme; der Endpunkt-Katalog der API-Seite (`openapi.json`, `api-doku.js`) bleibt deutsch.
+
 ## Lokal ansehen
 
 ```bash

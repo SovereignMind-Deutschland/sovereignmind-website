@@ -3,7 +3,8 @@
 
   // Zentrale Konfiguration: Befehle hier, Version/Release in assets/downloads.json (von Hand pflegen).
   // Die Skripte liegen im Wurzelordner der Seite (install.sh, install.ps1; Kopie aus dem Hauptprojekt, sync-website-install.sh).
-  var DOWNLOADS_JSON = 'assets/downloads.json';
+  var SM = window.SM || { en: false, root: '', t: function (de) { return de; } };
+  var DOWNLOADS_JSON = SM.root + 'assets/downloads.json';
   var SITE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
   var PS1 = SITE + 'install.ps1';
   var SH = SITE + 'install.sh';
@@ -104,7 +105,7 @@
         if (version) {
           renderCommands(version);
           document.querySelectorAll('[data-version]').forEach(function (el) {
-            el.textContent = 'Aktuelle Version: ' + version;
+            el.textContent = SM.t('Aktuelle Version: ', 'Current version: ') + version;
             el.hidden = false;
           });
         }
@@ -155,7 +156,7 @@
       if (!code) return;
       function done(ok) {
         var old = btn.textContent;
-        btn.textContent = ok ? 'Kopiert' : 'Markiert – Strg+C';
+        btn.textContent = ok ? SM.t('Kopiert', 'Copied') : SM.t('Markiert – Strg+C', 'Selected – Ctrl+C');
         setTimeout(function () { btn.textContent = old; }, 1800);
       }
       function fallback() {
@@ -177,23 +178,23 @@
   // Screenshot-Galerie mit Lightbox (ohne JS bleibt die statische Auswahl mit Links auf die Originale)
   var gallery = document.querySelector('[data-gallery]');
   if (gallery) {
-    var BASE = 'assets/screenshots/';
+    var BASE = SM.root + 'assets/screenshots/';
     var SHOTS = [
-      ['chat', 'Chat mit Quellenbelegen'],
-      ['chat-assistenten', 'Assistenten im Chat wählen'],
-      ['einstellungen', 'Einstellungen'],
-      ['login', 'Anmeldung'],
-      ['chat-mobil', 'Chat auf dem Smartphone'],
-      ['admin-nutzung', 'Admin: Nutzung'],
-      ['admin-profil', 'Admin: Profil'],
-      ['admin-nutzer', 'Admin: Nutzer'],
-      ['admin-dokumente', 'Admin: Dokumente'],
-      ['admin-unternehmen', 'Admin: Unternehmen'],
-      ['admin-ki-einstellungen', 'Admin: KI-Einstellungen'],
-      ['admin-connectors', 'Admin: Schnittstellen'],
-      ['admin-connector-vorlagen', 'Admin: Schnittstellen-Vorlagen'],
-      ['admin-dashboard', 'Admin: Dashboard'],
-      ['admin-support', 'Admin: Support']
+      ['chat', SM.t('Chat mit Quellenbelegen', 'Chat with source citations')],
+      ['chat-assistenten', SM.t('Assistenten im Chat wählen', 'Choosing assistants in the chat')],
+      ['einstellungen', SM.t('Einstellungen', 'Settings')],
+      ['login', SM.t('Anmeldung', 'Sign-in')],
+      ['chat-mobil', SM.t('Chat auf dem Smartphone', 'Chat on a smartphone')],
+      ['admin-nutzung', SM.t('Admin: Nutzung', 'Admin: usage')],
+      ['admin-profil', SM.t('Admin: Profil', 'Admin: profile')],
+      ['admin-nutzer', SM.t('Admin: Nutzer', 'Admin: users')],
+      ['admin-dokumente', SM.t('Admin: Dokumente', 'Admin: documents')],
+      ['admin-unternehmen', SM.t('Admin: Unternehmen', 'Admin: company')],
+      ['admin-ki-einstellungen', SM.t('Admin: KI-Einstellungen', 'Admin: AI settings')],
+      ['admin-connectors', SM.t('Admin: Schnittstellen', 'Admin: connectors')],
+      ['admin-connector-vorlagen', SM.t('Admin: Schnittstellen-Vorlagen', 'Admin: connector templates')],
+      ['admin-dashboard', SM.t('Admin: Dashboard', 'Admin: dashboard')],
+      ['admin-support', SM.t('Admin: Support', 'Admin: support')]
     ];
     var BRANDED = ['chat', 'einstellungen', 'admin-nutzung', 'admin-profil'];
     var state = {
@@ -243,7 +244,7 @@
         fig.className = 'shot' + (s[0] === 'chat-mobil' ? ' portrait' : '');
         var b = document.createElement('button');
         b.type = 'button';
-        b.setAttribute('aria-label', s[1] + ' vergrößern');
+        b.setAttribute('aria-label', s[1] + SM.t(' vergrößern', ': enlarge'));
         var img = document.createElement('img');
         img.src = src(s[0]);
         img.alt = s[1];
@@ -282,23 +283,66 @@
     syncControls();
     render();
   }
-  // Animationen: Einblenden beim Scrollen und Pipeline "So funktioniert es". Ohne JS, ohne IntersectionObserver
-  // oder bei "Bewegung reduzieren" wird nichts versteckt (Startzustand setzt nur dieses Skript).
+  // Animationen: Einblenden beim Scrollen, Zähler, Aktionsbalken und Pipeline "So funktioniert es".
+  // Ohne JS, ohne IntersectionObserver oder bei "Bewegung reduzieren" wird nichts versteckt (Startzustand setzt nur dieses Skript).
   var calmMotion = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   if (calmMotion && 'IntersectionObserver' in window) {
+    var hidden = [];
+    var release = function (el) {
+      el.classList.add('in');
+      if (io) io.unobserve(el);
+    };
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        e.target.classList.add('in');
-        io.unobserve(e.target);
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('section.calm .wrap > h2, section.calm .wrap > .lead, section.calm .wrap > .more, .reasons li, .features li, .video, .dev').forEach(function (el, i) {
+      entries.forEach(function (e) { if (e.isIntersecting) release(e.target); });
+    }, { rootMargin: '0px 0px -6% 0px' });
+    var targetEl = null;
+    try { targetEl = location.hash.length > 1 ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null; } catch (e) { /* ungültiger Anker */ }
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    document.querySelectorAll('section.calm .wrap > h2, section.calm .wrap > .lead, section.calm .wrap > .more, .reasons li, .features li, .video, .dev').forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      // Schon im Bild beim Laden oder im Zielabschnitt einer Sprungmarke: nicht verstecken (kein Aufblitzen)
+      if ((r.top < vh && r.bottom > 0) || (targetEl && (targetEl === el || targetEl.contains(el)))) return;
       var sibling = Array.prototype.indexOf.call(el.parentNode.children, el);
-      el.style.transitionDelay = Math.min(sibling, 5) * 80 + 'ms';
+      el.style.transitionDelay = (sibling % 3) * 80 + 'ms';
       el.classList.add('reveal');
+      el.addEventListener('transitionend', function done(ev) {
+        if (ev.propertyName !== 'transform' || !el.classList.contains('in')) return;
+        // Nach dem Einblenden Klasse entfernen: Hover-Übergänge der Karten gelten wieder
+        el.classList.remove('reveal', 'in');
+        el.style.transitionDelay = '';
+        el.removeEventListener('transitionend', done);
+      });
+      hidden.push(el);
       io.observe(el);
     });
+    // Sprung per Link innerhalb der Seite: alles Versteckte freigeben, damit kein Ziel leer bleibt
+    window.addEventListener('hashchange', function () { hidden.forEach(release); });
+
+    // Hochzählende Kennzahlen: Endzahl steht im HTML, der Zähler ist nur Verbesserung
+    var counters = document.querySelectorAll('[data-count]');
+    if (counters.length) {
+      var co = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          co.unobserve(e.target);
+          var el = e.target;
+          var end = parseInt(el.getAttribute('data-count'), 10);
+          if (!isFinite(end)) return;
+          var text = el.textContent;
+          var start = null;
+          var step = function (t) {
+            if (start === null) start = t;
+            var p = Math.min((t - start) / 1400, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = p < 1 ? String(Math.round(end * eased)) : text;
+            if (p < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+      }, { threshold: 0.5 });
+      counters.forEach(function (el) { co.observe(el); });
+    }
+
     var flow = document.querySelector('[data-flow]');
     if (flow) {
       Array.prototype.forEach.call(flow.children, function (li, i) { li.style.setProperty('--i', i); });
@@ -307,6 +351,29 @@
         if (entries[0].isIntersecting) { flow.classList.add('run'); fo.disconnect(); }
       }, { threshold: 0.4 });
       fo.observe(flow);
+    }
+  }
+
+  // Fester Aktionsbalken (nur schmale Bildschirme per CSS): nach dem Hero sichtbar, am Kontaktabschnitt weg
+  var bar = document.querySelector('[data-action-bar]');
+  var heroEl = document.querySelector('.hero');
+  if (bar && heroEl && 'IntersectionObserver' in window) {
+    var pastHero = false;
+    var atContact = false;
+    var paintBar = function () { bar.classList.toggle('on', pastHero && !atContact); };
+    bar.hidden = false;
+    document.body.classList.add('has-action-bar');
+    new IntersectionObserver(function (entries) {
+      var e = entries[entries.length - 1];
+      pastHero = !e.isIntersecting && e.boundingClientRect.top < 0;
+      paintBar();
+    }).observe(heroEl);
+    var contact = document.getElementById('kontakt');
+    if (contact) {
+      new IntersectionObserver(function (entries) {
+        atContact = entries[entries.length - 1].isIntersecting;
+        paintBar();
+      }).observe(contact);
     }
   }
 })();

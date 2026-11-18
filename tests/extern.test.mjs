@@ -30,7 +30,7 @@ test('HTML: kein <script src>, <link href> oder <img/source src> auf fremde Serv
   for (const f of files.filter((x) => x.endsWith('.html'))) {
     const html = readFileSync(f, 'utf8');
     for (const m of html.matchAll(/<(script|link|source|img|iframe)\b[^>]*\b(?:src|href|srcset)\s*=\s*["']([^"']+)["']/gi)) {
-      if (/rel\s*=\s*["']canonical["']/i.test(m[0])) continue; // Canonical ist eine Angabe, nichts, was geladen wird
+      if (/rel\s*=\s*["'](canonical|alternate)["']/i.test(m[0])) continue; // Canonical und hreflang-Alternativen sind Angaben, nichts, was geladen wird
       assert.ok(!EXTERN.test(m[2].trim()), `${f}: externe URL in <${m[1]}>: ${m[2]}`);
     }
   }
@@ -57,7 +57,7 @@ test('Navigation: höchstens 6 Einträge, Skip-Link und genau eine Überschrift 
     const html = readFileSync(f, 'utf8');
     const nav = html.match(/<nav class="main"[\s\S]*?<\/nav>/);
     assert.ok(nav, `${f}: keine Hauptnavigation`);
-    const n = (nav[0].match(/<a /g) || []).length;
+    const n = (nav[0].replace(/<div class="lang-switch"[\s\S]*?<\/div>/, '').match(/<a /g) || []).length; // der Sprachumschalter zählt nicht als Eintrag
     assert.ok(n <= 6, `${f}: ${n} Navigationseinträge`);
     assert.match(html, /class="skip"/, `${f}: Skip-Link fehlt`);
     assert.equal((html.match(/<h1[ >]/g) || []).length, 1, `${f}: <h1> nicht genau einmal`);

@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On-premises AI assistant: what is it? – SovereignMind</title>
+  <meta name="description" content="What an on-premises AI assistant is, when it is worthwhile and what the GDPR and shadow IT have to do with it. Factual, without legal advice.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="On-premises AI assistant: what is it? – SovereignMind">
+  <meta property="og:description" content="What an on-premises AI assistant is, when it is worthwhile and what the GDPR and shadow IT have to do with it. Factual, without legal advice.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: the AI assistant that never lets your data leave">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="On-premises AI assistant: what is it? – SovereignMind">
+  <meta name="twitter:description" content="What an on-premises AI assistant is, when it is worthwhile and what the GDPR and shadow IT have to do with it. Factual, without legal advice.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "On-premises AI",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html"
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="../assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="../assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menu</button>
+      <nav class="main" id="hauptnav" aria-label="Main navigation">
+        <a href="index.html">Product</a>
+        <a href="../wissenspakete.html">Knowledge packages</a>
+        <a href="vergleich.html">Comparison</a>
+        <a href="api.html">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Language"><a lang="de" hreflang="de" href="../on-premise-ki.html" title="Deutsch">DE</a><a lang="en" hreflang="en" href="on-premise-ki.html" aria-current="true" title="English">EN</a></div><!--/lang-switch-->
+        <a class="btn" href="download.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">What is an on-premises AI assistant, and when is it worthwhile?</h1>
+    <p><strong>An on-premises AI assistant is an AI chat whose language model and document search run on the organization’s own hardware instead of at a cloud provider.</strong> Questions and documents stay on your own network. It is worthwhile mainly when sensitive documents should not go to third parties and many people use the same installation. As of: October 2026.</p>
+    <div class="note warn"><strong>Important:</strong> SovereignMind is currently provided only as a demo for evaluation (no production use, license offer open). This page explains the concept in general terms and is not legal advice.</div>
+
+    <h2>What does “on-premises” mean for AI?</h2>
+    <p>“On-premises” means the software runs in your own environment, on a server or workstation the organization operates itself. With a cloud assistant the same thing runs at the provider. With SovereignMind the language model (llama.cpp), document search (Qdrant) and database (PostgreSQL) run locally; there is no connection to cloud AI services.</p>
+
+    <h2>How does it answer questions about your own documents?</h2>
+    <p>The method is called retrieval-augmented generation (RAG): documents are split up and made searchable. When a question comes in, the system finds the matching passages and has the language model formulate an answer from them. SovereignMind links the answer to the original document so it can be verified.</p>
+
+    <h2>What does this have to do with the GDPR?</h2>
+    <p>If documents contain personal data, the GDPR applies to their processing, even when an AI service processes them. Typical points to clarify with a cloud service:</p>
+    <ul>
+      <li>A data processing agreement with the provider (Art. 28 GDPR).</li>
+      <li>The location of processing; transfers to third countries are subject to special conditions (Art. 44 ff. GDPR).</li>
+      <li>For professional secrecy (for example law firms, medical practices), the professional rules also apply, such as § 203 of the German Criminal Code (StGB).</li>
+    </ul>
+    <p>Local operation avoids passing data to a provider, but does not replace the other obligations (legal basis, access rights, deletion concept). Whether use is permitted is something to clarify with your data protection officer.</p>
+
+    <h2>What is shadow IT, and why does it matter here?</h2>
+    <p>Shadow IT means services that employees use without IT approval, such as private accounts with cloud chatbots. Where no approved alternative exists, the temptation to paste documents there is great. A solution provided internally can reduce the risk but does not prevent private use on its own. That also takes rules and training.</p>
+
+    <h2>When is a local assistant worthwhile, and when is cloud better?</h2>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Decision aid, scrolls horizontally">
+      <table>
+        <caption>Decision aid: local or cloud (as of October 2026)</caption>
+        <thead><tr><th scope="col">Criterion</th><th scope="col">More local</th><th scope="col">More cloud</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Documents</th><td>Confidential, professional secrecy, personnel or design data</td><td>Not very sensitive</td></tr>
+          <tr><th scope="row">Number of users</th><td>Many users on one installation</td><td>Few or strongly fluctuating number of users</td></tr>
+          <tr><th scope="row">Costs</th><td>Fixed costs for hardware and operation</td><td>License per user, partly usage-based</td></tr>
+          <tr><th scope="row">Model quality</th><td>Local open-weight models, limited by the hardware</td><td>Strongest available models</td></tr>
+          <tr><th scope="row">Operation</th><td>Own hardware, updates, backup</td><td>Hardly any operating effort</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Figures and assumptions are in the <a href="vergleich.html">comparison with a cost example and sources</a>.</p>
+
+    <h2>What hardware does a local assistant need?</h2>
+    <p>SovereignMind recommends 8 GB of graphics memory (VRAM) and 16 GB of RAM; the installer does not check these values. The model is chosen by available VRAM; running on the processor alone is possible but slower. Quality and speed depend on the hardware.</p>
+
+    <h2>More about the product</h2>
+    <p>The details deliberately left out of the <a href="index.html">home page</a>: use cases, all features, assistants with voices and interfaces, architecture and the full screenshot gallery.</p>
+    <section class="block" id="einsatz">
+        <h2>What would you use it for?</h2>
+        <p class="lead">Sensitive documents must not go into a US cloud, and searching folders costs time every day. Without an approved alternative, content often ends up in private ChatGPT accounts. SovereignMind answers questions in-house and shows where the answer comes from.</p>
+        <dl class="rows">
+          <div><dt>Law firms</dt><dd>Search contracts and files without handing over client data.<span class="beispiel">Example question: “What notice period applies to the maintenance contract with Müller GmbH?”</span></dd></div>
+          <div><dt>HR departments</dt><dd>Query policies and personnel records without them leaving the building.<span class="beispiel">Example question: “How many vacation days do new employees get in their first year?”</span></dd></div>
+          <div><dt>Healthcare</dt><dd>Make manuals and documentation usable by asking, without them leaving the building.<span class="beispiel">Example question: “According to the manual, how must the device be reprocessed between two patients?”</span></dd></div>
+          <div><dt>Industry</dt><dd>Find manuals and production plans by asking instead of searching folders.<span class="beispiel">Example question: “What tightening torque applies to the clamping plate according to the maintenance manual?”</span></dd></div>
+        </dl>
+        <p class="actions-row"><a class="btn secondary" href="vergleich.html">Local or cloud? To the comparison</a> <a class="btn secondary" href="../wissenspakete.html">View knowledge packages (German)</a></p>
+    </section>
+
+    <section class="block" id="funktionen">
+        <h2>Features</h2>
+        <div class="feature-main">
+          <h3>Questions to your own documents</h3>
+          <div>
+            <p>Questions in natural language, answers in the language of the question, with clickable links to the original document. PDFs, DOCX files, spreadsheets and more are read and made searchable automatically, with categories, duplicate detection and processing status.</p>
+          </div>
+        </div>
+        <dl class="rows">
+          <div><dt>Local AI</dt><dd>The language model and embeddings run on your hardware (llama.cpp). The chat model is chosen automatically by available VRAM (NVIDIA, AMD, Intel, otherwise CPU).</dd></div>
+          <div><dt>Users and roles</dt><dd>Admin and member, custom branding per company.</dd></div>
+          <div><dt>Assistants and prompt library</dt><dd>Assistants with a role, personality, avatar and their own voice, plus reusable templates for the whole team.</dd></div>
+          <div><dt>Connecting internal systems</dt><dd>HTTP interfaces (DMS, ERP, specialist databases) can be connected as tools that the model calls itself when needed. Ready-made templates for HubSpot, Microsoft 365, Jira and more.</dd></div>
+          <div><dt>Answer cache</dt><dd>Repeated questions are answered faster: search results and, optionally, finished answers are cached. Permissions and the state of knowledge still apply; the operator can clear the cache or reset it to default.</dd></div>
+          <div><dt>Files in chat</dt><dd>Upload documents directly in a chat without storing them permanently.</dd></div>
+          <div><dt>Language</dt><dd>Read-aloud with multiple voices, processed locally. The operator enables it per company. Dictation is not yet available.</dd></div>
+          <div><dt>Knowledge packages</dt><dd>Preprocessed laws and regulations as packages that the operator installs from the catalog or imports as a file.</dd></div>
+          <div><dt>Themes</dt><dd>Each user chooses style, light/dark and accent color; the company can set an accent color.</dd></div>
+          <div><dt>Support messages</dt><dd>Users write to the operator through a contact form directly from the app.</dd></div>
+          <div><dt>Admin area</dt><dd>Users, documents, branding, license, AI settings, knowledge packages, support, usage statistics, logs and a dashboard with hardware load.</dd></div>
+        </dl>
+    </section>
+
+    <section class="block" id="assistenten">
+        <h2>Assistants, voices and interfaces</h2>
+        <p class="lead">Each company puts together its own assistants: with expertise, character, face and voice, and with access to the systems that already run in-house. The sample chat above comes with four assistants.</p>
+
+        <h3 class="sub">Configure assistants</h3>
+        <dl class="rows">
+          <div><dt>Roles</dt><dd>A role carries the specialist instruction, for example “contract reviewer”. Each assistant has at most one; if the role is deleted, the assistants remain.</dd></div>
+          <div><dt>Personality</dt><dd>The operator sets tone and character per assistant, plus display name and an additional instruction. Clara, Jonas, Sam and Robin are supplied.</dd></div>
+          <div><dt>Avatar</dt><dd>One of 20 supplied templates (AI-generated faces and illustrations) or your own image. In the chat the avatar appears next to every answer, with the note “AI assistant”.</dd></div>
+          <div><dt>Knowledge and tools</dt><dd>Per assistant, document categories can be assigned as a knowledge base and interfaces as tools.</dd></div>
+          <div><dt>Own voice</dt><dd>The operator assigns a voice to each assistant. Members choose: default, the assistant’s voice or their own voice.</dd></div>
+          <div><dt>Prompt library</dt><dd>Reusable templates that users insert into the chat with one click.</dd></div>
+        </dl>
+
+        <h3 class="sub">Connection via API</h3>
+        <p class="lead">The model calls connected systems itself when needed. The calls appear as an expandable card in the chat, credentials are stored encrypted, and an allowlist limits the permitted target hosts.</p>
+        <dl class="rows">
+          <div><dt>Provider templates</dt><dd>Ready-made templates for HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (trades software) and Microsoft 365 with OAuth2. All read-only.</dd></div>
+          <div><dt>Custom connectors</dt><dd>Generic scaffolds for full-text search, appointment lookup and ticket status, adaptable to any internal HTTP system such as DMS or ERP.</dd></div>
+          <div><dt>Guided setup</dt><dd>The template picker offers search, category filters, feature selection and notes on credentials and setup.</dd></div>
+        </dl>
+
+        <h3 class="sub">Voices</h3>
+        <p class="lead">Read-aloud runs entirely locally. Qwen3-TTS reads aloud on the CPU by default; the operator chooses the GPU, and its support is then downloaded.</p>
+        <dl class="rows">
+          <div><dt>Multiple voices</dt><dd>Ramona (default), Karlsson and Thorsten are available. Further voices can be added as small artifacts (about 45 KB) without changing the service.</dd></div>
+          <div><dt>Dictation (not yet available)</dt><dd>Voice input via faster-whisper is prepared but not yet released. The dictation button appears in the chat only once it is available.</dd></div>
+          <div><dt>Per company and user</dt><dd>The operator enables read-aloud and sets the default voice. Users choose their voice mode in their profile.</dd></div>
+        </dl>
+        <div class="voices">
+          <h4>Voice samples (Qwen3-TTS)</h4>
+          <div class="voice-row">
+            <figure><figcaption>Ramona (default)</figcaption><audio controls preload="none" src="../assets/voices/ramona.wav"></audio></figure>
+            <figure><figcaption>Karlsson</figcaption><audio controls preload="none" src="../assets/voices/karlsson.wav"></audio></figure>
+            <figure><figcaption>Thorsten</figcaption><audio controls preload="none" src="../assets/voices/thorsten.wav"></audio></figure>
+          </div>
+          <p class="demo-note">Sources: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Read-aloud in the sample chat uses your browser’s speech output as a preview; in the product the chosen voice reads aloud.</p>
+        </div>
+    </section>
+
+    <section class="block" id="architektur">
+        <h2>Architecture in brief</h2>
+        <p class="lead">After installation everything runs as a background service, without Docker and without WSL. The installer ships the AI server (llama.cpp) and the models.</p>
+        <div class="arch">
+        <picture class="light">
+          <source media="(max-width: 640px)" srcset="../assets/architektur-schmal-hell.svg" width="340" height="520">
+          <img src="../assets/architektur-hell.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360">
+        </picture>
+        <picture class="dark">
+          <source media="(max-width: 640px)" srcset="../assets/architektur-schmal-dunkel.svg" width="340" height="520">
+          <img src="../assets/architektur-dunkel.svg" alt="Web-Oberfläche greift auf das Backend zu; das Backend nutzt Inferenz, Vektordatenbank, Dokumentenverarbeitung, Sprache und PostgreSQL." width="760" height="360">
+        </picture>
+      </div>
+    </section>
+
+    <section class="block" id="screenshots">
+        <h2>Screenshots</h2>
+        <p class="lead">Chat, admin area and dashboard (sample data). A click enlarges the image.</p>
+        <div class="gallery-controls" data-gallery-controls hidden>
+          <div class="seg" role="group" aria-label="Design">
+            <button type="button" data-variant="standard">Obsidian</button>
+            <button type="button" data-variant="mono">Mono</button>
+            <button type="button" data-variant="aurora">Aurora</button>
+            <button type="button" data-variant="echo">Echo</button>
+            <button type="button" data-variant="lumen">Lumen</button>
+            <button type="button" data-variant="corporate">Corporate</button>
+          </div>
+          <div class="seg" role="group" aria-label="Color scheme">
+            <button type="button" data-theme="light">Light</button>
+            <button type="button" data-theme="dark">Dark</button>
+          </div>
+        </div>
+        <div class="shots" data-gallery><p><a href="index.html#ansehen">Without script: selection on the home page</a></p></div>
+    </section>
+
+    <dialog class="lightbox" data-lightbox aria-label="Screenshot view">
+      <button type="button" class="lb-close" data-lb="close" aria-label="Close">×</button>
+      <button type="button" class="lb-nav lb-prev" data-lb="prev" aria-label="Previous image">‹</button>
+      <figure>
+        <img alt="" data-lb-img>
+        <figcaption data-lb-cap></figcaption>
+      </figure>
+      <button type="button" class="lb-nav lb-next" data-lb="next" aria-label="Next image">›</button>
+    </dialog>
+
+    <h2>How can you try it?</h2>
+    <p>The demo runs for 24 hours without a license key and only on your own machine. Please do not use real or confidential data. <a href="download.html#demo">Go to the demo</a> · <a href="index.html#kontakt">Give feedback</a></p>
+
+    <p class="muted page-end">This is not legal, tax or procurement advice.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="../praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a><a href="../datenschutz.html" hreflang="de" lang="de">Privacy (German)</a></span>
+    </div>
+  </footer>
+  <script src="../assets/app.js" defer></script>
+</body>
+</html>

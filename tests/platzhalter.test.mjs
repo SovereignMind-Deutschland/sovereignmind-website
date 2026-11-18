@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const workflow = readFileSync(join(root, '.github/workflows/pages.yml'), 'utf8');
-const SKIP = new Set(['.git', 'node_modules', '.github', 'scripts', 'tests', 'packages', 'screenshots', 'video']);
+const SKIP = new Set(['.git', 'node_modules', '.github', 'scripts', 'tests', 'i18n', 'packages', 'screenshots', 'video']);
 
 function python() {
   for (const cmd of ['python3', 'python']) {
@@ -56,7 +56,7 @@ test('Nach dem Einsetzen (Testwerte) bleibt in der veröffentlichten Kopie kein 
   const tmp = mkdtempSync(join(tmpdir(), 'sm-site-'));
   try {
     // gleiche Ausschlüsse wie das tar in pages.yml
-    const EXCLUDE = new Set(['.git', '.github', 'scripts', 'tests', 'README.md', 'SECURITY.md', 'node_modules']);
+    const EXCLUDE = new Set(['.git', '.github', 'scripts', 'tests', 'i18n', 'README.md', 'SECURITY.md', 'node_modules']);
     const copy = (from, to) => {
       for (const name of readdirSync(from)) {
         if (from === root && EXCLUDE.has(name)) continue;

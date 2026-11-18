@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>API – SovereignMind</title>
+  <meta name="description" content="Documentation of the SovereignMind interface: areas and endpoints to read up on, without installing anything.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="API – SovereignMind">
+  <meta property="og:description" content="Documentation of the SovereignMind interface: areas and endpoints to read up on, without installing anything.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: the AI assistant that never lets your data leave">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="API – SovereignMind">
+  <meta name="twitter:description" content="Documentation of the SovereignMind interface: areas and endpoints to read up on, without installing anything.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "API",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html"
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="../assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/api-doku.css">
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="../assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menu</button>
+      <nav class="main" id="hauptnav" aria-label="Main navigation">
+        <a href="index.html">Product</a>
+        <a href="../wissenspakete.html">Knowledge packages</a>
+        <a href="vergleich.html">Comparison</a>
+        <a href="api.html" aria-current="page">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Language"><a lang="de" hreflang="de" href="../api.html" title="Deutsch">DE</a><a lang="en" hreflang="en" href="api.html" aria-current="true" title="English">EN</a></div><!--/lang-switch-->
+        <a class="btn" href="download.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap api-wrap">
+    <h1 class="api-title">API documentation</h1>
+    <div class="note" lang="en">The introduction is available in English. The endpoint reference below is generated from the OpenAPI description and is currently in German only.</div>
+    <p class="muted api-meta" id="api-meta" aria-live="polite">Loading …</p>
+    <noscript><div class="note warn">JavaScript is required for the API documentation. The raw data is in <a href="../assets/api/openapi.json">openapi.json</a>.</div></noscript>
+
+    <div class="api-layout" id="api-layout" hidden>
+      <button class="btn secondary api-toggle" id="api-toggle" type="button" aria-expanded="false" aria-controls="api-side">Areas and search</button>
+      <aside class="api-side" id="api-side" aria-label="Endpoints">
+        <div class="api-controls">
+          <label for="api-base">Base URL for the examples</label>
+          <input id="api-base" type="url" autocomplete="off" spellcheck="false" value="http://localhost:5043">
+          <label for="api-q">Search</label>
+          <input id="api-q" type="search" autocomplete="off" placeholder="Path, title or text ( / )">
+          <div class="seg" role="group" aria-label="Filter by method" id="api-methods"></div>
+          <label class="api-check"><input type="checkbox" id="api-open"> No sign-in required</label>
+          <p class="pkg-count" id="api-count" role="status" aria-live="polite"></p>
+        </div>
+        <nav id="api-nav" aria-label="Areas and endpoints"><a class="api-typesnav" href="#einleitung">Introduction</a></nav>
+      </aside>
+      <div class="api-content" id="api-content">
+        <section class="api-sec" id="einleitung" aria-labelledby="einleitung-h">
+          <h2 id="einleitung-h">Introduction</h2>
+          <div class="note warn" data-status-note><strong>Draft:</strong> SovereignMind is currently provided only as a demo for evaluation. Production use is not permitted. Whether and when official licenses will be offered is open; there is no entitlement to a license.</div>
+          <p class="muted" id="api-stand"></p>
+          <div id="api-intro-desc"></div>
+          <h3 class="api-h3">Base URL</h3>
+          <p>The API runs on your own machine. By default it is reachable at <code>http://&lt;machine&gt;:5043</code>, so on the machine itself at <code>http://localhost:5043</code>. If HTTPS is set up, you reach it under your own name, e.g. <code>https://chat.example.de</code>. All paths on this page hang off this address. Enter your address in the field “Base URL for the examples” on the left; the code examples use it.</p>
+          <h3 class="api-h3" id="ablauf">Flow: from registration to an answer with sources</h3>
+          <p>How the calls fit together (order on a fresh installation):</p>
+          <ol class="api-steps">
+            <li><strong>Check the state:</strong> <code>GET /health</code> and <a href="#get-api-system-status">GET /api/system-status</a> (<code>mode</code>, <code>modelsMissing</code>). If models are missing, load them first; questions are not possible otherwise.</li>
+            <li><strong>Register (once):</strong> <a href="#post-api-tenant-register">POST /api/tenant/register</a> with license data and admin password.</li>
+            <li><strong>Sign in as admin</strong> (<a href="#post-api-auth-admin-login">POST /api/auth/admin-login</a>) and create a member for the line-of-business system (<a href="#post-api-admin-users">POST /api/admin/users</a>). The admin creates a document category once.</li>
+            <li><strong>Sign in as a member:</strong> <a href="#post-api-auth-login">POST /api/auth/login</a> returns the access token (<code>accessToken</code>).</li>
+            <li><strong>Upload a document</strong> (<a href="#post-api-v1-documents">POST /api/v1/documents</a>) and wait until the status is <code>Ready</code> (<a href="#get-api-v1-documents">GET /api/v1/documents</a>). New documents are private at first; the admin can share them with everyone.</li>
+            <li><strong>Ask a question:</strong> <a href="#post-api-v1-chat">POST /api/v1/chat</a> answers as a stream of <code>data: {…}</code> lines. The last event (<code>"type":"done"</code>) carries the sources (<code>citations</code>).</li>
+          </ol>
+          <h3 class="api-h3">Which installers include the API?</h3>
+          <div class="card api-installers">
+            <p>Both installers (<strong>Full</strong> and <strong>Minimal</strong>) include the API at <code>/api</code> on the same address, together with the web interface.</p>
+            <p>If you only use the API or connect your own front end, turn off the web interface (Linux <code>sudo sovereignmind frontend off</code>, Windows tray menu “Web interface”). For browser interfaces on a different address, the installation is set up with <code>--cors</code> (Linux) or <code>/CORS=https://app.example</code> (Windows).</p>
+            <p><a class="btn secondary" href="download.html">Go to the download page</a></p>
+          </div>
+        </section>
+        <div class="note" id="api-empty" hidden>No endpoint matches your search. Shorten the search term or reset the filters.</div>
+      </div>
+    </div>
+    <div class="note warn" id="api-error" hidden>The API description could not be loaded. Please try again later.</div>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="../praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a><a href="../datenschutz.html" hreflang="de" lang="de">Privacy (German)</a></span>
+    </div>
+  </footer>
+  <script src="../assets/api-doku.js" defer></script>
+</body>
+</html>

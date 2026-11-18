@@ -59,6 +59,7 @@
     {
       "id": "cloud-lizenz",
       "typ": "US-Cloud-Assistent, Lizenz je Nutzer",
+      "typ_en": "US cloud assistant, license per user",
       "preis_nutzer_monat": [
         18,
         22.5
@@ -69,6 +70,7 @@
     {
       "id": "copilot",
       "typ": "Büro-Suite-Zusatz (Copilot-Typ), Lizenz je Nutzer",
+      "typ_en": "Office suite add-on (Copilot type), license per user",
       "preis_nutzer_monat": [
         15.6,
         18.2
@@ -79,6 +81,7 @@
     {
       "id": "eu-plattform",
       "typ": "EU-Plattform, Lizenz je Nutzer",
+      "typ_en": "EU platform, license per user",
       "preis_nutzer_monat": [
         20,
         25
@@ -89,6 +92,7 @@
   ],
   "azure_selbstbau": {
     "typ": "Selbstgebauter Cloud-Chat (Azure OpenAI und Suchdienst)",
+    "typ_en": "Self-built cloud chat (Azure OpenAI and search service)",
     "suche_monat_usd": [
       75,
       250
@@ -109,21 +113,25 @@
     {
       "id": "Q1",
       "text": "Preisübersichten zu ChatGPT Business (Drittseiten, Oktober 2026); Anbieterseite war nicht abrufbar (HTTP 403).",
+      "text_en": "Price overviews for ChatGPT Business (third-party sites, October 2026); the provider page was not retrievable (HTTP 403).",
       "belegt": "teilweise"
     },
     {
       "id": "Q2",
       "text": "Microsoft-Preisseite zu Microsoft 365 Copilot Business (microsoft.com/de-de/microsoft-365-copilot/pricing), abgerufen am 14.11.2026: 15,60 € je Nutzer und Monat netto bei jährlicher Abrechnung (Aktionspreis, befristet), regulär 18,20 €.",
+      "text_en": "Microsoft price page for Microsoft 365 Copilot Business (microsoft.com/de-de/microsoft-365-copilot/pricing), retrieved on 14.11.2026: €15.60 per user and month net with annual billing (promotional price, limited), regularly €18.20.",
       "belegt": "ja"
     },
     {
       "id": "Q3",
       "text": "Langdock-Preisseite (langdock.com/de/pricing), abgerufen am 21.10.2026: Business 25 € je Nutzer, netto.",
+      "text_en": "Langdock price page (langdock.com/de/pricing), retrieved on 21.10.2026: Business €25 per user, net.",
       "belegt": "ja"
     },
     {
       "id": "Q4",
       "text": "Azure-Preisseite (Oktober 2026) zeigt keine Beträge; Stundensätze aus Drittseiten (Basic ca. 0,10 $/h, S1 ca. 0,34 $/h), Token-Preise GPT-4.1 (2 $/8 $ je Million) aus Drittseiten (Oktober 2026).",
+      "text_en": "Azure price page (October 2026) shows no amounts; hourly rates from third-party sites (Basic about $0.10/h, S1 about $0.34/h), GPT-4.1 token prices ($2/$8 per million) from third-party sites (October 2026).",
       "belegt": "teilweise"
     }
   ],

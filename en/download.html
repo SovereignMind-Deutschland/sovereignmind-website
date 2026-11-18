@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download – SovereignMind</title>
+  <meta name="description" content="Install SovereignMind: one command for Windows and Linux, without Docker.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Download – SovereignMind">
+  <meta property="og:description" content="Install SovereignMind: one command for Windows and Linux, without Docker.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: the AI assistant that never lets your data leave">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Download – SovereignMind">
+  <meta name="twitter:description" content="Install SovereignMind: one command for Windows and Linux, without Docker.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Download",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html"
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="../assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="../assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menu</button>
+      <nav class="main" id="hauptnav" aria-label="Main navigation">
+        <a href="index.html">Product</a>
+        <a href="../wissenspakete.html">Knowledge packages</a>
+        <a href="vergleich.html">Comparison</a>
+        <a href="api.html">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Language"><a lang="de" hreflang="de" href="../download.html" title="Deutsch">DE</a><a lang="en" hreflang="en" href="download.html" aria-current="true" title="English">EN</a></div><!--/lang-switch-->
+        <a class="btn" href="download.html" aria-current="page">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Install SovereignMind</h1>
+    <div class="note warn" data-status-note><strong>Draft:</strong> SovereignMind is currently provided only as a demo for evaluation. Production use is not permitted. Whether and when official licenses will be offered is open; there is no entitlement to a license.</div>
+    <p class="lead">One command sets everything up, without Docker and without WSL. Whether demo or license, you decide only on the first launch of the app in the browser.</p>
+    <ul class="facts" aria-label="The demo in brief">
+      <li><strong>Free</strong>demo without a license key</li>
+      <li><strong>24 hours</strong>of uptime, then data is deleted</li>
+      <li><strong>1 seat</strong>reachable only on the machine itself</li>
+      <li><strong>8&nbsp;GB VRAM · 16&nbsp;GB RAM</strong>recommended; about 3&nbsp;GB installer plus models</li>
+    </ul>
+    <p class="muted">More about the demo <a href="#demo">further down</a>. The installer does not check the recommended hardware.</p>
+    <p class="version" data-version hidden></p>
+
+    <div class="tabs" role="tablist" aria-label="Operating system">
+      <button class="tab" role="tab" id="tab-windows" data-os="windows" aria-controls="panel-windows" aria-selected="false">Windows</button>
+      <button class="tab" role="tab" id="tab-linux" data-os="linux" aria-controls="panel-linux" aria-selected="false">Linux</button>
+    </div>
+
+    <!-- Windows -->
+    <div class="panel" role="tabpanel" id="panel-windows" aria-labelledby="tab-windows" hidden>
+      <h2 id="windows-einzeiler">Minimal: one command, models are downloaded</h2>
+      <p>Open PowerShell (best with “Run as administrator”, then there is no further prompt), paste the command and confirm with Enter:</p>
+      <div class="cmd"><pre><code data-cmd="windows"></code></pre><button type="button" data-copy="windows">Copy</button></div>
+      <p>The script does the following in order:</p>
+      <ol class="steps">
+        <li>determines the latest version in the <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub release</a> and downloads the installation package (about 0.9&nbsp;GB),</li>
+        <li>compares each file with the checksum from <code>SHA256SUMS.txt</code>, unpacks the package and starts the installation,</li>
+        <li>shows the <a href="#eula">end-user license agreement</a>; you confirm it in the terminal, the script never agrees for you,</li>
+        <li>then downloads the AI models (about 11&nbsp;GB) from the internet.</li>
+      </ol>
+      <details>
+        <summary>Without administrator rights: what happens?</summary>
+        <p>If PowerShell is not running as administrator, the script asks before the download whether it should continue in a new administrator window (<code>y</code>: the Windows security prompt appears immediately; <code>n</code>: only after the download). If the prompt is declined, the downloaded files stay in place; a new start does not download anything twice.</p>
+      </details>
+      <details>
+        <summary>Read the script first</summary>
+        <p>Without <code>| iex</code> the command only prints the script’s text. It is also available as a file: <a href="../install.ps1">install.ps1</a>.</p>
+        <div class="cmd"><pre><code data-cmd="windows-lesen"></code></pre><button type="button" data-copy="windows-lesen">Copy</button></div>
+      </details>
+      <details>
+        <summary>Without the script: files from the release</summary>
+        <p>On the <a data-release-url href="#" rel="noopener" hidden>release page</a>, download all parts <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.zip.001</code> (and further <code>.zip.NNN</code>, if any), <code>EULA.de.txt</code> and <code>SHA256SUMS.txt</code> as well as the script <a href="../install.ps1" download>install.ps1</a> into one folder. Compare the checksum of each part with the line in <code>SHA256SUMS.txt</code>, then start <code>install.ps1</code> in a PowerShell as administrator with <code>-SourceDir</code> pointing to that folder. The script unpacks the package and asks for the <a href="#eula">end-user license agreement</a>.</p>
+        <div class="cmd"><pre><code data-cmd="windows-manuell"></code></pre><button type="button" data-copy="windows-manuell">Copy</button></div>
+      </details>
+      <p>The installer contains the web interface, API and the AI server. If the network is missing or the download is aborted, SovereignMind is still installed: the admin sees the notice “Load now” in the admin area.</p>
+
+      <h2>Requirements</h2>
+      <ul class="req">
+        <li>Windows 10 (1809), Windows 11 or Server 2019+ (x64)</li>
+        <li>Administrator rights</li>
+        <li>Space for the installer (about 3&nbsp;GB) and the models (about 11&nbsp;GB)</li>
+        <li>Recommended: 8&nbsp;GB VRAM and 16&nbsp;GB RAM. Without a GPU everything runs on the CPU, noticeably slower.</li>
+      </ul>
+      <details>
+        <summary>More notes on hardware and license</summary>
+        <ul class="req">
+          <li>CPU speech output needs about 8&nbsp;GB of additional RAM. A Mac with unified memory is untested.</li>
+          <li>Nothing else is needed for the demo. You need a license key (token) and the details it is bound to (email address, possibly company name and payment reference) only if the provider has expressly issued you one.</li>
+          <li>Optional: the <strong>hardware agent</strong> (Windows service for real CPU/RAM/GPU values in the dashboard) can be selected as a task in the setup.</li>
+        </ul>
+      </details>
+      <p>Using it afterwards: the <strong>tray app “SovereignMind Control”</strong> in the taskbar notification area starts and stops all services, shows the status and opens the web interface.</p>
+
+      <h2 id="windows-eigenes-frontend-einzeiler">For advanced users</h2>
+      <details>
+        <summary>One-liner with options (<code>SM_SETUP_ARGS</code>, <code>SM_VERSION</code>)</summary>
+        <p>Pass setup options before the command in <code>SM_SETUP_ARGS</code>, for example for your own interface without the web interface. <code>SM_VERSION</code> selects a specific version.</p>
+        <div class="cmd"><pre><code data-cmd="windows-eigenes-frontend"></code></pre><button type="button" data-copy="windows-eigenes-frontend">Copy</button></div>
+      </details>
+      <details>
+        <summary>Speech output on the graphics card</summary>
+        <p>Speech output runs on the CPU by default. To use the graphics card, choose “Voice” in the admin area; the admin downloads GPU support (PyTorch, about&nbsp;4 GB on NVIDIA, about&nbsp;5 GB on AMD) there when needed. The admin also loads the larger 14B chat model themselves (admin area, local models).</p>
+      </details>
+      <details id="windows-api">
+        <summary>Your own front end or API only</summary>
+        <p>The web interface is on by default. To turn it off, clear “Serve web interface” in the setup (silent: <code>/FRONTEND=off</code>) or later in the tray menu. SovereignMind then provides only the API; the setup shows the API address and places the endpoint documentation in the Start menu.</p>
+        <ul class="req">
+          <li><code>/CORS=https://app.example</code> allows browser interfaces on a different address.</li>
+          <li><code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> creates the tenant and admin silently.</li>
+        </ul>
+        <p>All endpoints, sign-in and examples: <a href="api.html">API documentation</a>.</p>
+      </details>
+    </div>
+
+    <!-- Linux -->
+    <div class="panel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux" hidden>
+      <h2 id="linux-variante">Minimal: one command, models are downloaded</h2>
+      <p>Open a terminal, paste the command and confirm with Enter:</p>
+      <div class="cmd"><pre><code data-cmd="linux"></code></pre><button type="button" data-copy="linux">Copy</button></div>
+      <p>The script does the following in order:</p>
+      <ol class="steps">
+        <li>asks for the <code>sudo</code> password right at the start; after that everything runs without further prompts,</li>
+        <li>determines the latest version in the <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub release</a>, downloads the parts of the minimal bundle (about 0.9&nbsp;GB), checks each part against <code>SHA256SUMS.txt</code> and joins them,</li>
+        <li>starts the bundle; you confirm the <a href="#eula">end-user license agreement</a> in the terminal, the script never agrees for you,</li>
+        <li>downloads the AI models (about 11&nbsp;GB, <code>huggingface.co</code> must be reachable) and shows progress in the terminal (“Model 2 of 4: … 63&nbsp;%”).</li>
+      </ol>
+      <p class="muted">The script creates its own working folder under <code>/var/tmp</code> that only you can read (about 6&nbsp;GB free space needed) and deletes it at the end. <code>SM_DOWNLOAD_DIR</code> chooses a different location; an existing folder is left alone, the script deletes only its own subfolder.</p>
+      <details>
+        <summary>Read the script first</summary>
+        <p>Without <code>| sh</code> the command only prints the script’s text. It is also available as a file: <a href="../install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> only checks and changes nothing.</p>
+        <div class="cmd"><pre><code data-cmd="linux-lesen"></code></pre><button type="button" data-copy="linux-lesen">Copy</button></div>
+      </details>
+      <details>
+        <summary>Without the script: files from the release</summary>
+        <p>On the <a data-release-url href="#" rel="noopener" hidden>release page</a>, download all parts <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> and <code>SHA256SUMS.txt</code> into one folder and run this there:</p>
+        <div class="cmd"><pre><code data-cmd="linux-manuell-minimal"></code></pre><button type="button" data-copy="linux-manuell-minimal">Copy</button></div>
+      </details>
+      <p>The bundle contains the web interface, API and AI server. Without a network the installation stays valid (warning at the end); the models can be loaded later in the admin area (“Load now”) or with <code>sudo sovereignmind models load</code>.</p>
+
+      <h2>Requirements</h2>
+      <ul class="req">
+        <li>Ubuntu or Debian (x64), current version</li>
+        <li><code>sudo</code> rights</li>
+        <li>Space: about 0.9&nbsp;GB download, 0.9&nbsp;GB temporarily under <code>/var/tmp</code>, plus about 11&nbsp;GB of models</li>
+        <li>Recommended: 8&nbsp;GB VRAM (NVIDIA or AMD) and 16&nbsp;GB RAM. Otherwise everything runs on the CPU, noticeably slower.</li>
+      </ul>
+      <details>
+        <summary>More notes on hardware, distributions and license</summary>
+        <ul class="req">
+          <li>The RPM family (Fedora, Rocky Linux) is not yet tested; the bundle may work there but is not approved.</li>
+          <li>The AI server (llama.cpp) uses NVIDIA, AMD and Intel GPUs via Vulkan, otherwise the CPU. An earlier Ollama installation of the package is taken over.</li>
+          <li>The installer does not check the recommended hardware. CPU speech output needs about 8&nbsp;GB of additional RAM; its GPU support is downloaded in the admin area when needed. A Mac with unified memory is untested.</li>
+          <li>The chat model is chosen automatically by available VRAM and can be changed in the admin area under “AI settings”.</li>
+          <li>Nothing else is needed for the demo. You need a license key (token) and the details it is bound to (email address, possibly company name and payment reference) only if the provider has expressly issued you one.</li>
+        </ul>
+      </details>
+
+      <h2 id="linux-eigenes-frontend">For advanced users</h2>
+      <details>
+        <summary>Your own front end or API only</summary>
+        <p>The web interface is on by default. <code>--no-frontend</code> during installation, or later <code>sudo sovereignmind frontend off</code>, turns it off (<code>on</code> turns it back on); then only the API is reachable.</p>
+        <ul class="req">
+          <li><code>--cors https://app.example</code> allows browser interfaces on a different address.</li>
+          <li><code>--license-email</code> with <code>SM_LICENSE_TOKEN</code> and <code>SM_ADMIN_PASSWORD</code> in the environment creates the tenant and admin.</li>
+        </ul>
+        <p>The endpoint documentation is located at <code>/opt/sovereignmind/docs/api</code> after installation (<code>sovereignmind docs</code>) and online: <a href="api.html">API documentation</a>.</p>
+        <p>The one-liner passes options on through <code>SM_BUNDLE_ARGS</code>:</p>
+        <div class="cmd"><pre><code data-cmd="linux-eigenes-frontend"></code></pre><button type="button" data-copy="linux-eigenes-frontend">Copy</button></div>
+      </details>
+      <details>
+        <summary>Models, USB stick and further options</summary>
+        <p><code>--no-models</code> downloads nothing at all, <code>--strict</code> ends the bundle with exit code&nbsp;5 if models are missing afterwards. With a USB stick or your own download server, joining the parts is not needed. More options such as <code>--accept-eula</code>, <code>--yes</code> or <code>--port</code> are shown by <code>bash &lt;file&gt;.run --help</code>.</p>
+      </details>
+
+      <h2 id="kommando">Using the command line</h2>
+      <p>There is no tray app on Linux. Instead the package installs the command <code>sovereignmind</code>. Commands that need privileges call <code>sudo</code> themselves. Sample output: <a href="#betrieb">Day-to-day operation</a>.</p>
+      <div class="overflow">
+        <table>
+          <thead><tr><th>Command</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>sovereignmind frontend [status|on|off]</code></td><td>Turn the web interface on or off (API only)</td></tr>
+            <tr><td><code>sovereignmind open</code></td><td>Open the web interface in the browser (without a desktop only the address)</td></tr>
+            <tr><td><code>sovereignmind status</code></td><td>Version, addresses, health, services, autostart, AI server, folders; without root</td></tr>
+            <tr><td><code>sovereignmind url</code></td><td>Address locally and on the network</td></tr>
+            <tr><td><code>sovereignmind start</code> / <code>stop</code></td><td>Start or stop all services</td></tr>
+            <tr><td><code>sovereignmind restart [backend]</code></td><td>Restart all services or only the backend</td></tr>
+            <tr><td><code>sovereignmind autostart on|off</code></td><td>Start when the machine boots</td></tr>
+            <tr><td><code>sovereignmind logs [dienst] [--once]</code></td><td>Log of backend, postgres, qdrant, ingestion, voice, llm-chat or llm-embed</td></tr>
+            <tr><td><code>sovereignmind lan on|off [IP]</code></td><td>Turn network access on or off</td></tr>
+            <tr><td><code>sovereignmind lan status|open</code></td><td>Show the access mode or revoke device approval (emergency)</td></tr>
+            <tr><td><code>sovereignmind https NAME [MODUS]</code></td><td>Set up the HTTPS name and certificate mode (<a href="#https">modes</a>); <code>sovereignmind https off</code> turns it off</td></tr>
+            <tr><td><code>sovereignmind backup</code></td><td>Start a backup now</td></tr>
+            <tr><td><code>sovereignmind models [status|load]</code></td><td>Show the state of the AI models or load missing ones (minimal variant)</td></tr>
+            <tr><td><code>sovereignmind docs</code></td><td>Location of the endpoint documentation</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    <section id="betrieb">
+        <h2>Day-to-day operation</h2>
+        <p>After installation SovereignMind runs as a background service and starts with the machine. Nobody needs system knowledge for start, stop and status: on Windows the tray app handles it, on Linux a single command.</p>
+        <div class="ops">
+          <div class="ops-text">
+            <dl class="rows">
+            <div><dt>Windows: tray app</dt><dd>“SovereignMind Control” sits in the taskbar notification area. It shows whether everything is running, starts and stops the services and opens the web interface.</dd></div>
+            <div><dt>Linux: <code>sovereignmind</code></dt><dd>One command for <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> and <code>backup</code>. Commands that need privileges call <code>sudo</code> themselves.</dd></div>
+            <div><dt>HTTPS proxy</dt><dd>The installer includes an HTTPS proxy: internal CA, Let's Encrypt or a supplied wildcard certificate without a browser warning. Chat and admin area run under their own names, and the demo starts there too.</dd></div>
+            <div><dt>API for line-of-business systems</dt><dd>Every installation includes an interface for connecting your own front ends and line-of-business systems. You can read up on all endpoints, sign-in, errors and code examples without installing anything.</dd></div>
+            </dl>
+            <p class="actions-row"><a class="btn secondary" href="api.html">Read the API documentation</a></p>
+          </div>
+          <figure class="term-fig">
+            <div class="term" role="img" aria-label="Terminal output of sovereignmind status: version, addresses, health, services, autostart, AI server, folders">
+              <div class="term-bar"><span></span><span></span><span></span><b>Terminal</b></div>
+<pre class="term-body" aria-hidden="true"><span class="p">$</span> <span class="c">sovereignmind status</span>
+<b>SovereignMind</b> 2026.11.16.1917   <span class="g">● läuft</span>
+
+Weboberfläche:           http://localhost:5043
+Im Netzwerk:             http://192.168.0.42:5043
+Gesundheit:              <span class="g">antwortet</span>
+
+Dienste:
+  Datenbank (PostgreSQL)        <span class="g">● aktiv</span>
+  Vektordatenbank (Qdrant)      <span class="g">● aktiv</span>
+  Dokumentenimport              <span class="g">● aktiv</span>
+  Sprache                       <span class="g">● aktiv</span>
+  KI-Server Chat                <span class="g">● aktiv</span>
+  KI-Server Embeddings          <span class="g">● aktiv</span>
+  Backend und Weboberfläche     <span class="g">● aktiv</span>
+
+Autostart:               an
+KI-Server:               llama.cpp b12191, GPU (Vulkan): NVIDIA GeForce RTX 5070 Laptop GPU
+Nächste Sicherung:       Tue 2026-10-20
+
+Programme:               /opt/sovereignmind
+Daten:                   /var/lib/sovereignmind
+Konfiguration:           /etc/sovereignmind
+Logs:                    sovereignmind logs   (oder journalctl -u 'sovereignmind-*')</pre>
+            </div>
+            <figcaption>Output of <code>sovereignmind status</code> (sample data)</figcaption>
+          </figure>
+        </div>
+    </section>
+
+    </div>
+
+    <h2 id="demo">Demo (no license, 24 hours)</h2>
+    <p>To try it out you need <strong>no separate installer</strong>. After installation the app asks on first launch: <strong>“Start demo”</strong> or <strong>“Set up with license”</strong>. The demo runs without a license key, is the same software with fixed limits, and deletes itself:</p>
+    <ul class="req">
+      <li><strong>24 hours:</strong> Service uptime counts; after 24 hours at the latest it is over. After that all data is deleted, including what you created in the demo. Setting the clock back does not extend the period. A new demo can be started afterwards.</li>
+      <li><strong>Only at the configured addresses:</strong> The software enforces that the demo is reachable only on the machine itself (<code>http://localhost:5043</code>) or under the name you set up during installation for HTTPS (<a href="#https">see below</a>) or network access. At any other address it rejects the demo.</li>
+      <li><strong>Credentials:</strong> admin with password <code>sovereignmind</code>, user <code>test@sovereignmind.de</code> with password <code>sovereignmind</code>. Both are also shown on the sign-in page.</li>
+      <li><strong>Limited:</strong> one seat (no further users), passwords and license cannot be changed, connectors locked, at most 50 documents and 200&nbsp;MB, no backups.</li>
+      <li><strong>Unlock with a key:</strong> If the provider has expressly issued you a license key, it unlocks the demo installation. You choose whether the demo data is kept or deleted. A second installation or an uninstall is not needed.</li>
+      <li>Same size and same requirements as above (the models are downloaded).</li>
+    </ul>
+    <p>Installation and download as above under Windows or Linux. You confirm the <a href="#eula">end-user license agreement</a> twice: in the installer and in the app, when starting the demo or during setup.</p>
+
+    <h2 id="eula">End-user license agreement</h2>
+    <p>The end-user license agreement (EULA) must be confirmed during installation. The Windows script <code>install.ps1</code> shows it before installing and asks in the terminal (or in advance with <code>-AcceptEula</code>); the Linux bundle asks in a configuration dialog (or in advance with <code>--accept-eula</code>). Without agreement, nothing is installed. The EULA is currently only a <strong>draft</strong> and has not yet been legally reviewed; the same notice is at the top of this page and in the app.</p>
+
+    <h2>After installation</h2>
+    <ol class="steps">
+      <li>Open the app: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (the port can be chosen during installation) or, if <a href="#https">HTTPS</a> is set up, at <code>https://chat.example.de</code> (your name)</li>
+      <li>On first launch the app shows a welcome page: <strong>“Start demo”</strong> (no key, 24 hours) or <strong>“Set up with license”</strong> (license key, company and admin password; activation works offline).</li>
+      <li>Everything runs as a background service and starts with the machine. Status and control: tray app (Windows) or <code>sovereignmind status</code> (Linux).</li>
+    </ol>
+
+    <h2 id="https">HTTPS on the network</h2>
+    <p>The installer includes an HTTPS proxy (Caddy). On Windows you set it up on the “HTTPS” page of the setup, on Linux with <code>sudo sovereignmind https chat.example.de &lt;mode&gt;</code>. Chat (<code>chat.…</code>) and admin area (<code>admin.…</code>) are two separate apps with their own names behind the same backend. The demo also starts under these names. For other devices on the network, LAN access must be on (<code>sovereignmind lan on</code>); it is off by default. In addition, the admin can restrict access under “Network &amp; devices” to approved pairs of user and IP address. If you lock yourself out, <code>sovereignmind lan open</code> on the server restores open access.</p>
+    <div class="overflow">
+      <table>
+        <thead><tr><th>Mode</th><th>Certificate</th><th>Notice</th></tr></thead>
+        <tbody>
+          <tr><td><code>internal</code> (default)</td><td>own internal CA</td><td>Install the root certificate once per device, otherwise the browser shows a warning</td></tr>
+          <tr><td><code>acme-http</code></td><td>Let's Encrypt (HTTP-01)</td><td>Public name, port 80 reachable from the internet</td></tr>
+          <tr><td><code>acme-dns</code></td><td>Let's Encrypt (DNS-01)</td><td>Your own domain and the DNS provider’s API key; the server does not need to be reachable from the internet</td></tr>
+          <tr><td><code>wildcard</code></td><td>supplied wildcard certificate</td><td>No browser warning and no internet needed; becomes active only with a valid license (until then <code>internal</code> applies). You enter the names via a hosts line or in the router DNS.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="pruefsummen">Checksums and Windows warning</h2>
+    <p>Each file of the current version has a SHA-256 checksum. The one-liners check it themselves; for a manual download, compare the file’s checksum with the line in <code>SHA256SUMS.txt</code> on the release page or with this table.</p>
+    <div class="table-scroll" data-sha256-box hidden>
+      <table class="sums">
+        <thead><tr><th scope="col">File</th><th scope="col">SHA-256</th></tr></thead>
+        <tbody data-sha256-rows></tbody>
+      </table>
+    </div>
+    <p data-sha256-missing>The checksums of the current version are in <code>SHA256SUMS.txt</code> on the release page.</p>
+    <p id="signatur"><strong>Signature of the checksums (minisign):</strong> Checksums detect damaged downloads, but not a swapped release: whoever swaps the release can also swap <code>SHA256SUMS.txt</code>. That is why the signature <code>SHA256SUMS.txt.minisig</code> sits next to it. It is created offline with our private key; the one-liner scripts and this page contain the public key, so it comes from a different place than the release.</p>
+    <p>The one-liners verify the signature themselves if <a href="https://jedisct1.github.io/minisign/" rel="noopener" target="_blank">minisign</a> is installed (Linux: <code>sudo apt install minisign</code>, Windows: <code>winget install jedisct1.minisign</code>). Without minisign they warn and only check the checksums; with <code>SM_REQUIRE_SIGNATURE=1</code> they then abort. An invalid signature always aborts the installation.</p>
+    <div data-minisign hidden>
+      <p>Public key: <code data-minisign-key></code></p>
+      <p>Check by hand, in the folder with <code>SHA256SUMS.txt</code> and <code>SHA256SUMS.txt.minisig</code> (then the file checksums as above):</p>
+      <div class="cmd"><pre><code data-cmd="signatur-linux"></code></pre><button type="button" data-copy="signatur-linux">Copy</button></div>
+      <div class="cmd"><pre><code data-cmd="signatur-windows"></code></pre><button type="button" data-copy="signatur-windows">Copy</button></div>
+      <p>The output must read “Signature and comment signature verified”. With any other output, do not install anything and tell us through the <a href="index.html#kontakt">contact address</a>.</p>
+    </div>
+    <p data-minisign-missing>The signature is being introduced. As long as no public key is shown here, the releases are not yet signed and the one-liners only check the checksums.</p>
+    <p><strong>Windows warning (SmartScreen):</strong> The installation package and <code>install.ps1</code> are not signed with a certificate. Windows may therefore show “Windows protected your PC”. Check the file’s checksum; if it matches, choose “More info” and then “Run anyway”. Setup remains an administration task and needs administrator rights anyway.</p>
+
+    <h2>License and knowledge packages</h2>
+    <p>The provider issues license keys only expressly; whether and when official licenses will be offered is open. A key is bound to an email address and may additionally be bound to company name and payment reference (invoice number or last four digits of card or IBAN); you enter these details during setup. They are stored in the key only as a hash. Please do not pass the key on: after five wrong entries per hour, redemption is temporarily blocked. The admin downloads knowledge packages directly in the app under “Knowledge packages”. Packages with an extra feature require a matching license.</p>
+
+    <h2>Update and backup</h2>
+    <p><strong>Update:</strong> run the new version of the installer: run the one-liner again (it takes the latest version) or start the new setup or bundle by hand. Data, keys and license are kept; a database dump is created before the update.</p>
+    <p><strong>Backup:</strong> The daily backup runs automatically. Recovery and uninstall are described in the operator manual, which is delivered with provider support.</p>
+
+    <p>Further reading: <a href="vergleich.html">Local or cloud? The comparison</a>, <a href="../wissenspakete.html">Knowledge packages for your installation</a>.</p>
+
+    <p class="page-end">If problems occur, please report them to the provider and send the installer output along.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="../praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a><a href="../datenschutz.html" hreflang="de" lang="de">Privacy (German)</a></span>
+    </div>
+  </footer>
+  <script src="../assets/app.js" defer></script>
+</body>
+</html>

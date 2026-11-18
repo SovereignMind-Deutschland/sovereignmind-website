@@ -13,6 +13,16 @@ Stand: November 2026. Grenze: SovereignMind wird derzeit nur als Demo zur Erprob
 - [Download und Demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html): Installation unter Windows und Linux mit einem Befehl (`irm …/install.ps1 | iex` bzw. `curl -fsSL …/install.sh | sh`, minimale Variante aus dem GitHub-Release, Skripte vorab lesbar), Demo-Grenzen
 - [API](https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html): Dokumentation der Schnittstelle
 
+## English
+
+- [Product](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/): features, architecture, day-to-day operation
+- [What is an on-premises AI assistant?](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html): concept, GDPR and shadow IT, decision aid local or cloud (not legal advice)
+- [Comparison](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html): local versus cloud licenses and a self-built cloud chat, cost example with assumptions, sources and date
+- [Download and demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html): installation on Windows and Linux with one command, demo limits
+- [API](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html): interface documentation (endpoint reference in German)
+
+English summary: SovereignMind is a self-hosted AI assistant for company documents; language model, document search and database run on your own hardware, with no connection to cloud AI. Answers link to the original document. It is currently provided as a demo only (24 hours, no license key, own machine only); production use is not permitted, and whether licenses will be offered is open. There is no price.
+
 ## Hinweise
 
 - Die Kostenzahlen im Vergleich sind ein Rechenbeispiel mit offenen Annahmen, keine Preisliste. Preise Dritter stammen teils aus Übersichten Dritter und sind datiert.

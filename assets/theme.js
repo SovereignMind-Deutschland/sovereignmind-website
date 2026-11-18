@@ -8,11 +8,31 @@
   if (stored === 'light' || stored === 'dark') root.setAttribute('data-theme', stored);
   root.classList.add('js');
 
+  // Sprache der Seite und Wurzelpfad (en/ liegt eine Ebene tiefer, data-root="../"); die Skripte der Seite nutzen window.SM.
+  var EN = (root.getAttribute('lang') || 'de').slice(0, 2) === 'en';
+  window.SM = {
+    en: EN,
+    root: root.getAttribute('data-root') || '',
+    t: function (de, en) { return EN ? en : de; }
+  };
+
   function effective() {
     return root.getAttribute('data-theme') || (media && media.matches ? 'dark' : 'light');
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    // Kopfzeile: data-scrolled, sobald die Seite gescrollt ist (1-px-Wächter, kein Scroll-Listener)
+    var head = document.querySelector('header.site');
+    if (head && 'IntersectionObserver' in window) {
+      var sentinel = document.createElement('div');
+      sentinel.className = 'scroll-sentinel';
+      sentinel.setAttribute('aria-hidden', 'true');
+      document.body.insertBefore(sentinel, document.body.firstChild);
+      new IntersectionObserver(function (entries) {
+        head.toggleAttribute('data-scrolled', !entries[entries.length - 1].isIntersecting);
+      }).observe(sentinel);
+    }
+
     var nav = document.querySelector('nav.main');
     if (!nav) return;
     var btn = document.createElement('button');
@@ -23,8 +43,8 @@
 
     function paint() {
       var dark = effective() === 'dark';
-      btn.textContent = dark ? 'Hell' : 'Dunkel';
-      btn.setAttribute('aria-label', dark ? 'Zu hellem Design wechseln' : 'Zu dunklem Design wechseln');
+      btn.textContent = dark ? SM.t('Hell', 'Light') : SM.t('Dunkel', 'Dark');
+      btn.setAttribute('aria-label', dark ? SM.t('Zu hellem Design wechseln', 'Switch to light theme') : SM.t('Zu dunklem Design wechseln', 'Switch to dark theme'));
     }
     btn.addEventListener('click', function () {
       var next = effective() === 'dark' ? 'light' : 'dark';
@@ -40,7 +60,7 @@
       function setOpen(open) {
         nav.classList.toggle('open', open);
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-        toggle.textContent = open ? 'Schließen' : 'Menü';
+        toggle.textContent = open ? SM.t('Schließen', 'Close') : SM.t('Menü', 'Menu');
       }
       toggle.addEventListener('click', function () { setOpen(!nav.classList.contains('open')); });
       document.addEventListener('keydown', function (e) {

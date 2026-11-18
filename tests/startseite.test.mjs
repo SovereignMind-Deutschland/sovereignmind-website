@@ -59,3 +59,29 @@ test('Versionszeile und Statushinweis springen nicht (CLS, Entscheidung E24)', (
   assert.match(css, /\[data-version\] \{ min-height: 1lh; \}/);
   assert.match(css, /\[data-version\]\[hidden\] \{ display: block !important; visibility: hidden; \}/);
 });
+
+test('Phase 1: Kopfzeile, Zähler, Aktionsbalken und Bewegungsregeln', () => {
+  const theme = lesen('assets/theme.js');
+  assert.match(theme, /scroll-sentinel/);
+  assert.match(theme, /data-scrolled/);
+  assert.ok(!/addEventListener\('scroll'/.test(theme + js), 'Scroll-Listener statt IntersectionObserver');
+  assert.match(css, /header\.site\[data-scrolled\]/);
+  assert.match(css, /backdrop-filter: blur\(14px\)/);
+  assert.match(css, /\[data-count\] \{ font-variant-numeric: tabular-nums; \}/);
+  assert.match(css, /\.action-bar\[hidden\] \{ display: none; \}/);
+  assert.match(index, /<div class="action-bar" data-action-bar hidden>/);
+  // Zähler und Animationen stehen im Block, der bei "Bewegung reduzieren" übersprungen wird
+  const ruhig = js.slice(js.indexOf('if (calmMotion'));
+  assert.match(ruhig, /data-count/);
+  assert.match(ruhig, /hashchange/);
+  const reduziert = [...css.matchAll(/@media \(prefers-reduced-motion: reduce\) \{([\s\S]*?)\n\}/g)].map((m) => m[1]).join('\n');
+  assert.match(reduziert, /\.action-bar\.on \{ transform: none; \}/);
+  assert.match(reduziert, /nav\.main\.open > \* \{ animation: none; \}/);
+});
+
+test('Kennzahl Wissenspakete stimmt mit dem Katalog überein (keine Zahl ohne Quelle)', () => {
+  const katalog = JSON.parse(lesen('packages/index.json')).packages.filter((p) => !p.withdrawn);
+  const zahl = index.match(/data-count="(\d+)">\1<\/span> Pakete im Katalog/);
+  assert.ok(zahl, 'Zähler mit Text "Pakete im Katalog" fehlt');
+  assert.equal(Number(zahl[1]), katalog.length);
+});

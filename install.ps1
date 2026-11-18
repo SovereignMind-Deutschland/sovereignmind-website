@@ -19,7 +19,7 @@
 #   -LicenseEmail <mail> -LicenseToken <token> -AdminPassword <pw> [-TenantName <name>]   Erstregistrierung (Token und Passwort besser per
 #                 Umgebung SM_LICENSE_TOKEN und SM_ADMIN_PASSWORD); -Strict: Fehler beenden das Skript mit Code 15/16
 #   -RecoveryKit <ordner>  Passphrase aus -RecoveryPassphrase oder SM_RECOVERY_PASSPHRASE (mindestens 12 Zeichen)
-#   -AcceptEula   Zustimmung zum Endnutzer-Lizenzvertrag (noetig ohne Rueckfrage-Moeglichkeit); -Unattended: keine Rueckfragen
+#   -AcceptEula   ausdrueckliche Zustimmung zum Endnutzer-Lizenzvertrag (Pflicht ohne Rueckfrage-Moeglichkeit, auch bei -Unattended und /VERYSILENT); -Unattended: keine Rueckfragen
 #   -Force        auch eine neuere installierte Version ueberschreiben;  -FullBackup  Update mit Sicherung der Dokumente
 #   -DryRun       nur pruefen und anzeigen;  -Uninstall [-RemoveData]  ruft tools\uninstall.ps1 auf
 # Umgebungsvariablen:
@@ -99,7 +99,7 @@ function Install-SovereignMind {
             $name = $Matches[1].ToLowerInvariant() -replace "-", ""
             $hasValue = $Matches.ContainsKey(2) -and $null -ne $Matches[2]
             $value = if ($hasValue) { $Matches[2] } else { $null }
-            if ($name -in "verysilent", "silent") { $result["Unattended"] = $true; $result["AcceptEula"] = $true; continue }   # wie das alte Setup: stiller Modus gilt als Zustimmung
+            if ($name -in "verysilent", "silent") { $result["Unattended"] = $true; continue }   # E46: der stille Modus gilt nicht mehr als Zustimmung, dafuer braucht es -AcceptEula (bzw. /AcceptEula)
             if ($name -in "suppressmsgboxes", "norestart", "nocancel", "nodebug") { continue }
             if ($name -in "log", "dir", "group", "lang", "loadinf", "saveinf") { if (-not $hasValue -and $i + 1 -lt $tokens.Count) { $i++ }; continue }
             if (-not $canonical.ContainsKey($name)) { Write-Warning "Unbekannte Option '$token' wird ignoriert."; continue }
@@ -787,7 +787,7 @@ public static class SmArchive
             else {
                 Status "Ermittle die neueste Version ..."
                 $curl = Get-Curl
-                if (-not $curl) { Fail "curl.exe fehlt; Version mit -Version angeben, z. B. -Version 2026.11.12.1500." }
+                if (-not $curl) { Fail "curl.exe fehlt; Version mit -Version angeben, z. B. -Version 2026.11.16.1917." }
                 $previousPreference = $ErrorActionPreference
                 $ErrorActionPreference = "Continue"   # stderr von curl ist hier Text, kein Abbruchgrund (Windows PowerShell 5.1 macht daraus sonst eine Ausnahme)
                 $json = & $curl --fail --silent --show-error --location -H "User-Agent: sovereignmind-install" $apiUrl 2>&1
@@ -795,7 +795,7 @@ public static class SmArchive
                 $ErrorActionPreference = $previousPreference
                 if ($curlCode -ne 0) {
                     $msg = ($json | Out-String).Trim()
-                    if ($msg -match "40[3]|429") { Fail "GitHub-API-Limit erreicht. Version angeben, z. B. -Version 2026.11.12.1500 (siehe Download-Seite)." }
+                    if ($msg -match "40[3]|429") { Fail "GitHub-API-Limit erreicht. Version angeben, z. B. -Version 2026.11.16.1917 (siehe Download-Seite)." }
                     Fail "Release nicht abrufbar: $msg"
                 }
                 $tag = $null
@@ -901,7 +901,7 @@ public static class SmArchive
             else { Write-Host "Der Lizenztext liegt im Paket (licenses\EULA.de.txt) und wird nach dem Entpacken nicht mehr angezeigt; Text unter https://sovereignmind-deutschland.github.io/sovereignmind-website/." }
             if (-not (Read-YesNo "Stimmen Sie dem Endnutzer-Lizenzvertrag zu?" $false "SM_ACCEPT_EULA")) { Fail "Ohne Zustimmung zum Endnutzer-Lizenzvertrag wird nicht installiert." }
         }
-        else { Fail "Der Endnutzer-Lizenzvertrag braucht Ihre Zustimmung: mit -AcceptEula bestaetigen (Text: $eulaFile)." }
+        else { Fail "Der Endnutzer-Lizenzvertrag braucht Ihre ausdrueckliche Zustimmung: mit -AcceptEula (bei der alten Schreibweise /AcceptEula zusaetzlich zu /VERYSILENT) bestaetigen (Text: $eulaFile)." }
 
         # Registrierungsangaben gehoeren zusammen
         $regCount = @("LicenseEmail", "LicenseToken", "AdminPassword" | Where-Object { Has $_ }).Count

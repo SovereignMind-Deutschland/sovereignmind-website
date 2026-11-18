@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SovereignMind – on-premises AI assistant</title>
+  <meta name="description" content="AI assistant for your company documents: runs on your own hardware and answers with a source citation. A demo to try out, for small and mid-sized businesses in Germany, Austria and Switzerland.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="SovereignMind – on-premises AI assistant">
+  <meta property="og:description" content="AI assistant for your company documents: runs on your own hardware and answers with a source citation. A demo to try out, for small and mid-sized businesses in Germany, Austria and Switzerland.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: the AI assistant that never lets your data leave">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="SovereignMind – on-premises AI assistant">
+  <meta name="twitter:description" content="AI assistant for your company documents: runs on your own hardware and answers with a source citation. A demo to try out, for small and mid-sized businesses in Germany, Austria and Switzerland.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "{{PROVIDER_NAME}}",
+    "url": "https://sovereignmind-deutschland.github.io/sovereignmind-website/",
+    "brand": {
+      "@type": "Brand",
+      "name": "SovereignMind"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "SovereignMind",
+    "url": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/",
+    "inLanguage": "en"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "SovereignMind",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Windows, Linux",
+    "url": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/",
+    "inLanguage": "en",
+    "description": "Self-hosted AI assistant over your own company documents that runs locally at the customer’s site. Currently available as a demo for evaluation."
+  }
+  </script>
+  <link rel="preload" href="../assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <link rel="stylesheet" href="../assets/demo.css">
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="../assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menu</button>
+      <nav class="main" id="hauptnav" aria-label="Main navigation">
+        <a href="index.html" aria-current="page">Product</a>
+        <a href="../wissenspakete.html">Knowledge packages</a>
+        <a href="vergleich.html">Comparison</a>
+        <a href="api.html">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Language"><a lang="de" hreflang="de" href="../index.html" title="Deutsch">DE</a><a lang="en" hreflang="en" href="index.html" aria-current="true" title="English">EN</a></div><!--/lang-switch-->
+        <a class="btn" href="download.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="pill">Runs on your own hardware</p>
+            <h1>The AI assistant that <em>never lets</em> your data leave.</h1>
+            <p>Ask your own documents. The answer comes with a source citation, and the AI runs on your hardware.</p>
+            <div class="actions">
+              <a class="btn" href="download.html#demo">Try the demo</a> <a class="btn ghost" href="download.html">View installation</a>
+            </div>
+            <p class="hint">Free demo, 24 hours, only on your own machine. Do not use confidential data.</p>
+            <p class="version" data-version hidden></p>
+          </div>
+          <div class="net" id="ausprobieren">
+            <svg class="net-line" aria-hidden="true" focusable="false"><rect pathLength="1"/></svg>
+            <p class="net-label">Your network</p>
+            <div class="demo" data-demo>
+              <div class="demo-tabs" role="tablist" aria-label="Choose assistant"></div>
+              <div class="demo-chat" aria-live="polite"></div>
+              <p class="demo-note" data-demo-note></p>
+            </div>
+          </div>
+        </div>
+        <div class="note warn" data-status-note><strong>Draft:</strong> SovereignMind is currently provided only as a demo for evaluation. Production use is not permitted. Whether and when official licenses will be offered is open; there is no entitlement to a license.</div>
+      </div>
+    </section>
+
+    <div class="trust">
+      <div class="wrap">
+        <ul aria-label="Key facts">
+          <li>No cloud AI connection</li>
+          <li>Models run locally</li>
+          <li>Roles and permissions</li>
+          <li>Source citation in every answer</li>
+          <li>Runs as a service, without Docker</li>
+        </ul>
+      </div>
+    </div>
+
+    <section class="block calm" id="gruende">
+      <div class="wrap">
+        <h2>Why local?</h2>
+        <ol class="reasons">
+          <li><h3>Your data stays in-house.</h3><p>No connection to cloud AI.</p></li>
+          <li><h3>Every answer names its source.</h3><p>Clickable in the original document.</p></li>
+          <li><h3>Runs as a background service.</h3><p>Without Docker, with a tray app or a command.</p></li>
+        </ol>
+        <p class="more"><a href="on-premise-ki.html#einsatz">What would you use it for?</a> · <a href="vergleich.html">Local or cloud?</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="so-funktioniert-es">
+      <div class="wrap">
+        <h2>From file to answer</h2>
+        <ol class="flow" data-flow>
+          <li><h3>Add a document</h3><p>PDFs, DOCX files and spreadsheets are read.</p></li>
+          <li><h3>Split</h3><p>The text is split into short, searchable sections.</p></li>
+          <li><h3>Search</h3><p>The matching passages are found for the question.</p></li>
+          <li><h3>Answer with source</h3><p>The model answers in the language of the question, citation included.</p></li>
+        </ol>
+        <p class="more"><a href="on-premise-ki.html#architektur">Architecture at a glance</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="funktionen">
+      <div class="wrap">
+        <h2>Features</h2>
+        <ul class="features">
+          <li><h3>Questions to documents</h3><p>Answers with a link to the original.</p></li>
+          <li><h3>Local AI</h3><p>The model is chosen by available graphics memory.</p></li>
+          <li><h3>Roles and permissions</h3><p>Admin and member, custom branding.</p></li>
+          <li><h3>Assistants</h3><p>Role, character, avatar and voice for each assistant.</p></li>
+          <li><h3>Connect systems</h3><p>HTTP interfaces as tools, read-only.</p></li>
+          <li><h3>Knowledge packages</h3><p>Laws and regulations, ready to install: <span data-count="22">22</span> packages in the catalog.</p></li>
+        </ul>
+        <p class="more"><a href="on-premise-ki.html#funktionen">All features</a> · <a href="on-premise-ki.html#assistenten">Assistants, voices and interfaces</a> · <a href="../wissenspakete.html">Knowledge packages (German)</a> · <a href="api.html">API documentation</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="ansehen">
+      <div class="wrap">
+        <h2>Watch</h2>
+        <p class="lead">A tour in eleven minutes, sample data, with German subtitles.</p>
+        <figure class="video">
+          <video controls preload="none" playsinline poster="../assets/video/sovereignmind-demo-poster.webp" width="1920" height="1080">
+            <source src="../assets/video/sovereignmind-demo.mp4" type="video/mp4"> <track kind="subtitles" src="../assets/video/sovereignmind-demo.de.vtt" srclang="de" label="Deutsch" default> Your browser cannot play the video. <a href="../assets/video/sovereignmind-demo.mp4">Download the video (MP4, 41 MB)</a>.
+          </video>
+        </figure>
+        <div class="shots" data-gallery data-limit="3">
+          <figure class="shot">
+            <a href="../assets/screenshots/standard/light/chat.webp" target="_blank" rel="noopener"><img src="../assets/screenshots/standard/light/chat.webp" alt="Chat mit Antwort und Quellenangabe" width="1440" height="900" loading="lazy"></a>
+            <figcaption>Chat with source citations</figcaption>
+          </figure>
+          <figure class="shot">
+            <a href="../assets/screenshots/standard/light/admin-nutzung.webp" target="_blank" rel="noopener"><img src="../assets/screenshots/standard/light/admin-nutzung.webp" alt="Admin-Bereich: Nutzungsstatistik" width="1440" height="900" loading="lazy"></a>
+            <figcaption>Admin: usage</figcaption>
+          </figure>
+          <figure class="shot">
+            <a href="../assets/screenshots/standard/light/admin-dashboard.webp" target="_blank" rel="noopener"><img src="../assets/screenshots/standard/light/admin-dashboard.webp" alt="Admin-Bereich: Dashboard" width="1440" height="900" loading="lazy"></a>
+            <figcaption>Dashboard</figcaption>
+          </figure>
+        </div>
+        <p class="more"><a href="on-premise-ki.html#screenshots">All screenshots in six designs</a></p>
+      </div>
+    </section>
+
+    <section class="block calm" id="entwickler">
+      <div class="wrap">
+        <h2>Who builds this?</h2>
+        <div class="dev">
+          <img src="../assets/entwickler-240.webp" srcset="../assets/entwickler-240.webp 240w, ../assets/entwickler-400.webp 400w" sizes="(max-width: 760px) 200px, 240px" alt="Portrait of Benjamin Richter, developer of SovereignMind" width="240" height="240" loading="lazy">
+          <div class="dev-text">
+            <h3>Benjamin Richter</h3>
+            <p class="dev-role">Developer of SovereignMind</p>
+            <p>I build SovereignMind as a local AI for documents that stay in-house. It is developed in Germany. The current state is a demo; feedback is welcome.</p>
+            <p class="dev-links"><a href="mailto:{{PROVIDER_EMAIL}}">Send an email</a> · <a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <dialog class="lightbox" data-lightbox aria-label="Screenshot view">
+      <button type="button" class="lb-close" data-lb="close" aria-label="Close">×</button>
+      <button type="button" class="lb-nav lb-prev" data-lb="prev" aria-label="Previous image">‹</button>
+      <figure>
+        <img alt="" data-lb-img>
+        <figcaption data-lb-cap></figcaption>
+      </figure>
+      <button type="button" class="lb-nav lb-next" data-lb="next" aria-label="Next image">›</button>
+    </dialog>
+
+    <section class="block calm" id="kontakt">
+      <div class="wrap">
+        <h2>Contact and feedback</h2>
+        <p class="lead">Questions about adoption or feedback on the demo: <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a>. Whether and when licenses will be offered is open.</p>
+        <p class="lead"><a href="../praesentation/index.html">View the presentation with 18 slides (German)</a></p>
+        <a class="btn" href="download.html#demo">Try the demo</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="action-bar" data-action-bar hidden><a class="btn" href="download.html#demo">Download</a></div>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="../praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a><a href="../datenschutz.html" hreflang="de" lang="de">Privacy (German)</a></span>
+    </div>
+  </footer>
+  <script src="../assets/app.js" defer></script>
+  <script src="../assets/demo.js" defer></script>
+</body>
+</html>

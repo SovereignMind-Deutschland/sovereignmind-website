@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparison – SovereignMind</title>
+  <meta name="description" content="A factual comparison: local AI assistant versus cloud licenses and a self-built cloud chat, with a cost example, assumptions and sources.">
+  <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SovereignMind">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Comparison – SovereignMind">
+  <meta property="og:description" content="A factual comparison: local AI assistant versus cloud licenses and a self-built cloud chat, with a cost example, assumptions and sources.">
+  <meta property="og:url" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html">
+  <meta property="og:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="SovereignMind: the AI assistant that never lets your data leave">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Comparison – SovereignMind">
+  <meta name="twitter:description" content="A factual comparison: local AI assistant versus cloud licenses and a self-built cloud chat, with a cost example, assumptions and sources.">
+  <meta name="twitter:image" content="https://sovereignmind-deutschland.github.io/sovereignmind-website/assets/og-image.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Comparison",
+        "item": "https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html"
+      }
+    ]
+  }
+  </script>
+  <link rel="preload" href="../assets/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/theme.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="../assets/logo.svg" alt="" width="28" height="28">SovereignMind</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="hauptnav">Menu</button>
+      <nav class="main" id="hauptnav" aria-label="Main navigation">
+        <a href="index.html">Product</a>
+        <a href="../wissenspakete.html">Knowledge packages</a>
+        <a href="vergleich.html" aria-current="page">Comparison</a>
+        <a href="api.html">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Language"><a lang="de" hreflang="de" href="../vergleich.html" title="Deutsch">DE</a><a lang="en" hreflang="en" href="vergleich.html" aria-current="true" title="English">EN</a></div><!--/lang-switch-->
+        <a class="btn" href="download.html">Download</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+    <h1 class="page-title">Local or cloud? A factual comparison</h1>
+    <p>This page compares a locally operated AI assistant (SovereignMind) with three types of providers: cloud assistants with a license per user, a self-built cloud chat, and freely available interfaces for self-hosting. Figures as of: <strong data-stand>October 2026</strong>.</p>
+    <div class="note warn"><strong>Important:</strong> The cost figures are a <em>worked example with open assumptions</em>, not a price list and not an offer. SovereignMind is currently provided only as a demo; no license price has been set, which is why the SovereignMind rows are calculated without a license fee. The manufacturers’ current information always prevails. Third-party prices partly come from third-party overviews and must be checked before a decision (see sources).</div>
+
+    <p><strong>In short:</strong> Local fits confidential documents and many users; cloud fits the strongest models, few users and little wish to operate anything. The term is explained in <a href="on-premise-ki.html">What is an on-premises AI assistant?</a></p>
+
+    <h2>What fits when?</h2>
+    <div class="grid">
+      <div class="card"><h3>Local fits if …</h3><p>documents must not leave the building (professional secrecy, personnel, patient or design data), many users share the same installation and fixed rather than usage-based costs are wanted.</p></div>
+      <div class="card"><h3>Cloud fits if …</h3><p>the strongest available language models are needed, you want no operation of your own and no hardware, or the number of users fluctuates strongly. With few users a license per user is usually cheaper (see cost example).</p></div>
+      <div class="card"><h3>Combining both</h3><p>Many organizations separate: highly sensitive documents run locally, less sensitive tasks with high demands on the model in a controlled cloud access. The data protection officer decides, not this page.</p></div>
+    </div>
+
+    <h2>Features at a glance</h2>
+    <p class="muted">Columns are types, not products. Statements about third parties are kept general and differ by product; statements about SovereignMind refer to the shipped version.</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Feature table, scrolls horizontally">
+      <table class="cmp">
+        <caption>Feature comparison by provider type</caption>
+        <thead><tr><th scope="col">Feature</th><th scope="col">SovereignMind (local)</th><th scope="col">Cloud assistant with license</th><th scope="col">Self-built cloud chat</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Where do the model and documents run?</th><td class="ja">On your own hardware; no connection to cloud AI services</td><td>At the provider, region depending on contract</td><td>In your own cloud account at the provider</td></tr>
+          <tr><th scope="row">Operation without internet</th><td class="teils">Partly: offline installer and license without a license server; full proof is still outstanding</td><td class="nein">No</td><td class="nein">No</td></tr>
+          <tr><th scope="row">Answers with source citation</th><td class="ja">Yes, link to the original document with preview</td><td>differs by product</td><td>Has to be built</td></tr>
+          <tr><th scope="row">German laws as a knowledge package</th><td class="ja">Yes, catalog to download</td><td>differs by product</td><td>Has to be built</td></tr>
+          <tr><th scope="row">Users, roles, categories</th><td class="ja">Admin and member, categories</td><td>usually available</td><td>Has to be built</td></tr>
+          <tr><th scope="row">Connecting internal systems</th><td class="ja">HTTP interfaces as tools, templates</td><td>differs by product</td><td>Has to be built</td></tr>
+          <tr><th scope="row">Language (input and output)</th><td class="ja">Yes, local</td><td>differs by product</td><td>Has to be built</td></tr>
+          <tr><th scope="row">Billing</th><td>Hardware and operation; license model open</td><td>Per user and month</td><td>Service costs, partly by usage</td></tr>
+          <tr><th scope="row">Strongest language models</th><td class="nein">No: local open-weight models, limited in quality and speed by the hardware</td><td class="ja">Yes</td><td class="ja">Yes</td></tr>
+          <tr><th scope="row">Own operating effort</th><td class="teils">Yes: hardware, updates, backup</td><td class="ja">Low</td><td class="nein">High: build and maintenance</td></tr>
+          <tr><th scope="row">Scaling with many simultaneous users</th><td class="teils">Tied to hardware</td><td class="ja">Elastic</td><td class="ja">Elastic</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="features-legend">✓ strength · ◐ partly or with limitations · ✕ weakness or not possible. Cells without a symbol are neutral.</p>
+
+    <h2>Cost example</h2>
+    <p>Net in euros, including all one-off costs (hardware, setup), for the <strong>first year</strong> and over <strong>36 months</strong>. Assumptions: 20 questions per user and working day, 220 working days a year, about 6,000 input and 500 output tokens per question, hourly rate €90, 1 US dollar = €0.90. Hardware and electricity for SovereignMind are estimates (one workstation with a graphics card, several devices at 200 users), not measured values. <strong>Working time</strong> is your employees’ internal time (setup, operation), valued at the hourly rate, and is shown separately for each row; for cloud licenses, 4 hours of setup and 1 hour per month (users, permissions, reviews) are assumed. <strong>Self-operated</strong> counts setup and operating hours of your own IT; <strong>with a service provider</strong> a range for setup and a maintenance contract.</p>
+    <div id="kosten-tabelle"><noscript><div class="note warn">JavaScript is required for the cost example. The raw data is in <a href="../assets/kosten.json">kosten.json</a>.</div></noscript></div>
+    <p><strong>How to read this:</strong> With few users a cloud license is cheaper; in the first year SovereignMind incurs hardware and setup in full, which is why local is cheaper in this example only from about 100 users; over 36 months, during which the hardware is used, already from about 27 to 36 users (in each case without a license fee for SovereignMind). Model quality, support and the effort of data protection reviews are not converted into money. The office-suite rows lack the required base license.</p>
+
+    <h3 class="sub">Own calculation</h3>
+    <form class="calc-form" id="calc-form" aria-label="Cost calculator">
+      <div class="field"><label for="calc-n">Users</label><input id="calc-n" type="number" inputmode="numeric" min="1" max="5000" step="1" value="25"></div>
+      <div class="field"><label for="calc-q">Questions per user and day</label><input id="calc-q" type="number" inputmode="decimal" min="0" max="500" step="1" value="20"></div>
+      <div class="field"><label for="calc-l">Assumed license per user and month (€)</label><input id="calc-l" type="number" inputmode="decimal" min="0" max="500" step="0.5" value="0"></div>
+    </form>
+    <div id="calc-out" role="status" aria-live="polite"></div>
+
+    <h2>Sources and date</h2>
+    <p>As of: <strong data-stand>October 2026</strong>. Prices change; the manufacturers’ information takes precedence. The table and the cost example show only provider types; product names appear only in this list of sources, each with the retrieval date.</p>
+    <ul id="quellen-liste"></ul>
+    <p>Next: <a href="download.html#demo">try the demo</a> or <a href="../wissenspakete.html">view knowledge packages (German)</a>.</p>
+
+    <p class="muted page-end">This is not legal, tax or procurement advice. Whether a cloud service is permitted for certain data is something to clarify with your data protection officer.</p>
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="../praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="../impressum.html" hreflang="de" lang="de">Legal notice (German)</a><a href="../datenschutz.html" hreflang="de" lang="de">Privacy (German)</a></span>
+    </div>
+  </footer>
+  <script src="../assets/vergleich.js" defer></script>
+</body>
+</html>

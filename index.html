@@ -6,6 +6,9 @@
   <title>SovereignMind – On-Premise KI-Assistent</title>
   <meta name="description" content="KI-Assistent für Ihre Firmendokumente: läuft auf eigener Hardware, antwortet mit Quellenbeleg. Demo für den DACH-Mittelstand zum Ausprobieren.">
   <link rel="canonical" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/">
+  <link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/">
+  <link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/">
+  <link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="SovereignMind">
   <meta property="og:locale" content="de_DE">
@@ -70,6 +73,7 @@
         <a href="wissenspakete.html">Wissenspakete</a>
         <a href="vergleich.html">Vergleich</a>
         <a href="api.html">API</a>
+        <!--lang-switch--><div class="lang-switch" role="group" aria-label="Sprache"><a lang="de" hreflang="de" href="index.html" aria-current="true" title="Deutsch">DE</a><a lang="en" hreflang="en" href="en/index.html" title="English">EN</a></div><!--/lang-switch-->
         <a class="btn" href="download.html">Download</a>
       </nav>
     </div>
@@ -135,7 +139,7 @@
           <li><h3>Dokument ablegen</h3><p>PDF, DOCX und Tabellen werden gelesen.</p></li>
           <li><h3>Aufteilen</h3><p>Der Text wird in kurze, durchsuchbare Abschnitte geteilt.</p></li>
           <li><h3>Suchen</h3><p>Zur Frage werden die passenden Stellen gefunden.</p></li>
-          <li><h3>Antwort mit Quelle</h3><p>Das Modell antwortet auf Deutsch, Beleg inklusive.</p></li>
+          <li><h3>Antwort mit Quelle</h3><p>Das Modell antwortet in der Sprache der Frage, Beleg inklusive.</p></li>
         </ol>
         <p class="more"><a href="on-premise-ki.html#architektur">Architektur im Überblick</a></p>
       </div>
@@ -150,7 +154,7 @@
           <li><h3>Rollen und Rechte</h3><p>Admin und Member, eigenes Branding.</p></li>
           <li><h3>Assistenten</h3><p>Rolle, Charakter, Avatar und Stimme je Assistent.</p></li>
           <li><h3>Systeme anbinden</h3><p>HTTP-Schnittstellen als Werkzeuge, nur lesend.</p></li>
-          <li><h3>Wissenspakete</h3><p>Gesetze und Regelwerke fertig installierbar.</p></li>
+          <li><h3>Wissenspakete</h3><p>Gesetze und Regelwerke fertig installierbar: <span data-count="22">22</span> Pakete im Katalog.</p></li>
         </ul>
         <p class="more"><a href="on-premise-ki.html#funktionen">Alle Funktionen</a> · <a href="on-premise-ki.html#assistenten">Assistenten, Stimmen und Schnittstellen</a> · <a href="wissenspakete.html">Wissenspakete</a> · <a href="api.html">API-Dokumentation</a></p>
       </div>
@@ -219,6 +223,8 @@
       </div>
     </section>
   </main>
+
+  <div class="action-bar" data-action-bar hidden><a class="btn" href="download.html#demo">Herunterladen</a></div>
 
   <footer class="site">
     <div class="wrap">

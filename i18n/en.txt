@@ -1,0 +1,1385 @@
+# Deutsch (Schlüssel, Leerraum normalisiert) → Englisch. Erzeugt/gepflegt für scripts/build-i18n.mjs.
+# Zeile "> " = deutscher Text, Zeile "< " = englischer Text.
+
+> <a class="api-typesnav" href="#einleitung">Einleitung</a>
+< <a class="api-typesnav" href="#einleitung">Introduction</a>
+
+> Einleitung
+< Introduction
+
+> <a class="btn secondary" href="download.html">Zur Download-Seite</a>
+< <a class="btn secondary" href="download.html">Go to the download page</a>
+
+> <input type="checkbox" id="api-open"> Nur ohne Anmeldung
+< <input type="checkbox" id="api-open"> No sign-in required
+
+> <span>© SovereignMind</span> <span><a href="index.html#funktionen">Funktionen</a><a href="on-premise-ki.html#architektur">Architektur</a><a href="index.html#kontakt">Kontakt</a><a href="on-premise-ki.html">On-Premise-KI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Präsentation</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></span>
+< <span>© SovereignMind</span> <span><a href="index.html#funktionen">Features</a><a href="on-premise-ki.html#architektur">Architecture</a><a href="index.html#kontakt">Contact</a><a href="on-premise-ki.html">On-premises AI</a><a href="praesentation/index.html" target="_blank" rel="noopener">Presentation (German)</a><a href="impressum.html">Legal notice (German)</a><a href="datenschutz.html">Privacy (German)</a></span>
+
+> <strong>Als Admin anmelden</strong> (<a href="#post-api-auth-admin-login">POST /api/auth/admin-login</a>) und ein Mitglied für das Fachsystem anlegen (<a href="#post-api-admin-users">POST /api/admin/users</a>). Eine Kategorie für Dokumente legt der Admin einmal an.
+< <strong>Sign in as admin</strong> (<a href="#post-api-auth-admin-login">POST /api/auth/admin-login</a>) and create a member for the line-of-business system (<a href="#post-api-admin-users">POST /api/admin/users</a>). The admin creates a document category once.
+
+> <strong>Als Mitglied anmelden:</strong> <a href="#post-api-auth-login">POST /api/auth/login</a> liefert das Zugriffstoken (<code>accessToken</code>).
+< <strong>Sign in as a member:</strong> <a href="#post-api-auth-login">POST /api/auth/login</a> returns the access token (<code>accessToken</code>).
+
+> <strong>Dokument hochladen</strong> (<a href="#post-api-v1-documents">POST /api/v1/documents</a>) und warten, bis der Status <code>Ready</code> ist (<a href="#get-api-v1-documents">GET /api/v1/documents</a>). Neue Dokumente sind zunächst privat; der Admin kann sie für alle freigeben.
+< <strong>Upload a document</strong> (<a href="#post-api-v1-documents">POST /api/v1/documents</a>) and wait until the status is <code>Ready</code> (<a href="#get-api-v1-documents">GET /api/v1/documents</a>). New documents are private at first; the admin can share them with everyone.
+
+> <strong>Entwurf:</strong> SovereignMind wird derzeit ausschließlich als Demo zur Erprobung bereitgestellt. Die Nutzung im Produktivbetrieb ist nicht gestattet. Ob und wann offizielle Lizenzen angeboten werden, ist offen; ein Anspruch auf den Abschluss einer Lizenz besteht nicht.
+< <strong>Draft:</strong> SovereignMind is currently provided only as a demo for evaluation. Production use is not permitted. Whether and when official licenses will be offered is open; there is no entitlement to a license.
+
+> <strong>Frage stellen:</strong> <a href="#post-api-v1-chat">POST /api/v1/chat</a> antwortet als Strom von <code>data: {…}</code>-Zeilen. Das letzte Ereignis (<code>"type":"done"</code>) trägt die Quellen (<code>citations</code>).
+< <strong>Ask a question:</strong> <a href="#post-api-v1-chat">POST /api/v1/chat</a> answers as a stream of <code>data: {…}</code> lines. The last event (<code>"type":"done"</code>) carries the sources (<code>citations</code>).
+
+> <strong>Registrieren (einmal):</strong> <a href="#post-api-tenant-register">POST /api/tenant/register</a> mit Lizenzdaten und Admin-Passwort.
+< <strong>Register (once):</strong> <a href="#post-api-tenant-register">POST /api/tenant/register</a> with license data and admin password.
+
+> <strong>Zustand prüfen:</strong> <code>GET /health</code> und <a href="#get-api-system-status">GET /api/system-status</a> (<code>mode</code>, <code>modelsMissing</code>). Fehlen Modelle, zuerst laden; Fragen sind sonst nicht möglich.
+< <strong>Check the state:</strong> <code>GET /health</code> and <a href="#get-api-system-status">GET /api/system-status</a> (<code>mode</code>, <code>modelsMissing</code>). If models are missing, load them first; questions are not possible otherwise.
+
+> API – SovereignMind
+< API – SovereignMind
+
+> API-Dokumentation
+< API documentation
+
+> Ablauf: von der Registrierung bis zur Antwort mit Quellen
+< Flow: from registration to an answer with sources
+
+> Basis-URL
+< Base URL
+
+> Basis-URL der Beispiele
+< Base URL for the examples
+
+> Beide Installer (<strong>Voll</strong> und <strong>Minimal</strong>) enthalten die API unter <code>/api</code> derselben Adresse, zusammen mit der Weboberfläche.
+< Both installers (<strong>Full</strong> and <strong>Minimal</strong>) include the API at <code>/api</code> on the same address, together with the web interface.
+
+> Bereiche und Endpunkte
+< Areas and endpoints
+
+> Bereiche und Suche
+< Areas and search
+
+> Die API läuft auf Ihrem eigenen Rechner. Standardmäßig ist sie unter <code>http://&lt;Rechner&gt;:5043</code> erreichbar, auf dem Rechner selbst also unter <code>http://localhost:5043</code>. Ist HTTPS eingerichtet, erreichen Sie sie unter Ihrem Namen, z.&nbsp;B. <code>https://chat.example.de</code>. Alle Pfade dieser Seite hängen an dieser Adresse. Im Feld „Basis-URL der Beispiele“ links tragen Sie Ihre Adresse ein; die Codebeispiele übernehmen sie.
+< The API runs on your own machine. By default it is reachable at <code>http://&lt;machine&gt;:5043</code>, so on the machine itself at <code>http://localhost:5043</code>. If HTTPS is set up, you reach it under your own name, e.g. <code>https://chat.example.de</code>. All paths on this page hang off this address. Enter your address in the field “Base URL for the examples” on the left; the code examples use it.
+
+> Die API-Beschreibung konnte nicht geladen werden. Bitte später erneut versuchen.
+< The API description could not be loaded. Please try again later.
+
+> Dokumentation der SovereignMind-Schnittstelle: Bereiche und Endpunkte zum Nachlesen, ohne Installation.
+< Documentation of the SovereignMind interface: areas and endpoints to read up on, without installing anything.
+
+> Download
+< Download
+
+> Endpunkte
+< Endpoints
+
+> Für die API-Dokumentation wird JavaScript benötigt. Die Rohdaten stehen in der <a href="assets/api/openapi.json">openapi.json</a>.
+< JavaScript is required for the API documentation. The raw data is in <a href="assets/api/openapi.json">openapi.json</a>.
+
+> Hauptnavigation
+< Main navigation
+
+> Kein Endpunkt passt zu Ihrer Suche. Suchbegriff kürzen oder Filter zurücksetzen.
+< No endpoint matches your search. Shorten the search term or reset the filters.
+
+> Menü
+< Menu
+
+> Nach Methode filtern
+< Filter by method
+
+> Pfad, Titel oder Text ( / )
+< Path, title or text ( / )
+
+> Produkt
+< Product
+
+> So gehören die Aufrufe zusammen (Reihenfolge auf einer frischen Installation):
+< How the calls fit together (order on a fresh installation):
+
+> SovereignMind: Der KI-Assistent, der Ihre Daten nie verlässt
+< SovereignMind: the AI assistant that never lets your data leave
+
+> Sprache
+< Language
+
+> Startseite
+< Home
+
+> Suche
+< Search
+
+> Vergleich
+< Comparison
+
+> Welche Installer enthalten die API?
+< Which installers include the API?
+
+> Wer nur die API nutzt oder ein eigenes Frontend anbindet, schaltet die Weboberfläche ab (Linux <code>sudo sovereignmind frontend off</code>, Windows Tray-Menü „Weboberfläche“). Für Browser-Oberflächen auf einer anderen Adresse wird die Installation mit <code>--cors</code> (Linux) bzw. <code>/CORS=https://app.example</code> (Windows) eingerichtet.
+< If you only use the API or connect your own front end, turn off the web interface (Linux <code>sudo sovereignmind frontend off</code>, Windows tray menu “Web interface”). For browser interfaces on a different address, the installation is set up with <code>--cors</code> (Linux) or <code>/CORS=https://app.example</code> (Windows).
+
+> Wird geladen …
+< Loading …
+
+> Wissenspakete
+< Knowledge packages
+
+> Zum Inhalt
+< Skip to content
+
+> <a class="btn secondary" href="api.html">API-Dokumentation lesen</a>
+< <a class="btn secondary" href="api.html">Read the API documentation</a>
+
+> <code>--cors https://app.example</code> erlaubt Browser-Oberflächen auf anderer Adresse.
+< <code>--cors https://app.example</code> allows browser interfaces on a different address.
+
+> <code>--license-email</code> mit <code>SM_LICENSE_TOKEN</code> und <code>SM_ADMIN_PASSWORD</code> in der Umgebung legt Mandant und Admin an.
+< <code>--license-email</code> with <code>SM_LICENSE_TOKEN</code> and <code>SM_ADMIN_PASSWORD</code> in the environment creates the tenant and admin.
+
+> <code>--no-models</code> lädt gar nichts nach, <code>--strict</code> beendet das Bundle mit Exit-Code&nbsp;5, wenn danach Modelle fehlen. Bei einem USB-Stick oder eigenem Download-Server entfällt das Zusammenfügen. Weitere Optionen wie <code>--accept-eula</code>, <code>--yes</code> oder <code>--port</code> zeigt <code>bash &lt;datei&gt;.run --help</code>.
+< <code>--no-models</code> downloads nothing at all, <code>--strict</code> ends the bundle with exit code&nbsp;5 if models are missing afterwards. With a USB stick or your own download server, joining the parts is not needed. More options such as <code>--accept-eula</code>, <code>--yes</code> or <code>--port</code> are shown by <code>bash &lt;file&gt;.run --help</code>.
+
+> <code>/CORS=https://app.example</code> erlaubt Browser-Oberflächen auf anderer Adresse.
+< <code>/CORS=https://app.example</code> allows browser interfaces on a different address.
+
+> <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> legt Mandant und Admin still an.
+< <code>/LICENSEEMAIL=… /LICENSETOKEN=… /ADMINPASSWORD=…</code> creates the tenant and admin silently.
+
+> <code>internal</code> (Standard)
+< <code>internal</code> (default)
+
+> <code>sovereignmind start</code> / <code>stop</code>
+< <code>sovereignmind start</code> / <code>stop</code>
+
+> <code>sudo</code>-Rechte
+< <code>sudo</code> rights
+
+> <span></span><span></span><span></span><b>Terminal</b>
+< <span></span><span></span><span></span><b>Terminal</b>
+
+> <strong>1 Sitzplatz</strong>nur auf dem eigenen Rechner erreichbar
+< <strong>1 seat</strong>reachable only on the machine itself
+
+> <strong>24 Stunden:</strong> Es zählt die Betriebszeit der Dienste, spätestens 24 Stunden nach dem Start ist Schluss. Danach werden alle Daten gelöscht, auch die, die Sie in der Demo angelegt haben. Das Zurückstellen der Uhr verlängert die Frist nicht. Danach lässt sich eine neue Demo starten.
+< <strong>24 hours:</strong> Service uptime counts; after 24 hours at the latest it is over. After that all data is deleted, including what you created in the demo. Setting the clock back does not extend the period. A new demo can be started afterwards.
+
+> <strong>24 Stunden</strong>Betriebszeit, danach werden Daten gelöscht
+< <strong>24 hours</strong>of uptime, then data is deleted
+
+> <strong>8&nbsp;GB VRAM · 16&nbsp;GB RAM</strong>empfohlen; ca. 3&nbsp;GB Installer plus Modelle
+< <strong>8&nbsp;GB VRAM · 16&nbsp;GB RAM</strong>recommended; about 3&nbsp;GB installer plus models
+
+> <strong>Eingeschränkt:</strong> ein Sitzplatz (keine weiteren Nutzer), Passwörter und Lizenz nicht änderbar, Schnittstellen gesperrt, höchstens 50 Dokumente und 200&nbsp;MB, keine Sicherungen.
+< <strong>Limited:</strong> one seat (no further users), passwords and license cannot be changed, connectors locked, at most 50 documents and 200&nbsp;MB, no backups.
+
+> <strong>Kostenlos</strong>Demo ohne Lizenzschlüssel
+< <strong>Free</strong>demo without a license key
+
+> <strong>Mit Schlüssel freischalten:</strong> Hat Ihnen der Anbieter ausdrücklich einen Lizenzschlüssel ausgestellt, schaltet er die Demo-Installation frei. Dabei wählen Sie, ob die Daten der Demo übernommen oder gelöscht werden. Eine zweite Installation oder ein Deinstallieren ist nicht nötig.
+< <strong>Unlock with a key:</strong> If the provider has expressly issued you a license key, it unlocks the demo installation. You choose whether the demo data is kept or deleted. A second installation or an uninstall is not needed.
+
+> <strong>Nur unter den eingerichteten Adressen:</strong> Die Software erzwingt, dass die Demo nur auf dem Rechner selbst (<code>http://localhost:5043</code>) oder unter dem Namen erreichbar ist, den Sie bei der Installation für HTTPS (<a href="#https">siehe unten</a>) bzw. den Netzwerkzugriff eingerichtet haben. Unter jeder anderen Adresse lehnt sie die Demo ab.
+< <strong>Only at the configured addresses:</strong> The software enforces that the demo is reachable only on the machine itself (<code>http://localhost:5043</code>) or under the name you set up during installation for HTTPS (<a href="#https">see below</a>) or network access. At any other address it rejects the demo.
+
+> <strong>Sicherung:</strong> Die tägliche Sicherung läuft automatisch. Wiederherstellung und Deinstallation beschreibt das Betreiber-Handbuch, das mit dem Anbieter-Support ausgeliefert wird.
+< <strong>Backup:</strong> The daily backup runs automatically. Recovery and uninstall are described in the operator manual, which is delivered with provider support.
+
+> <strong>Signatur der Prüfsummen (minisign):</strong> Prüfsummen erkennen beschädigte Downloads, aber kein ausgetauschtes Release: Wer das Release austauscht, kann auch <code>SHA256SUMS.txt</code> austauschen. Darum liegt daneben die Signatur <code>SHA256SUMS.txt.minisig</code>. Sie entsteht offline mit unserem privaten Schlüssel; den öffentlichen Schlüssel enthalten die Einzeiler-Skripte und diese Seite, also ein anderer Ort als das Release.
+< <strong>Signature of the checksums (minisign):</strong> Checksums detect damaged downloads, but not a swapped release: whoever swaps the release can also swap <code>SHA256SUMS.txt</code>. That is why the signature <code>SHA256SUMS.txt.minisig</code> sits next to it. It is created offline with our private key; the one-liner scripts and this page contain the public key, so it comes from a different place than the release.
+
+> <strong>Update:</strong> neue Version des Installers ausführen: den Einzeiler noch einmal ausführen (er nimmt die neueste Version) oder das neue Setup bzw. Bundle von Hand starten. Daten, Schlüssel und Lizenz bleiben erhalten; vor dem Update wird ein Datenbank-Dump angelegt.
+< <strong>Update:</strong> run the new version of the installer: run the one-liner again (it takes the latest version) or start the new setup or bundle by hand. Data, keys and license are kept; a database dump is created before the update.
+
+> <strong>Windows-Warnung (SmartScreen):</strong> Das Installationspaket und <code>install.ps1</code> sind nicht mit einem Zertifikat signiert. Windows kann deshalb „Der Computer wurde durch Windows geschützt“ anzeigen. Prüfen Sie die Prüfsumme der Datei; stimmt sie, wählen Sie „Weitere Informationen“ und dann „Trotzdem ausführen“. Das Setup bleibt eine Verwaltungsaufgabe und braucht ohnehin Administratorrechte.
+< <strong>Windows warning (SmartScreen):</strong> The installation package and <code>install.ps1</code> are not signed with a certificate. Windows may therefore show “Windows protected your PC”. Check the file’s checksum; if it matches, choose “More info” and then “Run anyway”. Setup remains an administration task and needs administrator rights anyway.
+
+> <strong>Zugangsdaten:</strong> Admin mit Passwort <code>sovereignmind</code>, Nutzer <code>test@sovereignmind.de</code> mit Passwort <code>sovereignmind</code>. Beide stehen auch auf der Anmeldeseite.
+< <strong>Credentials:</strong> admin with password <code>sovereignmind</code>, user <code>test@sovereignmind.de</code> with password <code>sovereignmind</code>. Both are also shown on the sign-in page.
+
+> API für Fachsysteme
+< API for line-of-business systems
+
+> Administratorrechte
+< Administrator rights
+
+> Adresse lokal und im Netzwerk
+< Address locally and on the network
+
+> Alle Dienste oder nur das Backend neu starten
+< Restart all services or only the backend
+
+> Alle Dienste starten bzw. stoppen
+< Start or stop all services
+
+> Alle Endpunkte, Anmeldung und Beispiele: <a href="api.html">API-Dokumentation</a>.
+< All endpoints, sign-in and examples: <a href="api.html">API documentation</a>.
+
+> Alles läuft als Dienst im Hintergrund und startet mit dem Rechner. Status und Steuerung: Tray-App (Windows) bzw. <code>sovereignmind status</code> (Linux).
+< Everything runs as a background service and starts with the machine. Status and control: tray app (Windows) or <code>sovereignmind status</code> (Linux).
+
+> App öffnen: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (der Port ist bei der Installation wählbar) oder, wenn <a href="#https">HTTPS</a> eingerichtet ist, unter <code>https://chat.example.de</code> (Ihr Name)
+< Open the app: <a href="http://localhost:5043" rel="noopener">http://localhost:5043</a> (the port can be chosen during installation) or, if <a href="#https">HTTPS</a> is set up, at <code>https://chat.example.de</code> (your name)
+
+> Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.zip.001</code> (und weitere <code>.zip.NNN</code>, falls vorhanden), <code>EULA.de.txt</code> und <code>SHA256SUMS.txt</code> sowie das Skript <a href="install.ps1" download>install.ps1</a> in einen Ordner laden. Die Summe jedes Teils mit der Zeile in <code>SHA256SUMS.txt</code> vergleichen, dann <code>install.ps1</code> in einer PowerShell als Administrator mit <code>-SourceDir</code> auf diesen Ordner starten. Das Skript entpackt das Paket und fragt nach dem <a href="#eula">Endnutzer-Lizenzvertrag</a>.
+< On the <a data-release-url href="#" rel="noopener" hidden>release page</a>, download all parts <code>SovereignMind-Setup-Minimal-&lt;Version&gt;.zip.001</code> (and further <code>.zip.NNN</code>, if any), <code>EULA.de.txt</code> and <code>SHA256SUMS.txt</code> as well as the script <a href="install.ps1" download>install.ps1</a> into one folder. Compare the checksum of each part with the line in <code>SHA256SUMS.txt</code>, then start <code>install.ps1</code> in a PowerShell as administrator with <code>-SourceDir</code> pointing to that folder. The script unpacks the package and asks for the <a href="#eula">end-user license agreement</a>.
+
+> Auf der <a data-release-url href="#" rel="noopener" hidden>Release-Seite</a> alle Teile <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> und <code>SHA256SUMS.txt</code> in einen Ordner laden und dort ausführen:
+< On the <a data-release-url href="#" rel="noopener" hidden>release page</a>, download all parts <code>sovereignmind-installer-minimal_&lt;Version&gt;_amd64.run.partNN</code> and <code>SHA256SUMS.txt</code> into one folder and run this there:
+
+> Ausgabe von <code>sovereignmind status</code> (Beispieldaten)
+< Output of <code>sovereignmind status</code> (sample data)
+
+> Bedienung auf der Kommandozeile
+< Using the command line
+
+> Bedienung danach: Die <strong>Tray-App „SovereignMind Control“</strong> im Infobereich der Taskleiste startet und stoppt alle Dienste, zeigt den Status und öffnet die Weboberfläche.
+< Using it afterwards: the <strong>tray app “SovereignMind Control”</strong> in the taskbar notification area starts and stops all services, shows the status and opens the web interface.
+
+> Befehl
+< Command
+
+> Bei Problemen bitte beim Anbieter melden und die Ausgabe des Installers mitschicken.
+< If problems occur, please report them to the provider and send the installer output along.
+
+> Bei der Installation ist der Endnutzer-Lizenzvertrag (EULA) zu bestätigen. Das Windows-Skript <code>install.ps1</code> zeigt ihn vor der Installation und fragt im Terminal (oder vorab mit <code>-AcceptEula</code>), das Linux-Bundle fragt per Konfigurationsdialog (oder vorab mit <code>--accept-eula</code>). Ohne Zustimmung wird nicht installiert. Die EULA liegt derzeit nur als <strong>Entwurf</strong> vor und ist noch nicht juristisch geprüft; derselbe Hinweis steht oben auf dieser Seite und in der App.
+< The end-user license agreement (EULA) must be confirmed during installation. The Windows script <code>install.ps1</code> shows it before installing and asks in the terminal (or in advance with <code>-AcceptEula</code>); the Linux bundle asks in a configuration dialog (or in advance with <code>--accept-eula</code>). Without agreement, nothing is installed. The EULA is currently only a <strong>draft</strong> and has not yet been legally reviewed; the same notice is at the top of this page and in the app.
+
+> Beim ersten Aufruf zeigt die App eine Willkommensseite: <strong>„Demo starten“</strong> (ohne Schlüssel, 24 Stunden) oder <strong>„Mit Lizenz einrichten“</strong> (Lizenzschlüssel, Unternehmen und Admin-Passwort; die Aktivierung läuft offline).
+< On first launch the app shows a welcome page: <strong>“Start demo”</strong> (no key, 24 hours) or <strong>“Set up with license”</strong> (license key, company and admin password; activation works offline).
+
+> Betrieb im Alltag
+< Day-to-day operation
+
+> Betriebssystem
+< Operating system
+
+> Das Bundle enthält Weboberfläche, API und KI-Server. Ohne Netz bleibt die Installation gültig (Warnung am Ende); die Modelle lassen sich später im Admin-Bereich („Jetzt laden“) oder mit <code>sudo sovereignmind models load</code> nachholen.
+< The bundle contains the web interface, API and AI server. Without a network the installation stays valid (warning at the end); the models can be loaded later in the admin area (“Load now”) or with <code>sudo sovereignmind models load</code>.
+
+> Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt und kann im Admin-Bereich unter „KI-Einstellungen“ gewechselt werden.
+< The chat model is chosen automatically by available VRAM and can be changed in the admin area under “AI settings”.
+
+> Das Root-Zertifikat einmalig je Gerät installieren, sonst zeigt der Browser eine Warnung
+< Install the root certificate once per device, otherwise the browser shows a warning
+
+> Das Skript erledigt der Reihe nach:
+< The script does the following in order:
+
+> Das Skript legt unter <code>/var/tmp</code> einen eigenen, nur für Sie lesbaren Arbeitsordner an (ca. 6&nbsp;GB frei nötig) und löscht ihn am Ende. <code>SM_DOWNLOAD_DIR</code> wählt einen anderen Ort; ein vorhandener Ordner bleibt dabei stehen, das Skript löscht nur seinen eigenen Unterordner.
+< The script creates its own working folder under <code>/var/tmp</code> that only you can read (about 6&nbsp;GB free space needed) and deletes it at the end. <code>SM_DOWNLOAD_DIR</code> chooses a different location; an existing folder is left alone, the script deletes only its own subfolder.
+
+> Datei
+< File
+
+> Demo (ohne Lizenz, 24 Stunden)
+< Demo (no license, 24 hours)
+
+> Der Einzeiler reicht Optionen über <code>SM_BUNDLE_ARGS</code> weiter:
+< The one-liner passes options on through <code>SM_BUNDLE_ARGS</code>:
+
+> Der Installer bringt einen HTTPS-Proxy (Caddy) mit. Unter Windows richten Sie ihn auf der Setup-Seite „HTTPS“ ein, unter Linux mit <code>sudo sovereignmind https chat.example.de &lt;modus&gt;</code>. Chat (<code>chat.…</code>) und Admin-Bereich (<code>admin.…</code>) sind zwei getrennte Apps mit eigenem Namen hinter demselben Backend. Die Demo startet auch unter diesen Namen. Für andere Geräte im Netzwerk muss der LAN-Zugriff an sein (<code>sovereignmind lan on</code>); er ist standardmäßig aus. Zusätzlich kann der Admin unter „Netzwerk &amp; Geräte“ den Zugriff auf freigegebene Paare aus Nutzer und IP-Adresse beschränken. Sperren Sie sich aus, stellt <code>sovereignmind lan open</code> auf dem Server den offenen Zugriff wieder her.
+< The installer includes an HTTPS proxy (Caddy). On Windows you set it up on the “HTTPS” page of the setup, on Linux with <code>sudo sovereignmind https chat.example.de &lt;mode&gt;</code>. Chat (<code>chat.…</code>) and admin area (<code>admin.…</code>) are two separate apps with their own names behind the same backend. The demo also starts under these names. For other devices on the network, LAN access must be on (<code>sovereignmind lan on</code>); it is off by default. In addition, the admin can restrict access under “Network &amp; devices” to approved pairs of user and IP address. If you lock yourself out, <code>sovereignmind lan open</code> on the server restores open access.
+
+> Der Installer bringt einen HTTPS-Proxy mit: interne CA, Let's Encrypt oder ein mitgeliefertes Wildcard-Zertifikat ohne Browserwarnung. Chat und Admin-Bereich laufen unter eigenen Namen, die Demo startet auch dort.
+< The installer includes an HTTPS proxy: internal CA, Let's Encrypt or a supplied wildcard certificate without a browser warning. Chat and admin area run under their own names, and the demo starts there too.
+
+> Der Installer enthält Weboberfläche, API und den KI-Server. Fehlt das Netz oder wird das Laden abgebrochen, ist SovereignMind trotzdem installiert: Der Admin sieht im Admin-Bereich den Hinweis „Jetzt laden“.
+< The installer contains the web interface, API and the AI server. If the network is missing or the download is aborted, SovereignMind is still installed: the admin sees the notice “Load now” in the admin area.
+
+> Der Installer prüft die empfohlene Hardware nicht. Die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM; ihre GPU-Unterstützung wird bei Bedarf im Admin-Bereich nachgeladen. Mac mit Unified Memory ist nicht getestet.
+< The installer does not check the recommended hardware. CPU speech output needs about 8&nbsp;GB of additional RAM; its GPU support is downloaded in the admin area when needed. A Mac with unified memory is untested.
+
+> Der KI-Server (llama.cpp) nutzt NVIDIA-, AMD- und Intel-GPUs über Vulkan, sonst die CPU. Eine frühere Ollama-Installation des Pakets wird übernommen.
+< The AI server (llama.cpp) uses NVIDIA, AMD and Intel GPUs via Vulkan, otherwise the CPU. An earlier Ollama installation of the package is taken over.
+
+> Die Ausgabe muss „Signature and comment signature verified“ lauten. Bei jeder anderen Ausgabe nichts installieren und uns über die <a href="index.html#kontakt">Kontaktadresse</a> informieren.
+< The output must read “Signature and comment signature verified”. With any other output, do not install anything and tell us through the <a href="index.html#kontakt">contact address</a>.
+
+> Die CPU-Sprachausgabe braucht zusätzlich ca. 8&nbsp;GB RAM. Mac mit Unified Memory ist nicht getestet.
+< CPU speech output needs about 8&nbsp;GB of additional RAM. A Mac with unified memory is untested.
+
+> Die Demo in Kürze
+< The demo in brief
+
+> Die Einzeiler prüfen die Signatur selbst, wenn <a href="https://jedisct1.github.io/minisign/" rel="noopener" target="_blank">minisign</a> installiert ist (Linux: <code>sudo apt install minisign</code>, Windows: <code>winget install jedisct1.minisign</code>). Ohne minisign warnen sie und prüfen nur die Prüfsummen; mit <code>SM_REQUIRE_SIGNATURE=1</code> brechen sie dann ab. Eine ungültige Signatur bricht die Installation immer ab.
+< The one-liners verify the signature themselves if <a href="https://jedisct1.github.io/minisign/" rel="noopener" target="_blank">minisign</a> is installed (Linux: <code>sudo apt install minisign</code>, Windows: <code>winget install jedisct1.minisign</code>). Without minisign they warn and only check the checksums; with <code>SM_REQUIRE_SIGNATURE=1</code> they then abort. An invalid signature always aborts the installation.
+
+> Die Endpunkt-Dokumentation liegt nach der Installation unter <code>/opt/sovereignmind/docs/api</code> (<code>sovereignmind docs</code>) und online: <a href="api.html">API-Dokumentation</a>.
+< The endpoint documentation is located at <code>/opt/sovereignmind/docs/api</code> after installation (<code>sovereignmind docs</code>) and online: <a href="api.html">API documentation</a>.
+
+> Die Prüfsummen der aktuellen Version stehen in <code>SHA256SUMS.txt</code> auf der Release-Seite.
+< The checksums of the current version are in <code>SHA256SUMS.txt</code> on the release page.
+
+> Die RPM-Familie (Fedora, Rocky Linux) ist noch nicht getestet; das Bundle kann dort funktionieren, ist aber nicht freigegeben.
+< The RPM family (Fedora, Rocky Linux) is not yet tested; the bundle may work there but is not approved.
+
+> Die Signatur wird gerade eingeführt. Solange hier kein öffentlicher Schlüssel steht, haben die Releases noch keine Signatur, und die Einzeiler prüfen nur die Prüfsummen.
+< The signature is being introduced. As long as no public key is shown here, the releases are not yet signed and the one-liners only check the checksums.
+
+> Die Sprachausgabe läuft standardmäßig auf der CPU. Für die Grafikkarte wählen Sie im Admin-Bereich „Voice“; die GPU-Unterstützung (PyTorch, ca.&nbsp;4 GB bei NVIDIA, ca.&nbsp;5 GB bei AMD) lädt der Admin dort bei Bedarf nach. Das größere 14B-Chat-Modell lädt der Admin ebenfalls selbst (Admin-Bereich, Lokale Modelle).
+< Speech output runs on the CPU by default. To use the graphics card, choose “Voice” in the admin area; the admin downloads GPU support (PyTorch, about&nbsp;4 GB on NVIDIA, about&nbsp;5 GB on AMD) there when needed. The admin also loads the larger 14B chat model themselves (admin area, local models).
+
+> Die Weboberfläche ist standardmäßig an. <code>--no-frontend</code> bei der Installation oder später <code>sudo sovereignmind frontend off</code> schaltet sie ab (<code>on</code> schaltet sie wieder ein); dann ist nur die API erreichbar.
+< The web interface is on by default. <code>--no-frontend</code> during installation, or later <code>sudo sovereignmind frontend off</code>, turns it off (<code>on</code> turns it back on); then only the API is reachable.
+
+> Die Weboberfläche ist standardmäßig an. Abschalten: im Setup „Weboberfläche ausliefern“ abwählen (still: <code>/FRONTEND=off</code>) oder später im Tray-Menü. Dann stellt SovereignMind nur die API bereit; das Setup nennt die API-Adresse und legt die Endpunkt-Dokumentation im Startmenü ab.
+< The web interface is on by default. To turn it off, clear “Serve web interface” in the setup (silent: <code>/FRONTEND=off</code>) or later in the tray menu. SovereignMind then provides only the API; the setup shows the API address and places the endpoint documentation in the Start menu.
+
+> Eigene Domain und API-Schlüssel des DNS-Anbieters; der Server muss nicht aus dem Internet erreichbar sein
+< Your own domain and the DNS provider’s API key; the server does not need to be reachable from the internet
+
+> Eigenes Frontend oder nur die API
+< Your own front end or API only
+
+> Ein Befehl richtet alles ein, ohne Docker und ohne WSL. Ob Demo oder Lizenz, entscheiden Sie erst beim ersten Aufruf der App im Browser.
+< One command sets everything up, without Docker and without WSL. Whether demo or license, you decide only on the first launch of the app in the browser.
+
+> Ein Kommando für <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> und <code>backup</code>. Befehle mit Rechtebedarf rufen selbst <code>sudo</code> auf.
+< One command for <code>open</code>, <code>status</code>, <code>start</code>, <code>stop</code>, <code>restart</code>, <code>logs</code>, <code>lan</code>, <code>https</code> and <code>backup</code>. Commands that need privileges call <code>sudo</code> themselves.
+
+> Einzeiler mit Optionen (<code>SM_SETUP_ARGS</code>, <code>SM_VERSION</code>)
+< One-liner with options (<code>SM_SETUP_ARGS</code>, <code>SM_VERSION</code>)
+
+> Empfohlen: 8&nbsp;GB VRAM (NVIDIA oder AMD) und 16&nbsp;GB RAM. Sonst läuft alles auf der CPU, deutlich langsamer.
+< Recommended: 8&nbsp;GB VRAM (NVIDIA or AMD) and 16&nbsp;GB RAM. Otherwise everything runs on the CPU, noticeably slower.
+
+> Empfohlen: 8&nbsp;GB VRAM und 16&nbsp;GB RAM. Ohne GPU läuft alles auf der CPU, deutlich langsamer.
+< Recommended: 8&nbsp;GB VRAM and 16&nbsp;GB RAM. Without a GPU everything runs on the CPU, noticeably slower.
+
+> Endnutzer-Lizenzvertrag
+< End-user license agreement
+
+> Für Fortgeschrittene
+< For advanced users
+
+> Für die Demo ist nichts weiter nötig. Einen Lizenzschlüssel (Token) und die Angaben, an die er gebunden ist (E-Mail-Adresse, ggf. Firmenname und Zahlungsreferenz), brauchen Sie nur, wenn Ihnen der Anbieter ausdrücklich einen ausgestellt hat.
+< Nothing else is needed for the demo. You need a license key (token) and the details it is bound to (email address, possibly company name and payment reference) only if the provider has expressly issued you one.
+
+> Gleiche Größe und gleiche Voraussetzungen wie oben (die Modelle werden geladen).
+< Same size and same requirements as above (the models are downloaded).
+
+> HTTPS im Netzwerk
+< HTTPS on the network
+
+> HTTPS-Name und Zertifikatsmodus einrichten (<a href="#https">Modi</a>); <code>sovereignmind https off</code> schaltet ab
+< Set up the HTTPS name and certificate mode (<a href="#https">modes</a>); <code>sovereignmind https off</code> turns it off
+
+> HTTPS-Proxy
+< HTTPS proxy
+
+> Herunterladen
+< Download
+
+> <a class="btn" href="download.html#demo">Herunterladen</a>
+< <a class="btn" href="download.html#demo">Download</a>
+
+> Herunterladen – SovereignMind
+< Download – SovereignMind
+
+> Hinweis
+< Notice
+
+> Installation und Download wie oben unter Windows bzw. Linux. Den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie zweimal: im Installer und in der App, beim Start der Demo bzw. bei der Einrichtung.
+< Installation and download as above under Windows or Linux. You confirm the <a href="#eula">end-user license agreement</a> twice: in the installer and in the app, when starting the demo or during setup.
+
+> Jede Datei der aktuellen Version hat eine SHA-256-Prüfsumme. Die Einzeiler prüfen sie selbst; bei einem Download von Hand vergleichen Sie die Summe der Datei mit der Zeile in <code>SHA256SUMS.txt</code> auf der Release-Seite oder mit dieser Tabelle.
+< Each file of the current version has a SHA-256 checksum. The one-liners check it themselves; for a manual download, compare the file’s checksum with the line in <code>SHA256SUMS.txt</code> on the release page or with this table.
+
+> Jede Installation enthält eine Schnittstelle zum Anbinden eigener Oberflächen und Fachsysteme. Alle Endpunkte, Anmeldung, Fehler und Codebeispiele lesen Sie ohne Installation nach.
+< Every installation includes an interface for connecting your own front ends and line-of-business systems. You can read up on all endpoints, sign-in, errors and code examples without installing anything.
+
+> Keine Browserwarnung und kein Internet nötig; wird erst mit gültiger Lizenz aktiv (bis dahin gilt <code>internal</code>). Die Namen tragen Sie per Hosts-Zeile oder im Router-DNS ein.
+< No browser warning and no internet needed; becomes active only with a valid license (until then <code>internal</code> applies). You enter the names via a hosts line or in the router DNS.
+
+> Kopieren
+< Copy
+
+> Let's Encrypt (DNS-01)
+< Let's Encrypt (DNS-01)
+
+> Let's Encrypt (HTTP-01)
+< Let's Encrypt (HTTP-01)
+
+> Linux: <code>sovereignmind</code>
+< Linux: <code>sovereignmind</code>
+
+> Lizenz und Wissenspakete
+< License and knowledge packages
+
+> Lizenzschlüssel stellt der Anbieter nur ausdrücklich aus; ob und wann offizielle Lizenzen angeboten werden, ist offen. Ein Schlüssel ist an eine E-Mail-Adresse gebunden und kann zusätzlich an Firmenname und Zahlungsreferenz (Rechnungsnummer oder letzte vier Stellen von Karte bzw. IBAN) gebunden sein; bei der Einrichtung geben Sie diese Angaben ein. Sie stehen im Schlüssel nur als Hash. Bitte den Schlüssel nicht weitergeben: Nach fünf falschen Angaben pro Stunde ist die Einlösung vorübergehend gesperrt. Wissenspakete lädt der Admin direkt in der App unter „Wissenspakete“ herunter. Pakete mit Zusatzfunktion setzen eine passende Lizenz voraus.
+< The provider issues license keys only expressly; whether and when official licenses will be offered is open. A key is bound to an email address and may additionally be bound to company name and payment reference (invoice number or last four digits of card or IBAN); you enter these details during setup. They are stored in the key only as a hash. Please do not pass the key on: after five wrong entries per hour, redemption is temporarily blocked. The admin downloads knowledge packages directly in the app under “Knowledge packages”. Packages with an extra feature require a matching license.
+
+> Läuft PowerShell nicht als Administrator, fragt das Skript vor dem Download, ob es in einem neuen Administrator-Fenster weitermachen soll (<code>y</code>: die Windows-Sicherheitsabfrage kommt sofort; <code>n</code>: erst nach dem Download). Wird die Abfrage abgelehnt, bleiben die geladenen Dateien liegen, ein neuer Start lädt nichts doppelt.
+< If PowerShell is not running as administrator, the script asks before the download whether it should continue in a new administrator window (<code>y</code>: the Windows security prompt appears immediately; <code>n</code>: only after the download). If the prompt is declined, the downloaded files stay in place; a new start does not download anything twice.
+
+> Mehr zur Demo <a href="#demo">weiter unten</a>. Der Installer prüft die empfohlene Hardware nicht.
+< More about the demo <a href="#demo">further down</a>. The installer does not check the recommended hardware.
+
+> Minimal: ein Befehl, Modelle werden geladen
+< Minimal: one command, models are downloaded
+
+> Modelle, USB-Stick und weitere Optionen
+< Models, USB stick and further options
+
+> Modus
+< Mode
+
+> Nach der Installation
+< After installation
+
+> Nach der Installation läuft SovereignMind als Dienst im Hintergrund und startet mit dem Rechner. Für Start, Stopp und Status braucht niemand Systemkenntnisse: unter Windows übernimmt das die Tray-App, unter Linux ein einzelnes Kommando.
+< After installation SovereignMind runs as a background service and starts with the machine. Nobody needs system knowledge for start, stop and status: on Windows the tray app handles it, on Linux a single command.
+
+> Ohne <code>| iex</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.ps1">install.ps1</a>.
+< Without <code>| iex</code> the command only prints the script’s text. It is also available as a file: <a href="install.ps1">install.ps1</a>.
+
+> Ohne <code>| sh</code> gibt der Befehl den Text des Skripts nur aus. Es liegt auch als Datei vor: <a href="install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> prüft nur und ändert nichts.
+< Without <code>| sh</code> the command only prints the script’s text. It is also available as a file: <a href="install.sh">install.sh</a>. <code>| sh -s -- --dry-run</code> only checks and changes nothing.
+
+> Ohne Administratorrechte: was passiert?
+< Without administrator rights: what happens?
+
+> Ohne Skript: Dateien aus dem Release
+< Without the script: files from the release
+
+> Optional: Der <strong>Hardware-Agent</strong> (Windows-Dienst für echte CPU-/RAM-/GPU-Werte im Dashboard) ist im Setup als Aufgabe wählbar.
+< Optional: the <strong>hardware agent</strong> (Windows service for real CPU/RAM/GPU values in the dashboard) can be selected as a task in the setup.
+
+> Optionen für das Setup übergeben Sie vor dem Befehl in <code>SM_SETUP_ARGS</code>, zum Beispiel für eine eigene Oberfläche ohne Weboberfläche. <code>SM_VERSION</code> wählt eine bestimmte Version.
+< Pass setup options before the command in <code>SM_SETUP_ARGS</code>, for example for your own interface without the web interface. <code>SM_VERSION</code> selects a specific version.
+
+> Ort der Endpunkt-Dokumentation
+< Location of the endpoint documentation
+
+> Platz für den Installer (ca. 3&nbsp;GB) und die Modelle (ca. 11&nbsp;GB)
+< Space for the installer (about 3&nbsp;GB) and the models (about 11&nbsp;GB)
+
+> Platz: ca. 0,9&nbsp;GB Download, 0,9&nbsp;GB vorübergehend unter <code>/var/tmp</code>, dazu ca. 11&nbsp;GB Modelle
+< Space: about 0.9&nbsp;GB download, 0.9&nbsp;GB temporarily under <code>/var/tmp</code>, plus about 11&nbsp;GB of models
+
+> PowerShell öffnen (am besten „Als Administrator ausführen“, dann gibt es keine weitere Abfrage), den Befehl einfügen und mit Enter bestätigen:
+< Open PowerShell (best with “Run as administrator”, then there is no further prompt), paste the command and confirm with Enter:
+
+> Protokoll von backend, postgres, qdrant, ingestion, voice, llm-chat oder llm-embed
+< Log of backend, postgres, qdrant, ingestion, voice, llm-chat or llm-embed
+
+> Prüfsummen und Windows-Warnung
+< Checksums and Windows warning
+
+> Sicherung jetzt starten
+< Start a backup now
+
+> Skript vorab lesen
+< Read the script first
+
+> SovereignMind installieren
+< Install SovereignMind
+
+> SovereignMind installieren: ein Befehl für Windows und Linux, ohne Docker.
+< Install SovereignMind: one command for Windows and Linux, without Docker.
+
+> Sprachausgabe auf der Grafikkarte
+< Speech output on the graphics card
+
+> Stand der KI-Modelle zeigen bzw. fehlende Modelle laden (minimale Variante)
+< Show the state of the AI models or load missing ones (minimal variant)
+
+> Start beim Hochfahren des Rechners
+< Start when the machine boots
+
+> Terminal öffnen, den Befehl einfügen und mit Enter bestätigen:
+< Open a terminal, paste the command and confirm with Enter:
+
+> Terminalausgabe von sovereignmind status: Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner
+< Terminal output of sovereignmind status: version, addresses, health, services, autostart, AI server, folders
+
+> Ubuntu oder Debian (x64), aktuelle Version
+< Ubuntu or Debian (x64), current version
+
+> Unter Linux gibt es keine Tray-App. Stattdessen installiert das Paket das Kommando <code>sovereignmind</code>. Befehle, die Rechte brauchen, rufen selbst <code>sudo</code> auf. Beispielausgabe: <a href="#betrieb">Betrieb im Alltag</a>.
+< There is no tray app on Linux. Instead the package installs the command <code>sovereignmind</code>. Commands that need privileges call <code>sudo</code> themselves. Sample output: <a href="#betrieb">Day-to-day operation</a>.
+
+> Update und Datensicherung
+< Update and backup
+
+> Version, Adressen, Gesundheit, Dienste, Autostart, KI-Server, Ordner; ohne root
+< Version, addresses, health, services, autostart, AI server, folders; without root
+
+> Von Hand prüfen, im Ordner mit <code>SHA256SUMS.txt</code> und <code>SHA256SUMS.txt.minisig</code> (danach die Summen der Dateien wie oben):
+< Check by hand, in the folder with <code>SHA256SUMS.txt</code> and <code>SHA256SUMS.txt.minisig</code> (then the file checksums as above):
+
+> Voraussetzungen
+< Requirements
+
+> Weboberfläche ein- oder ausschalten (nur API)
+< Turn the web interface on or off (API only)
+
+> Weboberfläche im Browser öffnen (ohne Desktop nur die Adresse)
+< Open the web interface in the browser (without a desktop only the address)
+
+> Weitere Hinweise zu Hardware und Lizenz
+< More notes on hardware and license
+
+> Weitere Hinweise zu Hardware, Distributionen und Lizenz
+< More notes on hardware, distributions and license
+
+> Weiterlesen: <a href="vergleich.html">Lokal oder Cloud? Der Vergleich</a>, <a href="wissenspakete.html">Wissenspakete für Ihre Installation</a>.
+< Further reading: <a href="vergleich.html">Local or cloud? The comparison</a>, <a href="wissenspakete.html">Knowledge packages for your installation</a>.
+
+> Windows 10 (1809), Windows 11 oder Server 2019+ (x64)
+< Windows 10 (1809), Windows 11 or Server 2019+ (x64)
+
+> Windows: Tray-App
+< Windows: tray app
+
+> Wirkung
+< Effect
+
+> Zertifikat
+< Certificate
+
+> Zugriff aus dem Netzwerk ein- bzw. ausschalten
+< Turn network access on or off
+
+> Zugriffsmodus anzeigen bzw. Geräte-Freigabe aufheben (Notfall)
+< Show the access mode or revoke device approval (emergency)
+
+> Zum Ausprobieren braucht es <strong>keinen eigenen Installer</strong>. Nach der Installation fragt die App beim ersten Aufruf: <strong>„Demo starten“</strong> oder <strong>„Mit Lizenz einrichten“</strong>. Die Demo läuft ohne Lizenzschlüssel, ist dieselbe Software mit festen Einschränkungen und löscht sich selbst:
+< To try it out you need <strong>no separate installer</strong>. After installation the app asks on first launch: <strong>“Start demo”</strong> or <strong>“Set up with license”</strong>. The demo runs without a license key, is the same software with fixed limits, and deletes itself:
+
+> eigene interne CA
+< own internal CA
+
+> ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a> und lädt das Installationspaket (rund 0,9&nbsp;GB),
+< determines the latest version in the <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub release</a> and downloads the installation package (about 0.9&nbsp;GB),
+
+> ermittelt die neueste Version im <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub-Release</a>, lädt die Teile des minimalen Bundles (rund 0,9&nbsp;GB), prüft jeden Teil gegen <code>SHA256SUMS.txt</code> und fügt sie zusammen,
+< determines the latest version in the <a href="https://github.com/sovereignmind-deutschland/sovereignmind-installer/releases" rel="noopener" target="_blank">GitHub release</a>, downloads the parts of the minimal bundle (about 0.9&nbsp;GB), checks each part against <code>SHA256SUMS.txt</code> and joins them,
+
+> fragt gleich zu Beginn das <code>sudo</code>-Passwort ab; danach läuft alles ohne weitere Rückfrage,
+< asks for the <code>sudo</code> password right at the start; after that everything runs without further prompts,
+
+> lädt danach die KI-Modelle (ca. 11&nbsp;GB) aus dem Internet nach.
+< then downloads the AI models (about 11&nbsp;GB) from the internet.
+
+> lädt die KI-Modelle (ca. 11&nbsp;GB, <code>huggingface.co</code> muss erreichbar sein) und zeigt den Fortschritt im Terminal („Modell 2 von 4: … 63&nbsp;%“).
+< downloads the AI models (about 11&nbsp;GB, <code>huggingface.co</code> must be reachable) and shows progress in the terminal (“Model 2 of 4: … 63&nbsp;%”).
+
+> mitgeliefertes Wildcard-Zertifikat
+< supplied wildcard certificate
+
+> startet das Bundle; den <a href="#eula">Endnutzer-Lizenzvertrag</a> bestätigen Sie im Terminal, das Skript stimmt nie für Sie zu,
+< starts the bundle; you confirm the <a href="#eula">end-user license agreement</a> in the terminal, the script never agrees for you,
+
+> vergleicht jede Datei mit der Prüfsumme aus <code>SHA256SUMS.txt</code>, entpackt das Paket und startet die Installation,
+< compares each file with the checksum from <code>SHA256SUMS.txt</code>, unpacks the package and starts the installation,
+
+> zeigt den <a href="#eula">Endnutzer-Lizenzvertrag</a>; Sie bestätigen ihn im Terminal, das Skript stimmt nie für Sie zu,
+< shows the <a href="#eula">end-user license agreement</a>; you confirm it in the terminal, the script never agrees for you,
+
+> Öffentlicher Name, Port 80 aus dem Internet erreichbar
+< Public name, port 80 reachable from the internet
+
+> Öffentlicher Schlüssel: <code data-minisign-key></code>
+< Public key: <code data-minisign-key></code>
+
+> „SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.
+< “SovereignMind Control” sits in the taskbar notification area. It shows whether everything is running, starts and stops the services and opens the web interface.
+
+> <a class="btn" href="download.html#demo">Demo ausprobieren</a> <a class="btn ghost" href="download.html">Installation ansehen</a>
+< <a class="btn" href="download.html#demo">Try the demo</a> <a class="btn ghost" href="download.html">View installation</a>
+
+> <a href="mailto:{{PROVIDER_EMAIL}}">E-Mail schreiben</a> · <a href="impressum.html">Impressum</a>
+< <a href="mailto:{{PROVIDER_EMAIL}}">Send an email</a> · <a href="impressum.html">Legal notice (German)</a>
+
+> <a href="on-premise-ki.html#architektur">Architektur im Überblick</a>
+< <a href="on-premise-ki.html#architektur">Architecture at a glance</a>
+
+> <a href="on-premise-ki.html#einsatz">Wofür setzen Sie es ein?</a> · <a href="vergleich.html">Lokal oder Cloud?</a>
+< <a href="on-premise-ki.html#einsatz">What would you use it for?</a> · <a href="vergleich.html">Local or cloud?</a>
+
+> <a href="on-premise-ki.html#funktionen">Alle Funktionen</a> · <a href="on-premise-ki.html#assistenten">Assistenten, Stimmen und Schnittstellen</a> · <a href="wissenspakete.html">Wissenspakete</a> · <a href="api.html">API-Dokumentation</a>
+< <a href="on-premise-ki.html#funktionen">All features</a> · <a href="on-premise-ki.html#assistenten">Assistants, voices and interfaces</a> · <a href="wissenspakete.html">Knowledge packages (German)</a> · <a href="api.html">API documentation</a>
+
+> <a href="on-premise-ki.html#screenshots">Alle Screenshots in sechs Designs</a>
+< <a href="on-premise-ki.html#screenshots">All screenshots in six designs</a>
+
+> <a href="praesentation/index.html">Präsentation mit 18 Folien ansehen</a>
+< <a href="praesentation/index.html">View the presentation with 18 slides (German)</a>
+
+> <source src="assets/video/sovereignmind-demo.mp4" type="video/mp4"> <track kind="subtitles" src="assets/video/sovereignmind-demo.de.vtt" srclang="de" label="Deutsch" default> Ihr Browser kann das Video nicht abspielen. <a href="assets/video/sovereignmind-demo.mp4">Video herunterladen (MP4, 41 MB)</a>.
+< <source src="assets/video/sovereignmind-demo.mp4" type="video/mp4"> <track kind="subtitles" src="assets/video/sovereignmind-demo.de.vtt" srclang="de" label="Deutsch" default> Your browser cannot play the video. <a href="assets/video/sovereignmind-demo.mp4">Download the video (MP4, 41 MB)</a>.
+
+> Admin und Member, eigenes Branding.
+< Admin and member, custom branding.
+
+> Admin: Nutzung
+< Admin: usage
+
+> Ansehen
+< Watch
+
+> Antwort mit Quelle
+< Answer with source
+
+> Antworten mit Verweis ins Original.
+< Answers with a link to the original.
+
+> Assistent wählen
+< Choose assistant
+
+> Assistenten
+< Assistants
+
+> Aufteilen
+< Split
+
+> Benjamin Richter
+< Benjamin Richter
+
+> Betrieb als Dienst, ohne Docker
+< Runs as a service, without Docker
+
+> Chat mit Quellenbelegen
+< Chat with source citations
+
+> Das Modell antwortet in der Sprache der Frage, Beleg inklusive.
+< The model answers in the language of the question, citation included.
+
+> Das Modell wird nach verfügbarem Grafikspeicher gewählt.
+< The model is chosen by available graphics memory.
+
+> Dashboard
+< Dashboard
+
+> Demo ausprobieren
+< Try the demo
+
+> Der KI-Assistent, der Ihre Daten <em>nie verlässt</em>.
+< The AI assistant that <em>never lets</em> your data leave.
+
+> Der Text wird in kurze, durchsuchbare Abschnitte geteilt.
+< The text is split into short, searchable sections.
+
+> Dokument ablegen
+< Add a document
+
+> Eckdaten
+< Key facts
+
+> Entwickler von SovereignMind
+< Developer of SovereignMind
+
+> Fragen Sie Ihre eigenen Dokumente. Die Antwort kommt mit Quellenbeleg, die KI läuft auf Ihrer Hardware.
+< Ask your own documents. The answer comes with a source citation, and the AI runs on your hardware.
+
+> Fragen an Dokumente
+< Questions to documents
+
+> Fragen zur Einführung oder Rückmeldung zur Demo: <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a>. Ob und wann Lizenzen angeboten werden, ist offen.
+< Questions about adoption or feedback on the demo: <a href="mailto:{{PROVIDER_EMAIL}}">{{PROVIDER_EMAIL}}</a>. Whether and when licenses will be offered is open.
+
+> Funktionen
+< Features
+
+> Gesetze und Regelwerke fertig installierbar: <span data-count="22">22</span> Pakete im Katalog.
+< Laws and regulations, ready to install: <span data-count="22">22</span> packages in the catalog.
+
+> HTTP-Schnittstellen als Werkzeuge, nur lesend.
+< HTTP interfaces as tools, read-only.
+
+> Ich baue SovereignMind als lokale KI für Dokumente, die im Haus bleiben. Entwickelt wird in Deutschland. Der Stand ist eine Demo, Rückmeldungen sind willkommen.
+< I build SovereignMind as a local AI for documents that stay in-house. It is developed in Germany. The current state is a demo; feedback is welcome.
+
+> Ihr Netz
+< Your network
+
+> Ihre Daten bleiben im Haus.
+< Your data stays in-house.
+
+> Jede Antwort nennt ihre Quelle.
+< Every answer names its source.
+
+> KI-Assistent für Ihre Firmendokumente: läuft auf eigener Hardware, antwortet mit Quellenbeleg. Demo für den DACH-Mittelstand zum Ausprobieren.
+< AI assistant for your company documents: runs on your own hardware and answers with a source citation. A demo to try out, for small and mid-sized businesses in Germany, Austria and Switzerland.
+
+> Keine Anbindung an Cloud-KI.
+< No connection to cloud AI.
+
+> Keine Cloud-KI-Anbindung
+< No cloud AI connection
+
+> Klickbar im Originaldokument.
+< Clickable in the original document.
+
+> Kontakt und Rückmeldung
+< Contact and feedback
+
+> Kostenlose Demo, 24 Stunden, nur auf dem eigenen Rechner. Keine vertraulichen Daten einsetzen.
+< Free demo, 24 hours, only on your own machine. Do not use confidential data.
+
+> Lokale KI
+< Local AI
+
+> Läuft als Dienst im Hintergrund.
+< Runs as a background service.
+
+> Läuft auf Ihrer eigenen Hardware
+< Runs on your own hardware
+
+> Modelle laufen lokal
+< Models run locally
+
+> Nächstes Bild
+< Next image
+
+> Ohne Docker, mit Tray-App oder Kommando.
+< Without Docker, with a tray app or a command.
+
+> PDF, DOCX und Tabellen werden gelesen.
+< PDFs, DOCX files and spreadsheets are read.
+
+> Porträt von Benjamin Richter, Entwickler von SovereignMind
+< Portrait of Benjamin Richter, developer of SovereignMind
+
+> Quellenbeleg in jeder Antwort
+< Source citation in every answer
+
+> Rolle, Charakter, Avatar und Stimme je Assistent.
+< Role, character, avatar and voice for each assistant.
+
+> Rollen und Rechte
+< Roles and permissions
+
+> Rundgang in elf Minuten, Beispieldaten, mit deutschen Untertiteln.
+< A tour in eleven minutes, sample data, with German subtitles.
+
+> Schließen
+< Close
+
+> Screenshot-Ansicht
+< Screenshot view
+
+> Selbst gehosteter KI-Assistent über die eigenen Firmendokumente, der lokal beim Kunden läuft. Derzeit als Demo zur Erprobung verfügbar.
+< Self-hosted AI assistant over your own company documents that runs locally at the customer’s site. Currently available as a demo for evaluation.
+
+> SovereignMind – On-Premise KI-Assistent
+< SovereignMind – on-premises AI assistant
+
+> Suchen
+< Search
+
+> Systeme anbinden
+< Connect systems
+
+> Von der Akte zur Antwort
+< From file to answer
+
+> Vorheriges Bild
+< Previous image
+
+> Warum lokal?
+< Why local?
+
+> Wer baut das?
+< Who builds this?
+
+> Zur Frage werden die passenden Stellen gefunden.
+< The matching passages are found for the question.
+
+> <a class="btn secondary" href="vergleich.html">Lokal oder Cloud? Zum Vergleich</a> <a class="btn secondary" href="wissenspakete.html">Wissenspakete ansehen</a>
+< <a class="btn secondary" href="vergleich.html">Local or cloud? To the comparison</a> <a class="btn secondary" href="wissenspakete.html">View knowledge packages (German)</a>
+
+> <a href="index.html#ansehen">Ohne Skript: Auswahl auf der Startseite</a>
+< <a href="index.html#ansehen">Without script: selection on the home page</a>
+
+> <strong>Ein On-Premise-KI-Assistent ist ein KI-Chat, dessen Sprachmodell und Dokumentensuche auf Hardware der eigenen Organisation laufen statt bei einem Cloud-Anbieter.</strong> Fragen und Dokumente bleiben im eigenen Netz. Er lohnt sich vor allem, wenn sensible Dokumente nicht an Dritte gehen sollen und viele Personen dieselbe Installation nutzen. Stand: Oktober 2026.
+< <strong>An on-premises AI assistant is an AI chat whose language model and document search run on the organization’s own hardware instead of at a cloud provider.</strong> Questions and documents stay on your own network. It is worthwhile mainly when sensitive documents should not go to third parties and many people use the same installation. As of: October 2026.
+
+> <strong>Wichtig:</strong> SovereignMind wird derzeit nur als Demo zur Erprobung bereitgestellt (kein Produktivbetrieb, Lizenzangebot offen). Diese Seite erklärt das Konzept allgemein und ist keine Rechtsberatung.
+< <strong>Important:</strong> SovereignMind is currently provided only as a demo for evaluation (no production use, license offer open). This page explains the concept in general terms and is not legal advice.
+
+> Admin und Member, eigenes Branding pro Unternehmen.
+< Admin and member, custom branding per company.
+
+> Admin-Bereich
+< Admin area
+
+> Alles läuft nach der Installation als Dienst im Hintergrund, ohne Docker und ohne WSL. Den KI-Server (llama.cpp) und die Modelle liefert der Installer mit.
+< After installation everything runs as a background service, without Docker and without WSL. The installer ships the AI server (llama.cpp) and the models.
+
+> Anbieter-Vorlagen
+< Provider templates
+
+> Anbindung interner Systeme
+< Connecting internal systems
+
+> Anbindung per API
+< Connection via API
+
+> Antwort-Cache
+< Answer cache
+
+> Architektur in Kürze
+< Architecture in brief
+
+> Assistenten konfigurieren
+< Configure assistants
+
+> Assistenten mit Rolle, Persönlichkeit, Avatar und eigener Stimme sowie wiederverwendbare Vorlagen für das ganze Team.
+< Assistants with a role, personality, avatar and their own voice, plus reusable templates for the whole team.
+
+> Assistenten und Prompt-Bibliothek
+< Assistants and prompt library
+
+> Assistenten, Stimmen und Schnittstellen
+< Assistants, voices and interfaces
+
+> Aurora
+< Aurora
+
+> Avatar
+< Avatar
+
+> Bei Berufsgeheimnissen (zum Beispiel Kanzleien, Arztpraxen) zusätzlich die berufsrechtlichen Vorgaben, etwa § 203 StGB.
+< For professional secrecy (for example law firms, medical practices), the professional rules also apply, such as § 203 of the German Criminal Code (StGB).
+
+> Betrieb
+< Operation
+
+> Chat, Admin-Bereich und Dashboard (Beispieldaten). Ein Klick vergrößert das Bild.
+< Chat, admin area and dashboard (sample data). A click enlarges the image.
+
+> Corporate
+< Corporate
+
+> Das Modell ruft angebundene Systeme bei Bedarf selbst auf. Die Aufrufe erscheinen als aufklappbare Karte im Chat, Zugangsdaten werden verschlüsselt gespeichert, erlaubte Ziel-Hosts begrenzt eine Allowlist.
+< The model calls connected systems itself when needed. The calls appear as an expandable card in the chat, credentials are stored encrypted, and an allowlist limits the permitted target hosts.
+
+> Das Verfahren heißt Retrieval-Augmented Generation (RAG): Dokumente werden zerlegt und durchsuchbar gemacht. Bei einer Frage sucht das System die passenden Stellen und lässt das Sprachmodell daraus eine Antwort formulieren. SovereignMind verlinkt die Antwort mit dem Originaldokument, damit man sie nachprüfen kann.
+< The method is called retrieval-augmented generation (RAG): documents are split up and made searchable. When a question comes in, the system finds the matching passages and has the language model formulate an answer from them. SovereignMind links the answer to the original document so it can be verified.
+
+> Das Vorlesen läuft komplett lokal. Qwen3-TTS liest standardmäßig auf der CPU vor; die GPU wählt der Betreiber, ihre Unterstützung wird dann nachgeladen.
+< Read-aloud runs entirely locally. Qwen3-TTS reads aloud on the CPU by default; the operator chooses the GPU, and its support is then downloaded.
+
+> Dateien im Chat
+< Files in chat
+
+> Der Betreiber schaltet das Vorlesen frei und legt die Standardstimme fest. Nutzer wählen im Profil ihren Stimmen-Modus.
+< The operator enables read-aloud and sets the default voice. Users choose their voice mode in their profile.
+
+> Der Betreiber weist jedem Assistenten eine Stimme zu. Mitglieder wählen: Standard, Stimme des Assistenten oder eigene Stimme.
+< The operator assigns a voice to each assistant. Members choose: default, the assistant’s voice or their own voice.
+
+> Der Standort der Verarbeitung; für Übermittlungen in Drittländer gelten besondere Voraussetzungen (Art. 44 ff. DSGVO).
+< The location of processing; transfers to third countries are subject to special conditions (Art. 44 ff. GDPR).
+
+> Design
+< Design
+
+> Die Demo läuft 24 Stunden ohne Lizenzschlüssel und nur auf dem eigenen Rechner. Bitte keine echten oder vertraulichen Daten verwenden. <a href="download.html#demo">Zur Demo</a> · <a href="index.html#kontakt">Rückmeldung geben</a>
+< The demo runs for 24 hours without a license key and only on your own machine. Please do not use real or confidential data. <a href="download.html#demo">Go to the demo</a> · <a href="index.html#kontakt">Give feedback</a>
+
+> Die Details, die auf der <a href="index.html">Startseite</a> bewusst fehlen: Einsatzfälle, alle Funktionen, Assistenten mit Stimmen und Schnittstellen, Architektur und die volle Screenshot-Galerie.
+< The details deliberately left out of the <a href="index.html">home page</a>: use cases, all features, assistants with voices and interfaces, architecture and the full screenshot gallery.
+
+> Die Vorlagenauswahl bietet Suche, Kategorie-Filter, Funktionsauswahl sowie Hinweise zu Zugangsdaten und Einrichtung.
+< The template picker offers search, category filters, feature selection and notes on credentials and setup.
+
+> Dies ist keine Rechts-, Steuer- oder Einkaufsberatung.
+< This is not legal, tax or procurement advice.
+
+> Diktat (noch nicht verfügbar)
+< Dictation (not yet available)
+
+> Dokumente
+< Documents
+
+> Dokumente direkt in einer Unterhaltung hochladen, ohne sie dauerhaft abzulegen.
+< Upload documents directly in a chat without storing them permanently.
+
+> Dunkel
+< Dark
+
+> Echo
+< Echo
+
+> Eher Cloud
+< More cloud
+
+> Eher lokal
+< More local
+
+> Eigene Hardware, Updates, Sicherung
+< Own hardware, updates, backup
+
+> Eigene Schnittstellen
+< Custom connectors
+
+> Eigene Stimme
+< Own voice
+
+> Ein Vertrag zur Auftragsverarbeitung mit dem Anbieter (Art. 28 DSGVO).
+< A data processing agreement with the provider (Art. 28 GDPR).
+
+> Ein lokaler Betrieb vermeidet die Weitergabe an einen Anbieter, ersetzt aber nicht die übrigen Pflichten (Rechtsgrundlage, Zugriffsrechte, Löschkonzept). Ob ein Einsatz zulässig ist, klären Sie mit Ihrer oder Ihrem Datenschutzbeauftragten.
+< Local operation avoids passing data to a provider, but does not replace the other obligations (legal basis, access rights, deletion concept). Whether use is permitted is something to clarify with your data protection officer.
+
+> Eine Rolle trägt die Fachanweisung, zum Beispiel „Vertragsprüfer“. Jeder Assistent hat höchstens eine; wird die Rolle gelöscht, bleiben die Assistenten bestehen.
+< A role carries the specialist instruction, for example “contract reviewer”. Each assistant has at most one; if the role is deleted, the assistants remain.
+
+> Eine von 20 mitgelieferten Vorlagen (KI-generierte Gesichter und Illustrationen) oder ein eigenes Bild. Im Chat erscheint der Avatar neben jeder Antwort, mit Hinweis „KI-Assistent“.
+< One of 20 supplied templates (AI-generated faces and illustrations) or your own image. In the chat the avatar appears next to every answer, with the note “AI assistant”.
+
+> Enthalten Dokumente personenbezogene Daten, gilt die DSGVO für ihre Verarbeitung, auch wenn ein KI-Dienst sie verarbeitet. Typische Punkte, die bei einem Cloud-Dienst zu klären sind:
+< If documents contain personal data, the GDPR applies to their processing, even when an AI service processes them. Typical points to clarify with a cloud service:
+
+> Entscheidungshilfe, horizontal scrollbar
+< Decision aid, scrolls horizontally
+
+> Entscheidungshilfe: lokal oder Cloud (Stand Oktober 2026)
+< Decision aid: local or cloud (as of October 2026)
+
+> Farbschema
+< Color scheme
+
+> Fertige Vorlagen für HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (Handwerkersoftware) und Microsoft 365 mit OAuth2. Alle nur lesend.
+< Ready-made templates for HubSpot (CRM), Zendesk, Stripe, Notion, Jira Cloud, Hero (trades software) and Microsoft 365 with OAuth2. All read-only.
+
+> Feste Kosten für Hardware und Betrieb
+< Fixed costs for hardware and operation
+
+> Fragen an die eigenen Dokumente
+< Questions to your own documents
+
+> Fragen in natürlicher Sprache, Antworten in der Sprache der Frage, mit klickbaren Verweisen ins Originaldokument. PDF, DOCX, Tabellen und mehr werden automatisch gelesen und durchsuchbar gemacht, mit Kategorien, Duplikaterkennung und Verarbeitungsstatus.
+< Questions in natural language, answers in the language of the question, with clickable links to the original document. PDFs, DOCX files, spreadsheets and more are read and made searchable automatically, with categories, duplicate detection and processing status.
+
+> Geführte Einrichtung
+< Guided setup
+
+> Generische Gerüste für Volltextsuche, Terminabfrage und Ticketstatus, anpassbar an jedes interne HTTP-System wie DMS oder ERP.
+< Generic scaffolds for full-text search, appointment lookup and ticket status, adaptable to any internal HTTP system such as DMS or ERP.
+
+> Gesundheitswesen
+< Healthcare
+
+> HTTP-Schnittstellen (DMS, ERP, Fachdatenbanken) lassen sich als Werkzeuge einbinden, die das Modell bei Bedarf selbst aufruft. Fertige Vorlagen für HubSpot, Microsoft 365, Jira und mehr.
+< HTTP interfaces (DMS, ERP, specialist databases) can be connected as tools that the model calls itself when needed. Ready-made templates for HubSpot, Microsoft 365, Jira and more.
+
+> Handbücher und Dokumentation per Frage nutzbar machen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie ist laut Handbuch das Gerät zwischen zwei Patienten aufzubereiten?“</span>
+< Make manuals and documentation usable by asking, without them leaving the building.<span class="beispiel">Example question: “According to the manual, how must the device be reprocessed between two patients?”</span>
+
+> Handbücher und Fertigungspläne per Frage finden statt per Ordnersuche.<span class="beispiel">Beispielfrage: „Welches Anzugsdrehmoment gilt laut Wartungshandbuch für die Spannplatte?“</span>
+< Find manuals and production plans by asking instead of searching folders.<span class="beispiel">Example question: “What tightening torque applies to the clamping plate according to the maintenance manual?”</span>
+
+> Hell
+< Light
+
+> Industrie
+< Industry
+
+> Jeder Nutzer wählt Stil, Hell/Dunkel und Akzentfarbe; das Unternehmen kann eine Akzentfarbe vorgeben.
+< Each user chooses style, light/dark and accent color; the company can set an accent color.
+
+> Jedes Unternehmen stellt sich seine Assistenten selbst zusammen: mit Fachwissen, Charakter, Gesicht und Stimme, und mit Zugriff auf die Systeme, die im Haus schon laufen. Den Beispiel-Chat oben gibt es mit vier Assistenten.
+< Each company puts together its own assistants: with expertise, character, face and voice, and with access to the systems that already run in-house. The sample chat above comes with four assistants.
+
+> Kanzleien
+< Law firms
+
+> Karlsson
+< Karlsson
+
+> Kaum Betriebsaufwand
+< Hardly any operating effort
+
+> Kosten
+< Costs
+
+> Kriterium
+< Criterion
+
+> Lizenz je Nutzer, teils nutzungsabhängig
+< License per user, partly usage-based
+
+> Lokale Open-Weight-Modelle, von der Hardware begrenzt
+< Local open-weight models, limited by the hardware
+
+> Lumen
+< Lumen
+
+> Mehr zum Produkt
+< More about the product
+
+> Mehrere Stimmen
+< Multiple voices
+
+> Modellqualität
+< Model quality
+
+> Mono
+< Mono
+
+> Nutzer schreiben dem Betreiber über ein Kontaktformular direkt aus der App.
+< Users write to the operator through a contact form directly from the app.
+
+> Nutzer und Rollen
+< Users and roles
+
+> Nutzer, Dokumente, Branding, Lizenz, KI-Einstellungen, Wissenspakete, Support, Nutzungsstatistik, Logs und Dashboard mit Hardware-Auslastung.
+< Users, documents, branding, license, AI settings, knowledge packages, support, usage statistics, logs and a dashboard with hardware load.
+
+> Nutzerzahl
+< Number of users
+
+> Obsidian
+< Obsidian
+
+> On-Premise-KI
+< On-premises AI
+
+> On-Premise-KI-Assistent: Was ist das? – SovereignMind
+< On-premises AI assistant: what is it? – SovereignMind
+
+> Personalabteilungen
+< HR departments
+
+> Persönlichkeit
+< Personality
+
+> Pro Assistent lassen sich Dokumentkategorien als Wissensbasis und Schnittstellen als Werkzeuge zuordnen.
+< Per assistant, document categories can be assigned as a knowledge base and interfaces as tools.
+
+> Pro Unternehmen und Nutzer
+< Per company and user
+
+> Prompt-Bibliothek
+< Prompt library
+
+> Quellen: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Das Vorlesen im Beispiel-Chat nutzt die Sprachausgabe Ihres Browsers als Vorschau, im Produkt liest die gewählte Stimme vor.
+< Sources: M-AILABS Speech Dataset (Ramona Deininger, Karlsson), Thorsten-Voice (Thorsten Müller, CC0). Read-aloud in the sample chat uses your browser’s speech output as a preview; in the product the chosen voice reads aloud.
+
+> Ramona (Standard)
+< Ramona (default)
+
+> Richtlinien und Personalunterlagen befragen, ohne dass sie das Haus verlassen.<span class="beispiel">Beispielfrage: „Wie viele Urlaubstage stehen neuen Mitarbeitenden im ersten Jahr zu?“</span>
+< Query policies and personnel records without them leaving the building.<span class="beispiel">Example question: “How many vacation days do new employees get in their first year?”</span>
+
+> Rollen
+< Roles
+
+> Schatten-IT sind Dienste, die Mitarbeitende ohne Freigabe der IT nutzen, etwa private Konten bei Cloud-Chatbots. Wo es keine freigegebene Alternative gibt, ist die Versuchung groß, Dokumente dort einzufügen. Eine intern bereitgestellte Lösung kann das Risiko verringern, verhindert die private Nutzung aber nicht von allein. Dazu braucht es zusätzlich Regeln und Schulung.
+< Shadow IT means services that employees use without IT approval, such as private accounts with cloud chatbots. Where no approved alternative exists, the temptation to paste documents there is great. A solution provided internally can reduce the risk but does not prevent private use on its own. That also takes rules and training.
+
+> Screenshots
+< Screenshots
+
+> Sensible Dokumente dürfen nicht in eine US-Cloud, und die Suche in Ordnern kostet täglich Zeit. Ohne freigegebene Alternative landen Inhalte oft in privaten ChatGPT-Konten. SovereignMind beantwortet Fragen im eigenen Haus und zeigt, wo die Antwort steht.
+< Sensitive documents must not go into a US cloud, and searching folders costs time every day. Without an approved alternative, content often ends up in private ChatGPT accounts. SovereignMind answers questions in-house and shows where the answer comes from.
+
+> SovereignMind empfiehlt 8 GB Grafikspeicher (VRAM) und 16 GB Arbeitsspeicher; der Installer prüft diese Werte nicht. Das Modell wird nach dem verfügbaren VRAM gewählt; ein Betrieb nur mit dem Prozessor ist möglich, aber langsamer. Qualität und Tempo hängen von der Hardware ab.
+< SovereignMind recommends 8 GB of graphics memory (VRAM) and 16 GB of RAM; the installer does not check these values. The model is chosen by available VRAM; running on the processor alone is possible but slower. Quality and speed depend on the hardware.
+
+> Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.
+< Voice input via faster-whisper is prepared but not yet released. The dictation button appears in the chat only once it is available.
+
+> Sprachmodell und Embeddings laufen auf Ihrer Hardware (llama.cpp). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, Intel, sonst CPU).
+< The language model and embeddings run on your hardware (llama.cpp). The chat model is chosen automatically by available VRAM (NVIDIA, AMD, Intel, otherwise CPU).
+
+> Stimmen
+< Voices
+
+> Stimmenproben (Qwen3-TTS)
+< Voice samples (Qwen3-TTS)
+
+> Stärkste verfügbare Modelle
+< Strongest available models
+
+> Support-Nachrichten
+< Support messages
+
+> Themes
+< Themes
+
+> Thorsten
+< Thorsten
+
+> Ton und Charakter legt der Betreiber pro Assistent fest, dazu Anzeigename und eine Zusatzanweisung. Mitgeliefert sind Clara, Jonas, Sam und Robin.
+< The operator sets tone and character per assistant, plus display name and an additional instruction. Clara, Jonas, Sam and Robin are supplied.
+
+> Vertraulich, Berufsgeheimnis, Personal- oder Konstruktionsdaten
+< Confidential, professional secrecy, personnel or design data
+
+> Verträge und Akten durchsuchen, ohne Mandantendaten aus der Hand zu geben.<span class="beispiel">Beispielfrage: „Welche Kündigungsfrist gilt im Wartungsvertrag mit der Müller GmbH?“</span>
+< Search contracts and files without handing over client data.<span class="beispiel">Example question: “What notice period applies to the maintenance contract with Müller GmbH?”</span>
+
+> Viele Nutzer an einer Installation
+< Many users on one installation
+
+> Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.
+< Read-aloud with multiple voices, processed locally. The operator enables it per company. Dictation is not yet available.
+
+> Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Betreiber aus dem Katalog installiert oder als Datei importiert.
+< Preprocessed laws and regulations as packages that the operator installs from the catalog or imports as a file.
+
+> Wann lohnt sich ein lokaler Assistent, wann eher Cloud?
+< When is a local assistant worthwhile, and when is cloud better?
+
+> Was bedeutet „On-Premise“ bei KI?
+< What does “on-premises” mean for AI?
+
+> Was braucht ein lokaler Assistent an Hardware?
+< What hardware does a local assistant need?
+
+> Was ein On-Premise-KI-Assistent ist, wann er sich lohnt und was DSGVO und Schatten-IT damit zu tun haben. Sachlich, ohne Rechtsberatung.
+< What an on-premises AI assistant is, when it is worthwhile and what the GDPR and shadow IT have to do with it. Factual, without legal advice.
+
+> Was hat das mit der DSGVO zu tun?
+< What does this have to do with the GDPR?
+
+> Was ist Schatten-IT, und warum spielt sie hier eine Rolle?
+< What is shadow IT, and why does it matter here?
+
+> Was ist ein On-Premise-KI-Assistent und wann lohnt er sich?
+< What is an on-premises AI assistant, and when is it worthwhile?
+
+> Wenig sensibel
+< Not very sensitive
+
+> Wenige oder stark schwankende Nutzerzahl
+< Few or strongly fluctuating number of users
+
+> Wie beantwortet er Fragen zu eigenen Dokumenten?
+< How does it answer questions about your own documents?
+
+> Wie kann man es ausprobieren?
+< How can you try it?
+
+> Wiederholte Fragen werden schneller beantwortet: Suchergebnisse und, optional, fertige Antworten werden zwischengespeichert. Berechtigungen und der Wissensstand gelten dabei weiter; der Betreiber kann den Cache leeren oder auf Standard zurücksetzen.
+< Repeated questions are answered faster: search results and, optionally, finished answers are cached. Permissions and the state of knowledge still apply; the operator can clear the cache or reset it to default.
+
+> Wiederverwendbare Vorlagen, die Nutzer im Chat mit einem Klick einfügen.
+< Reusable templates that users insert into the chat with one click.
+
+> Wissen und Werkzeuge
+< Knowledge and tools
+
+> Wofür setzen Sie es ein?
+< What would you use it for?
+
+> Zahlen und Annahmen dazu stehen im <a href="vergleich.html">Vergleich mit Kostenbeispiel und Quellen</a>.
+< Figures and assumptions are in the <a href="vergleich.html">comparison with a cost example and sources</a>.
+
+> Zur Auswahl stehen Ramona (Standard), Karlsson und Thorsten. Weitere Stimmen lassen sich als kleine Artefakte (ca. 45 KB) ergänzen, ohne den Dienst zu ändern.
+< Ramona (default), Karlsson and Thorsten are available. Further voices can be added as small artifacts (about 45 KB) without changing the service.
+
+> „On-Premise“ heißt: Die Software läuft in der eigenen Umgebung, auf einem Server oder einer Workstation, die die Organisation selbst betreibt. Bei einem Cloud-Assistenten läuft dasselbe beim Anbieter. Bei SovereignMind laufen Sprachmodell (llama.cpp), Dokumentensuche (Qdrant) und Datenbank (PostgreSQL) lokal; es gibt keine Anbindung an Cloud-KI-Dienste.
+< “On-premises” means the software runs in your own environment, on a server or workstation the organization operates itself. With a cloud assistant the same thing runs at the provider. With SovereignMind the language model (llama.cpp), document search (Qdrant) and database (PostgreSQL) run locally; there is no connection to cloud AI services.
+
+> <strong>Kurz gesagt:</strong> Lokal passt bei vertraulichen Dokumenten und vielen Nutzern, Cloud bei den stärksten Modellen, wenigen Nutzern und geringem Betriebswunsch. Den Begriff erklärt <a href="on-premise-ki.html">Was ist ein On-Premise-KI-Assistent?</a>
+< <strong>In short:</strong> Local fits confidential documents and many users; cloud fits the strongest models, few users and little wish to operate anything. The term is explained in <a href="on-premise-ki.html">What is an on-premises AI assistant?</a>
+
+> <strong>So lesen:</strong> Bei wenigen Nutzern ist eine Cloud-Lizenz günstiger; im ersten Jahr kommen bei SovereignMind Hardware und Einrichtung komplett dazu, deshalb ist lokal in diesem Beispiel erst ab etwa 100 Nutzern günstiger; über 36 Monate, in denen die Hardware genutzt wird, schon ab etwa 27 bis 36 Nutzern (jeweils ohne Lizenzgebühr für SovereignMind). Nicht in Geld umgerechnet sind Modellqualität, Support und der Aufwand für Datenschutz-Prüfungen. Bei den Büro-Suite-Zeilen fehlt die vorausgesetzte Basislizenz.
+< <strong>How to read this:</strong> With few users a cloud license is cheaper; in the first year SovereignMind incurs hardware and setup in full, which is why local is cheaper in this example only from about 100 users; over 36 months, during which the hardware is used, already from about 27 to 36 users (in each case without a license fee for SovereignMind). Model quality, support and the effort of data protection reviews are not converted into money. The office-suite rows lack the required base license.
+
+> <strong>Wichtig:</strong> Die Kostenzahlen sind ein <em>Rechenbeispiel mit offenen Annahmen</em>, keine Preisliste und kein Angebot. SovereignMind wird derzeit nur als Demo bereitgestellt; ein Lizenzpreis steht nicht fest, deshalb sind die SovereignMind-Zeilen ohne Lizenzgebühr gerechnet. Maßgeblich sind immer die aktuellen Angaben der Hersteller. Preise Dritter stammen teils aus Übersichten Dritter und sind vor einer Entscheidung zu prüfen (siehe Quellen).
+< <strong>Important:</strong> The cost figures are a <em>worked example with open assumptions</em>, not a price list and not an offer. SovereignMind is currently provided only as a demo; no license price has been set, which is why the SovereignMind rows are calculated without a license fee. The manufacturers’ current information always prevails. Third-party prices partly come from third-party overviews and must be checked before a decision (see sources).
+
+> Abrechnung
+< Billing
+
+> Admin und Member, Kategorien
+< Admin and member, categories
+
+> An Hardware gebunden
+< Tied to hardware
+
+> Angenommene Lizenz je Nutzer und Monat (€)
+< Assumed license per user and month (€)
+
+> Antworten mit Quellenbeleg
+< Answers with source citation
+
+> Auf eigener Hardware; keine Anbindung an Cloud-KI-Dienste
+< On your own hardware; no connection to cloud AI services
+
+> Beides kombinieren
+< Combining both
+
+> Beim Anbieter, Region je nach Vertrag
+< At the provider, region depending on contract
+
+> Betrieb ohne Internet
+< Operation without internet
+
+> Cloud passt, wenn …
+< Cloud fits if …
+
+> Cloud-Assistent mit Lizenz
+< Cloud assistant with license
+
+> Deutsche Gesetze als Wissenspaket
+< German laws as a knowledge package
+
+> Dienstkosten, teils nach Verbrauch
+< Service costs, partly by usage
+
+> Dies ist keine Rechts-, Steuer- oder Einkaufsberatung. Ob ein Cloud-Dienst für bestimmte Daten zulässig ist, klären Sie mit Ihrem Datenschutzbeauftragten.
+< This is not legal, tax or procurement advice. Whether a cloud service is permitted for certain data is something to clarify with your data protection officer.
+
+> Diese Seite stellt einen lokal betriebenen KI-Assistenten (SovereignMind) drei Anbietertypen gegenüber: Cloud-Assistenten mit Lizenz je Nutzer, ein selbstgebauter Cloud-Chat und frei verfügbare Oberflächen zum Selbsthosten. Stand der Zahlen: <strong data-stand>Oktober 2026</strong>.
+< This page compares a locally operated AI assistant (SovereignMind) with three types of providers: cloud assistants with a license per user, a self-built cloud chat, and freely available interfaces for self-hosting. Figures as of: <strong data-stand>October 2026</strong>.
+
+> Dokumente das Haus nicht verlassen sollen (Berufsgeheimnis, Personal-, Patienten- oder Konstruktionsdaten), viele Nutzer dieselbe Installation teilen und feste statt nutzungsabhängiger Kosten gewünscht sind.
+< documents must not leave the building (professional secrecy, personnel, patient or design data), many users share the same installation and fixed rather than usage-based costs are wanted.
+
+> Eigene Rechnung
+< Own calculation
+
+> Eigener Betriebsaufwand
+< Own operating effort
+
+> Elastisch
+< Elastic
+
+> Fragen je Nutzer und Tag
+< Questions per user and day
+
+> Für das Kostenbeispiel wird JavaScript benötigt. Die Rohdaten stehen in der <a href="assets/kosten.json">kosten.json</a>.
+< JavaScript is required for the cost example. The raw data is in <a href="assets/kosten.json">kosten.json</a>.
+
+> Gering
+< Low
+
+> HTTP-Schnittstellen als Werkzeuge, Vorlagen
+< HTTP interfaces as tools, templates
+
+> Hardware und Betrieb; Lizenzmodell offen
+< Hardware and operation; license model open
+
+> Hoch: Bau und Wartung
+< High: build and maintenance
+
+> Im eigenen Cloud-Konto beim Anbieter
+< In your own cloud account at the provider
+
+> Ja
+< Yes
+
+> Ja, Katalog zum Download
+< Yes, catalog to download
+
+> Ja, Verweis ins Originaldokument mit Vorschau
+< Yes, link to the original document with preview
+
+> Ja, lokal
+< Yes, local
+
+> Ja: Hardware, Updates, Sicherung
+< Yes: hardware, updates, backup
+
+> Je Nutzer und Monat
+< Per user and month
+
+> Kostenbeispiel
+< Cost example
+
+> Kostenrechner
+< Cost calculator
+
+> Lokal oder Cloud? Ein sachlicher Vergleich
+< Local or cloud? A factual comparison
+
+> Lokal passt, wenn …
+< Local fits if …
+
+> Merkmal
+< Feature
+
+> Merkmale im Überblick
+< Features at a glance
+
+> Merkmalstabelle, horizontal scrollbar
+< Feature table, scrolls horizontally
+
+> Merkmalsvergleich nach Anbietertyp
+< Feature comparison by provider type
+
+> Muss gebaut werden
+< Has to be built
+
+> Nein
+< No
+
+> Nein: lokale Open-Weight-Modelle, in Qualität und Tempo von der Hardware begrenzt
+< No: local open-weight models, limited in quality and speed by the hardware
+
+> Netto in Euro, einschließlich aller Einmalkosten (Hardware, Einrichtung), für das <strong>erste Jahr</strong> und über <strong>36 Monate</strong>. Annahmen: 20 Fragen je Nutzer und Arbeitstag, 220 Arbeitstage im Jahr, rund 6.000 Eingabe- und 500 Ausgabe-Tokens je Frage, Stundensatz 90 €, 1 US-Dollar = 0,90 €. Hardware und Strom für SovereignMind sind Schätzungen (eine Workstation mit Grafikkarte, bei 200 Nutzern mehrere Geräte), keine Messwerte. <strong>Arbeitszeit</strong> ist interne Zeit Ihrer Mitarbeiter (Einrichtung, Betrieb), bewertet mit dem Stundensatz, und steht bei jeder Zeile gesondert; für Cloud-Lizenzen sind 4 Stunden Einrichtung und 1 Stunde je Monat angesetzt (Nutzer, Rechte, Prüfungen). <strong>Eigenbetrieb</strong> rechnet Einrichtungs- und Betriebsstunden der eigenen IT; <strong>mit Dienstleister</strong> eine Spanne für Einrichtung und Wartungsvertrag.
+< Net in euros, including all one-off costs (hardware, setup), for the <strong>first year</strong> and over <strong>36 months</strong>. Assumptions: 20 questions per user and working day, 220 working days a year, about 6,000 input and 500 output tokens per question, hourly rate €90, 1 US dollar = €0.90. Hardware and electricity for SovereignMind are estimates (one workstation with a graphics card, several devices at 200 users), not measured values. <strong>Working time</strong> is your employees’ internal time (setup, operation), valued at the hourly rate, and is shown separately for each row; for cloud licenses, 4 hours of setup and 1 hour per month (users, permissions, reviews) are assumed. <strong>Self-operated</strong> counts setup and operating hours of your own IT; <strong>with a service provider</strong> a range for setup and a maintenance contract.
+
+> Nutzer
+< Users
+
+> Nutzer, Rollen, Kategorien
+< Users, roles, categories
+
+> Quellen und Stand
+< Sources and date
+
+> Sachlicher Vergleich: lokaler KI-Assistent gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, mit Kostenbeispiel, Annahmen und Quellen.
+< A factual comparison: local AI assistant versus cloud licenses and a self-built cloud chat, with a cost example, assumptions and sources.
+
+> Selbstgebauter Cloud-Chat
+< Self-built cloud chat
+
+> Skalierung bei vielen gleichzeitigen Nutzern
+< Scaling with many simultaneous users
+
+> SovereignMind (lokal)
+< SovereignMind (local)
+
+> Spalten sind Typen, keine Produkte. Aussagen zu Dritten sind allgemein gehalten und gelten je Produkt unterschiedlich; Aussagen zu SovereignMind beziehen sich auf die ausgelieferte Version.
+< Columns are types, not products. Statements about third parties are kept general and differ by product; statements about SovereignMind refer to the shipped version.
+
+> Sprache (Eingabe und Ausgabe)
+< Language (input and output)
+
+> Stand: <strong data-stand>Oktober 2026</strong>. Preise ändern sich; die Angaben der Hersteller gehen vor. In der Tabelle und im Kostenbeispiel stehen nur Anbietertypen; Produktnamen erscheinen ausschließlich in dieser Quellenliste, jeweils mit Abrufdatum.
+< As of: <strong data-stand>October 2026</strong>. Prices change; the manufacturers’ information takes precedence. The table and the cost example show only provider types; product names appear only in this list of sources, each with the retrieval date.
+
+> Stärkste Sprachmodelle
+< Strongest language models
+
+> Teils: Offline-Installer und Lizenz ohne Lizenzserver; ein vollständiger Nachweis steht noch aus
+< Partly: offline installer and license without a license server; full proof is still outstanding
+
+> Vergleich – SovereignMind
+< Comparison – SovereignMind
+
+> Viele Organisationen trennen: Hochsensible Dokumente laufen lokal, weniger sensible Aufgaben mit hohem Anspruch an das Modell in einem kontrollierten Cloud-Zugang. Die Entscheidung trifft der Datenschutzbeauftragte, nicht diese Seite.
+< Many organizations separate: highly sensitive documents run locally, less sensitive tasks with high demands on the model in a controlled cloud access. The data protection officer decides, not this page.
+
+> Wann passt was?
+< What fits when?
+
+> Weiter: <a href="download.html#demo">Demo ausprobieren</a> oder <a href="wissenspakete.html">Wissenspakete ansehen</a>.
+< Next: <a href="download.html#demo">try the demo</a> or <a href="wissenspakete.html">view knowledge packages (German)</a>.
+
+> Wo laufen Modell und Dokumente?
+< Where do the model and documents run?
+
+> die stärksten verfügbaren Sprachmodelle gebraucht werden, kein eigener Betrieb und keine Hardware gewünscht sind, oder die Nutzerzahl stark schwankt. Bei wenigen Nutzern ist eine Lizenz je Nutzer meist günstiger (siehe Kostenbeispiel).
+< the strongest available language models are needed, you want no operation of your own and no hardware, or the number of users fluctuates strongly. With few users a license per user is usually cheaper (see cost example).
+
+> je Produkt verschieden
+< differs by product
+
+> meist vorhanden
+< usually available
+
+> ✓ Stärke · ◐ teils oder mit Einschränkung · ✕ Schwäche bzw. nicht möglich. Zellen ohne Symbol sind neutral.
+< ✓ strength · ◐ partly or with limitations · ✕ weakness or not possible. Cells without a symbol are neutral.

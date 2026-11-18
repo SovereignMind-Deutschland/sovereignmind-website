@@ -63,14 +63,17 @@ available() { command -v "$1" >/dev/null 2>&1; }
 WORK=""
 ROOT_WORK=""
 PARENT_CREATED=0
+RESUMABLE=0
 SUDO_KEEP=""
-# Löscht nur, was dieses Skript selbst angelegt hat: den eigenen Arbeitsordner (mktemp), die root-Kopie des Bundles und einen
-# SM_DOWNLOAD_DIR, den es neu angelegt hat, und auch den nur, wenn er danach leer ist (rmdir).
+# Löscht nur, was dieses Skript selbst angelegt hat: den eigenen Arbeitsordner, die root-Kopie des Bundles und einen
+# SM_DOWNLOAD_DIR, den es neu angelegt hat, und auch den nur, wenn er danach leer ist (rmdir). Bricht der Download der Teile ab
+# (Netz, Strg+C), bleibt der Arbeitsordner für die Wiederaufnahme stehen (RESUMABLE=1); bei Erfolg und bei jedem Prüffehler wird er gelöscht.
 cleanup() {
   if [ -n "$ROOT_WORK" ]; then $SUDO rm -rf -- "$ROOT_WORK" 2>/dev/null || true; fi
   if [ -n "$SUDO_KEEP" ]; then kill "$SUDO_KEEP" 2>/dev/null || true; fi
   [ -n "$WORK" ] || return 0
   if [ "${SM_KEEP:-0}" = "1" ]; then status "Arbeitsordner bleibt erhalten: $WORK"; return 0; fi
+  if [ "$RESUMABLE" = 1 ]; then status "Der Download ist unvollständig. Beim nächsten Start geht es in $WORK weiter."; return 0; fi
   rm -rf -- "$WORK"
   if [ "$PARENT_CREATED" = 1 ]; then rmdir -- "$SM_DOWNLOAD_DIR" 2>/dev/null || true; fi
 }
@@ -119,7 +122,7 @@ parent_ok() { # ORDNER
   return 0
 }
 
-# Eigener Arbeitsordner: von mktemp angelegt, gehört diesem Benutzer, Modus 0700, kein Symlink.
+# Eigener Arbeitsordner: gehört diesem Benutzer, Modus 0700, kein Symlink (auch ein vorhandener Ordner einer früheren Sitzung).
 workdir_ok() { # ORDNER
   [ -d "$1" ] && [ ! -L "$1" ] && [ "$(uid_of "$1")" = "$(id -u)" ] && [ "$(perm_of "$1")" = "drwx------" ]
 }
@@ -192,7 +195,7 @@ main() {
     status "Ermittle die neueste Version ..."
     json="$(curl --fail --silent --show-error --location "$SM_API_URL" 2>&1)" || {
       case "$json" in
-        *403*|*429*) error "GitHub-API-Limit erreicht. Version angeben, z. B.: SM_VERSION=2026.11.12.1500 (siehe Download-Seite)." ;;
+        *403*|*429*) error "GitHub-API-Limit erreicht. Version angeben, z. B.: SM_VERSION=2026.11.16.1917 (siehe Download-Seite)." ;;
         *) error "Release nicht abrufbar: $json" ;;
       esac
     }
@@ -241,12 +244,17 @@ main() {
 
   # Eigener Arbeitsordner (Fund 1 und 2 des Installer-Reviews): nie einen vorhandenen, womöglich fremden Ordner übernehmen.
   if [ ! -e "$SM_DOWNLOAD_DIR" ]; then
-    mkdir -p "$SM_DOWNLOAD_DIR" 2>/dev/null || error "Ordner $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."
+    ( umask 022; mkdir -p "$SM_DOWNLOAD_DIR" ) 2>/dev/null || error "Ordner $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."
     PARENT_CREATED=1
   fi
   parent_ok "$SM_DOWNLOAD_DIR" || error "$SM_DOWNLOAD_DIR ist kein sicherer Ort (Symlink, fremder Besitzer oder für andere beschreibbar ohne Sticky-Bit). Anderen Ordner mit SM_DOWNLOAD_DIR wählen."
-  WORK="$(mktemp -d "$SM_DOWNLOAD_DIR/sovereignmind-download.XXXXXX" 2>/dev/null)" || { WORK=""; error "Arbeitsordner in $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."; }
-  workdir_ok "$WORK" || error "Arbeitsordner $WORK hat nicht Besitzer $(id -u) und Modus 0700."
+  # Fester Name (Benutzer, Version, Architektur), damit ein abgebrochener Download weiterläuft. mkdir ohne -p legt nur neu an; ein
+  # vorhandener Ordner wird nur übernommen, wenn er diesem Benutzer gehört, Modus 0700 hat und kein Symlink ist (sonst Abbruch).
+  WORK="$SM_DOWNLOAD_DIR/sovereignmind-download-$(id -u)-${VERSION}-${ARCH}"
+  if [ ! -e "$WORK" ] && [ ! -L "$WORK" ]; then
+    ( umask 077; mkdir -- "$WORK" ) 2>/dev/null || { WORK=""; error "Arbeitsordner in $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."; }
+  fi
+  workdir_ok "$WORK" || { w="$WORK"; WORK=""; error "Arbeitsordner $w gehört nicht diesem Benutzer, hat nicht Modus 0700 oder ist ein Symlink. Nichts wurde geändert; Ordner prüfen und entfernen."; }
   status "Arbeitsordner: $WORK"
 
   status "Lade Prüfsummen ..."
@@ -260,18 +268,38 @@ main() {
 
   BUNDLE="$WORK/bundle.run"
   RUN_NAME="sovereignmind-installer-minimal_${VERSION}_${ARCH}.run"
-  : > "$BUNDLE"
+  # Wiederaufnahme: `merged` merkt sich (Zahl der angehängten Teile, Größe des Bundles). Passt die Größe nicht, fängt der Lauf neu an.
+  MERGED=0
+  if [ -f "$WORK/merged" ] && [ -f "$BUNDLE" ] && [ ! -L "$BUNDLE" ] && read -r MERGED MSIZE < "$WORK/merged" 2>/dev/null &&
+     [ "$(wc -c < "$BUNDLE" | tr -d ' ')" = "$MSIZE" ]; then
+    status "Früherer Download gefunden: $MERGED Teil(e) bereits geprüft."
+  else
+    MERGED=0; : > "$BUNDLE"; rm -f "$WORK/merged"
+  fi
+  RESUMABLE=1
   i=0
   for p in $PARTS; do
     i=$((i + 1))
+    if [ "$i" -le "$MERGED" ]; then status "Teil $i von $TOTAL: $p (schon vorhanden)"; continue; fi
     status "Teil $i von $TOTAL: $p"
-    # Der Arbeitsordner ist bei jedem Lauf neu (mktemp): eine Wiederaufnahme früherer Läufe gibt es nicht mehr.
-    fetch "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten."
-    sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p" || { rm -f "$WORK/$p" "$BUNDLE"; error "Prüfsumme von $p stimmt nicht. Teil gelöscht; bitte erneut starten."; }
-    # Anhängen und Teil sofort löschen: spart Platz
+    [ ! -L "$WORK/$p" ] || { rm -f "$WORK/$p"; }
+    # Ein vollständiger Rest einer früheren Sitzung wird nicht erneut geladen; ein unvollständiger setzt curl fort (-C -).
+    if [ ! -f "$WORK/$p" ] || ! sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p"; then
+      had=0; [ -f "$WORK/$p" ] && had=1
+      fetch "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
+      if [ "$had" = 1 ] && ! sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p"; then
+        # Der fortgesetzte Rest passte nicht (anderer Stand auf dem Server?): einmal komplett neu laden.
+        rm -f "$WORK/$p"
+        fetch "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
+      fi
+    fi
+    sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p" || { RESUMABLE=0; rm -f "$WORK/$p" "$BUNDLE" "$WORK/merged"; error "Prüfsumme von $p stimmt nicht. Teil gelöscht; bitte erneut starten."; }
+    # Anhängen, Stand merken, Teil löschen: spart Platz
     cat "$WORK/$p" >> "$BUNDLE"
+    printf '%s %s\n' "$i" "$(wc -c < "$BUNDLE" | tr -d ' ')" > "$WORK/merged"
     rm -f "$WORK/$p"
   done
+  RESUMABLE=0
   status "Alle $TOTAL Teile geprüft und zusammengefügt."
   BUNDLE_SUM="$(sha256sum "$BUNDLE" | cut -d' ' -f1)"
   want="$(sum_of "$WORK/SHA256SUMS.txt" "$RUN_NAME")"

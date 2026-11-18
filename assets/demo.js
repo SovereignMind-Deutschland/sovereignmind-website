@@ -2,11 +2,12 @@
 // Vorlesen über die Browser-Sprachausgabe (Vorschau, nicht die Qwen3-TTS-Stimmen).
 (function () {
   'use strict';
+  var SM = window.SM || { en: false, root: '', t: function (de) { return de; } };
   var root = document.querySelector('[data-demo]');
   if (!root) return;
 
   // blocks: { p: Absatz } oder { h: Überschrift, items: [Listenpunkte] }
-  var DATA = [
+  var DATA_DE = [
     { name: 'Robin', role: 'Zusammenfasser', avatar: 'assets/avatars/avatar-17.webp', pitch: 1.05, rate: 1,
       q: 'Was ist die STVO?',
       blocks: [
@@ -36,6 +37,37 @@
         { p: 'Ticket 4711 ist aktuell in Bearbeitung. Es wurde gestern dem Second-Level-Support zugewiesen, die nächste Rückmeldung wird bis morgen Mittag erwartet.' }
       ], src: 'Werkzeug „Support-Tickets“: get_ticket_status', tool: true }
   ];
+  var DATA_EN = [
+    { name: 'Robin', role: 'Summarizer', avatar: 'assets/avatars/avatar-17.webp', pitch: 1.05, rate: 1,
+      q: 'What is the StVO?',
+      blocks: [
+        { h: 'Key points:', items: [
+          'StVO stands for Straßenverkehrs-Ordnung, the German road traffic regulations.',
+          'It was reissued on 6 March 2013 and came into force on 1 April 2013.',
+          'It was last amended by Article 4 of the ordinance of 30 January 2026.' ] },
+        { h: 'Open points:', items: [
+          'Why and in what way the StVO was amended is not stated in the sources.' ] }
+      ], src: 'Knowledge package “Straßenverkehrs-Ordnung”' },
+    { name: 'Clara', role: 'Contract reviewer', avatar: 'assets/avatars/avatar-11.webp', pitch: 1.15, rate: 1,
+      q: 'What notice period applies to the maintenance contract with Müller GmbH?',
+      blocks: [
+        { p: 'The maintenance contract can be terminated with three months’ notice to the end of the year.' },
+        { p: 'Without timely notice it renews automatically for another year.' }
+      ], src: 'Wartungsvertrag_Mueller.pdf, § 8 Term and termination' },
+    { name: 'Jonas', role: 'HR advisor', avatar: 'assets/avatars/avatar-12.webp', pitch: 0.8, rate: 0.95,
+      q: 'How many vacation days do new employees get in their first year?',
+      blocks: [
+        { h: 'According to the works agreement:', items: [
+          '30 vacation days per year.',
+          'In the year of joining, the entitlement is prorated per full month.' ] }
+      ], src: 'Betriebsvereinbarung_Urlaub.docx, section 2' },
+    { name: 'Sam', role: 'Technical support', avatar: 'assets/avatars/avatar-16.webp', pitch: 0.95, rate: 1.05,
+      q: 'What is the status of ticket 4711?',
+      blocks: [
+        { p: 'Ticket 4711 is currently in progress. It was assigned to second-level support yesterday; the next update is expected by tomorrow noon.' }
+      ], src: 'Tool “Support tickets”: get_ticket_status', tool: true }
+  ];
+  var DATA = SM.en ? DATA_EN : DATA_DE;
 
   var tabs = root.querySelector('.demo-tabs');
   var chat = root.querySelector('.demo-chat');
@@ -68,7 +100,7 @@
     var box = el('div', 'player');
     var play = el('button', 'pl-btn', '▶');
     play.type = 'button';
-    play.setAttribute('aria-label', 'Vorlesen');
+    play.setAttribute('aria-label', SM.t('Vorlesen', 'Read aloud'));
     var bar = el('div', 'pl-bar');
     var fill = el('div', 'pl-fill');
     bar.appendChild(fill);
@@ -82,7 +114,8 @@
       if (stopCurrent === reset) stopCurrent = null;
     }
     // Echte Aufnahme (assets/voices/demo-<name>.mp3 oder .wav), sonst Browser-Stimme
-    var sources = ['mp3', 'wav'].map(function (ext) { return 'assets/voices/demo-' + d.name.toLowerCase() + '.' + ext; });
+    // Die Aufnahmen sind deutsch: auf der englischen Seite spricht die Browser-Stimme (Vorschau).
+    var sources = SM.en ? [] : ['mp3', 'wav'].map(function (ext) { return SM.root + 'assets/voices/demo-' + d.name.toLowerCase() + '.' + ext; });
     function playFile(k) {
       if (k >= sources.length) { playSynth(); return; }
       var a = new Audio(sources[k]);
@@ -111,7 +144,7 @@
       if (!canSpeak) return;
       speechSynthesis.cancel();
       var ut = new SpeechSynthesisUtterance(text);
-      ut.lang = 'de-DE'; ut.pitch = d.pitch; ut.rate = d.rate;
+      ut.lang = SM.en ? 'en-US' : 'de-DE'; ut.pitch = d.pitch; ut.rate = d.rate;
       ut.onboundary = function (e) {
         var p = Math.min(1, e.charIndex / text.length);
         fill.style.width = (p * 100) + '%';
@@ -135,13 +168,13 @@
 
     // Kopfzeile wie in der App
     var head = el('div', 'chat-head');
-    var hi = el('img'); hi.src = d.avatar; hi.alt = ''; hi.width = 28; hi.height = 28;
+    var hi = el('img'); hi.src = SM.root + d.avatar; hi.alt = ''; hi.width = 28; hi.height = 28;
     head.appendChild(hi);
-    var ht = el('span', null, 'Assistent: ');
+    var ht = el('span', null, SM.t('Assistent: ', 'Assistant: '));
     ht.appendChild(el('b', null, d.name));
     head.appendChild(ht);
     head.appendChild(el('span', 'role', '▤ ' + d.role));
-    head.appendChild(el('span', 'ai', 'KI-Assistent'));
+    head.appendChild(el('span', 'ai', SM.t('KI-Assistent', 'AI assistant')));
     chat.appendChild(head);
 
     var body = el('div', 'chat-body');
@@ -150,11 +183,11 @@
     body.appendChild(u);
 
     var m = el('div', 'msg bot');
-    var img = el('img'); img.src = d.avatar; img.alt = ''; img.width = 36; img.height = 36;
+    var img = el('img'); img.src = SM.root + d.avatar; img.alt = ''; img.width = 36; img.height = 36;
     var col = el('div', 'col');
     var who = el('div', 'who');
     who.appendChild(el('b', null, d.name));
-    who.appendChild(el('span', null, ' KI-Assistent'));
+    who.appendChild(el('span', null, SM.t(' KI-Assistent', ' AI assistant')));
     col.appendChild(who);
     var b = el('div', 'bubble');
     d.blocks.forEach(function (bl) {
@@ -164,7 +197,7 @@
       bl.items.forEach(function (t) { ul.appendChild(el('li', null, t)); });
       b.appendChild(ul);
     });
-    b.appendChild(el('div', 'src', (d.tool ? '' : 'Quelle: ') + d.src));
+    b.appendChild(el('div', 'src', (d.tool ? '' : SM.t('Quelle: ', 'Source: ')) + d.src));
     col.appendChild(b);
     col.appendChild(player(d));
     m.appendChild(img);
@@ -172,14 +205,16 @@
     body.appendChild(m);
     chat.appendChild(body);
 
-    note.textContent = 'Beispieldaten. ' + d.name + ' hat im Produkt eine eigene Stimme, die der Admin zuweist.';
+    note.textContent = SM.en
+      ? 'Sample data. In the product, ' + d.name + ' has its own voice, assigned by the admin.'
+      : 'Beispieldaten. ' + d.name + ' hat im Produkt eine eigene Stimme, die der Admin zuweist.';
   }
 
   DATA.forEach(function (d, i) {
     var t = el('button');
     t.type = 'button';
     t.setAttribute('role', 'tab');
-    var im = el('img'); im.src = d.avatar; im.alt = ''; im.width = 36; im.height = 36;
+    var im = el('img'); im.src = SM.root + d.avatar; im.alt = ''; im.width = 36; im.height = 36;
     var l = el('span', null, d.name);
     l.appendChild(el('small', null, d.role));
     t.appendChild(im);

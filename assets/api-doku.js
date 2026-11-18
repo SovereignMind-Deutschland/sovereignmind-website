@@ -1,8 +1,10 @@
 (function () {
   'use strict';
 
-  var DEFAULT_SPEC_URL = 'assets/api/openapi.json';
-  var DEFAULT_DOWNLOADS_URL = 'assets/downloads.json';
+  // Auf der englischen Seite (en/) liegt der Wurzelpfad eine Ebene höher (window.SM.root aus theme.js); in der App gibt es SM nicht.
+  var ROOT = (window.SM && window.SM.root) || '';
+  var DEFAULT_SPEC_URL = ROOT + 'assets/api/openapi.json';
+  var DEFAULT_DOWNLOADS_URL = ROOT + 'assets/downloads.json';
   var METHODS = ['get', 'post', 'put', 'patch', 'delete'];
   var spec = null;
   var items = [];      // { id, method, path, op, tag, el, navEl, hay }

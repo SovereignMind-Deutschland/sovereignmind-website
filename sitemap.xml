@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/</loc></url>
-  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>
+  </url>
   <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/wissenspakete.html</loc></url>
-  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html</loc></url>
-  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html</loc></url>
-  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html</loc></url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/api.html"/>
+  </url>
 </urlset>
