@@ -1,0 +1,20 @@
+Copyright (c) 2026 Benjamin Richter. Alle Rechte vorbehalten. / All rights reserved.
+
+Dieses Repository enthält die Website, die Installationsskripte (`install.sh`, `install.ps1`) und Wissenspakete. Sie sind proprietär. Erlaubt ist, den Inhalt zu lesen und
+die Installationsskripte zur Installation von SovereignMind auf dem eigenen Rechner auszuführen.
+Ohne ausdrückliche schriftliche Genehmigung des Rechteinhabers ist es nicht gestattet, den
+Inhalt zu kopieren, zu verändern, weiterzugeben oder zu verkaufen. Die Nutzung der Software
+richtet sich nach dem jeweiligen Lizenzvertrag (EULA).
+
+Die Nutzung des Quellcodes, der Binärdateien, der Dokumentation und der Inhalte für das
+Training, die Feinabstimmung oder die Bewertung von KI-Modellen ist nicht gestattet. Der
+Rechteinhaber behält sich die Nutzung für Text und Data Mining ausdrücklich vor
+(§ 44b Abs. 3 UrhG).
+
+This repository contains the website, the installation scripts (`install.sh`, `install.ps1`) and knowledge packages. It is proprietary. You may read the content and run the
+installation scripts to install SovereignMind on your own machine. No part may be copied,
+modified, distributed or sold without the written permission of the copyright holder.
+
+Use of the source code, binaries, documentation and content for training, fine-tuning or
+evaluating AI models is not permitted. The copyright holder expressly reserves the right
+to text and data mining (Art. 4(3) Directive (EU) 2019/790).

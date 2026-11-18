@@ -76,13 +76,23 @@ test('JSON-LD enthält weder Preis noch Bewertung; Anbietername bleibt Platzhalt
   assert.match(roh, /"name": "\{\{PROVIDER_NAME\}\}"/);
 });
 
-test('Sitemap listet genau die indexierbaren Seiten; robots.txt verweist darauf und sperrt nichts', () => {
+test('Sitemap listet genau die indexierbaren Seiten; robots.txt verweist darauf, sperrt nur KI-Trainings-Crawler', () => {
   const sitemap = lesen('sitemap.xml');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]).sort();
   assert.deepEqual(urls, Object.values(INDEXIERBAR).map((p) => BASE + p).sort());
   const robots = lesen('robots.txt');
   assert.match(robots, new RegExp(`^Sitemap: ${BASE}sitemap\.xml$`, 'm'));
-  assert.ok(!/^Disallow:\s*\S/m.test(robots), 'noindex-Seiten dürfen nicht gesperrt sein, sonst wird das noindex nicht gelesen');
+  // Gruppen (durch Leerzeile getrennt): "*" darf nichts sperren (noindex muss lesbar bleiben), KI-Trainings-Crawler sind komplett gesperrt.
+  const gruppen = robots.split(/\n\s*\n/).map((g) => g.split('\n').filter((z) => !z.startsWith('#')).join('\n'));
+  const alle = gruppen.find((g) => /^User-agent:\s*\*\s*$/m.test(g));
+  assert.ok(alle && !/^Disallow:\s*\S/m.test(alle), 'noindex-Seiten dürfen für "*" nicht gesperrt sein, sonst wird das noindex nicht gelesen');
+  const sperre = gruppen.find((g) => /^Disallow:\s*\/\s*$/m.test(g)) ?? '';
+  for (const bot of ['GPTBot', 'ClaudeBot', 'CCBot', 'Google-Extended', 'Applebot-Extended', 'Bytespider', 'Meta-ExternalAgent']) {
+    assert.match(sperre, new RegExp(`^User-agent:\\s*${bot}\\s*$`, 'mi'), `${bot} fehlt in der Sperrgruppe`);
+  }
+  for (const bot of ['OAI-SearchBot', 'ChatGPT-User', 'PerplexityBot', 'Claude-SearchBot']) {
+    assert.ok(!new RegExp(`^User-agent:\\s*${bot}\\s*$`, 'mi').test(sperre), `${bot} ist Such-/Abrufbot und soll erlaubt bleiben`);
+  }
 });
 
 test('Alle Bilder im HTML haben ein alt-Attribut', () => {
