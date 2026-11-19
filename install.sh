@@ -35,9 +35,143 @@ REC_VRAM_MB=$((7 * 1024))
 # Platzbedarf im Arbeitsordner in KiB: Download ca. 0,9 GB + Entpacken ca. 0,9 GB durch das Bundle, großzügiger Puffer
 NEED_KB=$((6 * 1024 * 1024))
 
-status() { printf '>>> %s\n' "$*" >&2; }
-error() { printf 'FEHLER: %s\n' "$*" >&2; exit 1; }
-warning() { printf 'WARNUNG: %s\n' "$*" >&2; }
+# --- Ausgabe ----------------------------------------------------------------------------------------------------------------
+# Alles steht hier im Skript (es läuft per "curl | sh" und lädt keine Nachbarn). Regeln: Farben und überschriebene Zeilen nur auf
+# einem Terminal (stderr) und ohne NO_COLOR/--plain; ohne Terminal gibt es nur ganze Zeilen. Symbole und Balken: Unicode bei
+# UTF-8-Locale, sonst ASCII (ok/#/-). Meldungen gehen nach stderr.
+STEP_TOTAL=5
+STEP_N=0
+STEP_T0=0
+RUN_T0=0
+UI_TTY=0
+COLOR=0
+U8=0
+COLS=80
+PLAIN="${SM_PLAIN:-0}"
+NOCOLOR=0
+BAR_ACTIVE=0
+CURSOR_HIDDEN=0
+CURL_PID=""
+CURL_RC=""
+SESS_TICKS=0
+TICK_MS=200
+SLEEP=0.2
+C_RED=""; C_GRN=""; C_YEL=""; C_DIM=""; C_BOLD=""; C_OFF=""
+SYM_OK="ok"; SYM_WARN="!"; SYM_ERR=""
+BAR_FULL="#"; BAR_EMPTY="-"
+BOX_TOP="+-"; BOX_SIDE="|"; BOX_BOT="+-"
+
+now() { date +%s 2>/dev/null || echo 0; }
+
+term_cols() {
+  c="${COLUMNS:-}"
+  if [ "$UI_TTY" = 1 ]; then
+    case "$c" in ''|*[!0-9]*) c=""; if available tput; then c="$(tput cols 2>/dev/null </dev/tty)" || c=""; fi ;; esac
+    case "$c" in ''|*[!0-9]*) c="$(stty size 2>/dev/null </dev/tty | cut -d' ' -f2)" || c="" ;; esac
+  fi
+  case "$c" in ''|*[!0-9]*|0) c=80 ;; esac
+  COLS="$c"
+}
+
+ui_init() {
+  UI_TTY=0
+  if [ -t 2 ]; then UI_TTY=1; fi
+  if [ "$UI_TTY" = 1 ] && [ "$PLAIN" != 1 ] && [ "$NOCOLOR" != 1 ] && [ -z "${NO_COLOR:-}" ] && [ "${TERM:-}" != dumb ]; then COLOR=1; fi
+  if [ -n "${FORCE_COLOR:-}" ] && [ "$PLAIN" != 1 ] && [ "$NOCOLOR" != 1 ] && [ -z "${NO_COLOR:-}" ]; then COLOR=1; fi
+  case "${LC_ALL:-${LC_CTYPE:-${LANG:-}}}" in *[Uu][Tt][Ff]-8*|*[Uu][Tt][Ff]8*) U8=1 ;; esac
+  if [ "$PLAIN" = 1 ]; then U8=0; fi
+  if [ "$COLOR" = 1 ]; then
+    esc="$(printf '\033')"
+    C_RED="${esc}[31m"; C_GRN="${esc}[32m"; C_YEL="${esc}[33m"; C_DIM="${esc}[2m"; C_BOLD="${esc}[1m"; C_OFF="${esc}[0m"
+  fi
+  if [ "$U8" = 1 ]; then
+    SYM_OK="✓"; SYM_WARN="!"; SYM_ERR="✗ "
+    BAR_FULL="█"; BAR_EMPTY="░"
+    BOX_TOP="┌─"; BOX_SIDE="│"; BOX_BOT="└─"
+  fi
+  if ! sleep 0.01 2>/dev/null; then SLEEP=1; TICK_MS=1000; fi
+  term_cols
+  RUN_T0="$(now)"
+}
+
+# Beendet eine überschriebene Balkenzeile, bevor eine andere Zeile folgt.
+line_break() {
+  if [ "$BAR_ACTIVE" = 1 ]; then printf '\n' >&2; BAR_ACTIVE=0; fi
+}
+ui_reset() {
+  if [ "$CURSOR_HIDDEN" = 1 ]; then printf '\033[?25h' >&2; CURSOR_HIDDEN=0; fi
+  if [ "$COLOR" = 1 ]; then printf '%s' "$C_OFF" >&2; fi
+}
+
+fmt_dur() { # SEKUNDEN -> "7 s" oder "2 min 05 s"
+  if [ "$1" -ge 60 ]; then printf '%s min %02d s' "$(($1 / 60))" "$(($1 % 60))"; else printf '%s s' "$1"; fi
+}
+
+status() { line_break; printf '    %s\n' "$*" >&2; }
+step() { # TEXT: nummerierter Schritt
+  line_break
+  STEP_N=$((STEP_N + 1))
+  STEP_T0="$(now)"
+  printf '\n%s[%s/%s]%s %s%s%s\n' "$C_BOLD" "$STEP_N" "$STEP_TOTAL" "$C_OFF" "$C_BOLD" "$*" "$C_OFF" >&2
+}
+ok() { # TEXT: Schritt abgeschlossen, mit Zeit ab zwei Sekunden
+  line_break
+  d=$(($(now) - STEP_T0))
+  if [ "$d" -ge 2 ] && [ "$STEP_T0" != 0 ]; then t=" ($(fmt_dur "$d"))"; else t=""; fi
+  printf '    %s%s%s %s%s\n' "$C_GRN" "$SYM_OK" "$C_OFF" "$*" "$t" >&2
+}
+warning() { line_break; printf '    %s%s %s%s\n' "$C_YEL" "$SYM_WARN" "$*" "$C_OFF" >&2; }
+error() { # TEXT [HINWEIS]: Was ist passiert, Warum, Was tun (Text), dazu optional eine Zeile "Tipp"
+  line_break
+  printf '\n%s%sFEHLER: %s%s\n' "$C_RED" "$SYM_ERR" "$1" "$C_OFF" >&2
+  if [ -n "${2:-}" ]; then printf '  %s\n' "$2" >&2; fi
+  exit 1
+}
+box() { # TITEL ZEILE...: Wichtiges abgrenzen (nur linker Rand, bricht bei keiner Breite um)
+  line_break
+  bt="$1"; shift
+  printf '\n  %s%s %s%s\n' "$C_BOLD" "$BOX_TOP" "$bt" "$C_OFF" >&2
+  for bl in "$@"; do printf '  %s %s\n' "$BOX_SIDE" "$bl" >&2; done
+  printf '  %s\n' "$BOX_BOT" >&2
+}
+
+# Balken über die Gesamtgröße. Auf dem Terminal eine Zeile (\r, bis Zeilenende löschen), sonst eine ganze Zeile je 10 % bzw. 30 s.
+BAR_LAST=-1
+BAR_LAST_TICK=0
+bar() { # PRÄFIX FERTIG GESAMT [ZUSATZ]  (Bytes; GESAMT 0 = unbekannt: nur Zähler)
+  pre="$1"; bd="$2"; bt="$3"; bx="${4:-}"
+  if [ "$bt" -gt 0 ]; then
+    [ "$bd" -le "$bt" ] || bd="$bt"
+    pct=$((bd * 100 / bt))
+    tx="$(printf '%3d%%' "$pct") $((bd / 1048576))/$((bt / 1048576)) MiB$bx"
+  else
+    pct=0
+    tx="$((bd / 1048576)) MiB$bx"
+  fi
+  if [ "$UI_TTY" = 1 ]; then
+    if [ "$CURSOR_HIDDEN" = 0 ]; then printf '\033[?25l' >&2; CURSOR_HIDDEN=1; fi
+    w=$((COLS - 5 - ${#pre} - ${#tx}))
+    if [ "$bt" -le 0 ] || [ "$w" -lt 8 ]; then
+      # zu schmal für einen Balken: nur Text, abgeschnitten
+      printf '\r  %s %s\033[K' "$pre" "$tx" | cut -c1-$((COLS + 8)) >&2
+      BAR_ACTIVE=1; return 0
+    fi
+    [ "$w" -le 40 ] || w=40
+    f=$((w * pct / 100)); n=0; fs=""; es=""
+    while [ "$n" -lt "$w" ]; do
+      if [ "$n" -lt "$f" ]; then fs="$fs$BAR_FULL"; else es="$es$BAR_EMPTY"; fi
+      n=$((n + 1))
+    done
+    printf '\r  %s %s%s%s%s%s %s\033[K' "$pre" "$C_GRN" "$fs" "$C_DIM" "$es" "$C_OFF" "$tx" >&2
+    BAR_ACTIVE=1
+  else
+    bucket=$((pct / 10))
+    if [ "$bt" -gt 0 ] && { [ "$bucket" -gt "$BAR_LAST" ] || [ $((SESS_TICKS - BAR_LAST_TICK)) -ge $((30000 / TICK_MS)) ]; }; then
+      printf '    %s %s\n' "$pre" "$tx" >&2
+      BAR_LAST="$bucket"; BAR_LAST_TICK="$SESS_TICKS"
+    fi
+  fi
+}
 
 # Hinweis, kein Abbruch: SovereignMind läuft auch mit weniger, aber Antworten und Dokumentenverarbeitung werden dann langsam oder scheitern.
 hardware_check() {
@@ -69,17 +203,79 @@ SUDO_KEEP=""
 # SM_DOWNLOAD_DIR, den es neu angelegt hat, und auch den nur, wenn er danach leer ist (rmdir). Bricht der Download der Teile ab
 # (Netz, Strg+C), bleibt der Arbeitsordner für die Wiederaufnahme stehen (RESUMABLE=1); bei Erfolg und bei jedem Prüffehler wird er gelöscht.
 cleanup() {
+  ui_reset
+  if [ -n "$CURL_PID" ]; then
+    if [ -n "$WORK" ] && [ -f "$WORK/.curl.pid" ]; then kill "$(cat "$WORK/.curl.pid" 2>/dev/null)" 2>/dev/null || true; fi
+    kill "$CURL_PID" 2>/dev/null || true
+    CURL_PID=""
+  fi
   if [ -n "$ROOT_WORK" ]; then $SUDO rm -rf -- "$ROOT_WORK" 2>/dev/null || true; fi
   if [ -n "$SUDO_KEEP" ]; then kill "$SUDO_KEEP" 2>/dev/null || true; fi
   [ -n "$WORK" ] || return 0
   if [ "${SM_KEEP:-0}" = "1" ]; then status "Arbeitsordner bleibt erhalten: $WORK"; return 0; fi
-  if [ "$RESUMABLE" = 1 ]; then status "Der Download ist unvollständig. Beim nächsten Start geht es in $WORK weiter."; return 0; fi
+  if [ "$RESUMABLE" = 1 ]; then warning "Der Download ist unvollständig. Beim nächsten Start geht es in $WORK weiter."; return 0; fi
   rm -rf -- "$WORK"
   if [ "$PARENT_CREATED" = 1 ]; then rmdir -- "$SM_DOWNLOAD_DIR" 2>/dev/null || true; fi
 }
 
-fetch() { # URL ZIEL (mit Wiederaufnahme)
-  curl --fail --show-error --location --progress-bar -C - -o "$2" "$1"
+fetch() { # URL ZIEL (mit Wiederaufnahme, ohne Anzeige; für kleine Dateien)
+  curl --fail --silent --show-error --location -C - -o "$2" "$1"
+}
+
+# Größe einer Datei in Byte (0, wenn es sie nicht gibt)
+size_of() { if [ -f "$1" ]; then wc -c < "$1" | tr -d ' '; else echo 0; fi; }
+
+# Größe einer Datei auf dem Server (Content-Length der letzten Antwort nach Weiterleitungen); 0, wenn unbekannt
+remote_size() { # URL
+  s="$(curl --fail --silent --location --head "$1" 2>/dev/null | tr -d '\r' | awk 'tolower($1) == "content-length:" && $2 ~ /^[0-9]+$/ { v = $2 } END { print v + 0 }')" || s=0
+  case "$s" in ''|*[!0-9]*) s=0 ;; esac
+  echo "$s"
+}
+
+# Lädt URL nach ZIEL mit Wiederaufnahme und zeigt dabei den Balken (curl läuft im Hintergrund, die Dateigröße wird gelesen).
+# Rückgabewert ist der Exit-Code von curl; die Fehlermeldung von curl wird erst nach der Balkenzeile ausgegeben.
+# Verwendet DL_PRE (Präfix), DL_BASE (Byte früherer Teile), DL_TOTAL (Gesamtgröße, 0 = nur dieser Teil), DL_PART (Größe dieses Teils).
+DL_PRE=""; DL_BASE=0; DL_TOTAL=0; DL_PART=0; DL_START=0
+fetch_bar() { # URL ZIEL
+  rcf="$WORK/.curl.rc"; rm -f "$rcf" "$WORK/.curl.pid" "$2.err"
+  ( curl --fail --silent --show-error --location -C - -o "$2" "$1" 2>"$2.err" </dev/null &
+    cp=$!; echo "$cp" > "$WORK/.curl.pid"
+    r=0; wait "$cp" || r=$?; echo "$r" > "$rcf" ) &
+  CURL_PID=$!
+  while [ ! -s "$rcf" ] && kill -0 "$CURL_PID" 2>/dev/null; do
+    dl_draw "$(size_of "$2")"
+    SESS_TICKS=$((SESS_TICKS + 1))
+    if [ $((SESS_TICKS % 25)) = 0 ]; then term_cols; fi
+    sleep "$SLEEP" 2>/dev/null || sleep 1
+  done
+  wait "$CURL_PID" 2>/dev/null || true
+  CURL_PID=""
+  CURL_RC="$(cat "$rcf" 2>/dev/null)"; [ -n "$CURL_RC" ] || CURL_RC=1; rm -f "$rcf" "$WORK/.curl.pid"
+  if [ "$CURL_RC" = 0 ]; then dl_draw "$(size_of "$2")"; else line_break; cat "$2.err" >&2 2>/dev/null || true; fi
+  rm -f "$2.err"
+  return "${CURL_RC:-1}"
+}
+
+dl_draw() { # BYTES des aktuellen Teils
+  dd_cur="$1"
+  if [ "$DL_TOTAL" -gt 0 ]; then dd_done=$((DL_BASE + dd_cur)); dd_tot="$DL_TOTAL"
+  elif [ "$DL_PART" -gt 0 ]; then dd_done="$dd_cur"; dd_tot="$DL_PART"
+  else dd_done="$dd_cur"; dd_tot=0; fi
+  extra=""
+  # Geschwindigkeit und Restzeit ab 50 MiB Gesamtgröße und zwei Sekunden Laufzeit
+  el_ms=$((SESS_TICKS * TICK_MS))
+  if [ "$dd_tot" -ge 52428800 ] && [ "$el_ms" -ge 2000 ] && [ "$dd_done" -gt "$DL_START" ]; then
+    bps=$(((dd_done - DL_START) * 1000 / el_ms))
+    if [ "$bps" -gt 0 ]; then
+      sp=$((bps * 10 / 1048576))
+      extra="  $((sp / 10)).$((sp % 10)) MiB/s"
+      if [ "$dd_tot" -gt "$dd_done" ]; then
+        rest=$(((dd_tot - dd_done) / bps))
+        extra="$extra  noch $((rest / 60)):$(printf '%02d' $((rest % 60)))"
+      fi
+    fi
+  fi
+  bar "$DL_PRE" "$dd_done" "$dd_tot" "$extra"
 }
 
 sudo_prepare() { # sudo-Passwort vor dem Download abfragen und bis zum Ende gültig halten
@@ -87,7 +283,7 @@ sudo_prepare() { # sudo-Passwort vor dem Download abfragen und bis zum Ende gül
   if [ "$TTY" = 0 ]; then
     sudo -n -v 2>/dev/null || error "sudo braucht ein Passwort, es gibt aber kein Terminal. Als root starten: curl -fsSL .../install.sh | sudo sh -s -- --accept-eula --yes"
   else
-    status "Die Installation braucht root-Rechte. Bitte jetzt das sudo-Passwort eingeben; danach läuft alles ohne weitere Rückfrage."
+    box "root-Rechte nötig" "Bitte jetzt das sudo-Passwort eingeben." "Danach läuft alles ohne weitere Rückfrage."
     sudo -v || error "sudo-Anmeldung fehlgeschlagen."
   fi
   # Download dauert oft länger als die sudo-Frist (Standard 15 min): Anmeldung im Hintergrund auffrischen
@@ -150,16 +346,25 @@ verify_signature() { # SUMS
   fi
   minisign -V -q -P "$MINISIGN_PUBKEY" -m "$1" -x "$1.minisig" >/dev/null 2>&1 ||
     error "Die Signatur von SHA256SUMS.txt ist ungültig. Nichts wurde installiert. Bitte nicht erneut versuchen, sondern den Anbieter informieren (Download-Seite, Abschnitt Prüfsummen)."
-  status "Signatur von SHA256SUMS.txt geprüft (minisign)."
+  ok "Signatur von SHA256SUMS.txt geprüft (minisign)."
 }
 
 main() {
   DRY=0
   ARGS=""
   for a in "$@"; do
-    if [ "$a" = "--dry-run" ]; then DRY=1; else ARGS="$ARGS $a"; fi
+    case "$a" in
+      --dry-run) DRY=1 ;;
+      --plain) PLAIN=1 ;;
+      --no-color) NOCOLOR=1 ;;
+      *) ARGS="$ARGS $a" ;;
+    esac
   done
   ARGS="$ARGS ${SM_BUNDLE_ARGS:-}"
+  ui_init
+  # sudo reicht die Umgebung nicht durch: die schlichte Ausgabe geht als Option an das Bundle
+  if [ "$PLAIN" = 1 ]; then ARGS="$ARGS --plain"; elif [ "$NOCOLOR" = 1 ]; then ARGS="$ARGS --no-color"; fi
+  step "System prüfen"
 
   [ "$SM_VARIANT" = "minimal" ] || error "SM_VARIANT=$SM_VARIANT wird nicht unterstützt (nur minimal)."
   [ "$(uname -s)" = "Linux" ] || error "Dieses Skript läuft nur unter Linux."
@@ -206,7 +411,7 @@ main() {
   case "$VERSION" in ''|*[!0-9A-Za-z._-]*) error "Ungültige Version '$VERSION'." ;; esac
   TAG="v$VERSION"
   BASE="${SM_BASE_URL:-https://github.com/$REPO/releases/download}/$TAG"
-  status "Version $VERSION ($ARCH, $SM_VARIANT)"
+  ok "Version $VERSION ($ARCH, $SM_VARIANT)"
 
   # Platz (der Ordner wird erst nach dem Trockenlauf angelegt)
   probe="$SM_DOWNLOAD_DIR"
@@ -255,16 +460,28 @@ main() {
     ( umask 077; mkdir -- "$WORK" ) 2>/dev/null || { WORK=""; error "Arbeitsordner in $SM_DOWNLOAD_DIR nicht anlegbar (SM_DOWNLOAD_DIR setzen)."; }
   fi
   workdir_ok "$WORK" || { w="$WORK"; WORK=""; error "Arbeitsordner $w gehört nicht diesem Benutzer, hat nicht Modus 0700 oder ist ein Symlink. Nichts wurde geändert; Ordner prüfen und entfernen."; }
-  status "Arbeitsordner: $WORK"
+  ok "Arbeitsordner: $WORK"
 
-  status "Lade Prüfsummen ..."
-  fetch "$BASE/SHA256SUMS.txt" "$WORK/SHA256SUMS.txt" || error "SHA256SUMS.txt nicht ladbar ($BASE). Existiert die Version $VERSION?"
+  step "Lade Prüfsummen ..."
+  fetch "$BASE/SHA256SUMS.txt" "$WORK/SHA256SUMS.txt" || error "SHA256SUMS.txt nicht ladbar ($BASE). Existiert die Version $VERSION?" "Version prüfen (Download-Seite) oder SM_VERSION setzen; Netzverbindung prüfen."
   verify_signature "$WORK/SHA256SUMS.txt"
 
   VRE="$(printf '%s' "$VERSION" | sed 's/\./\\./g')"   # Punkte der Version wörtlich
   PARTS="$(sed -n "s/^[0-9a-fA-F]\{64\}[ ][ *]\(sovereignmind-installer-minimal_${VRE}_${ARCH}\.run\.part[0-9]\{1,\}\)\$/\1/p" "$WORK/SHA256SUMS.txt" | sort)"
   [ -n "$PARTS" ] || error "Im Release $TAG gibt es keine Teile für $ARCH."
   TOTAL="$(printf '%s\n' "$PARTS" | wc -l | tr -d ' ')"
+  ok "Signatur und Teileliste: $TOTAL Teile"
+
+  step "Lade Installationspaket ($TOTAL Teile)"
+  # Gesamtgröße aus den Größenangaben des Servers (für einen Balken über alle Teile); fehlt eine, gibt es einen Balken je Teil.
+  SIZES=""; DL_TOTAL=0; sum_known=1
+  for p in $PARTS; do
+    sz="$(remote_size "$BASE/$p")"
+    [ "$sz" -gt 0 ] || sum_known=0
+    DL_TOTAL=$((DL_TOTAL + sz)); SIZES="$SIZES$p $sz
+"
+  done
+  [ "$sum_known" = 1 ] || DL_TOTAL=0
 
   BUNDLE="$WORK/bundle.run"
   RUN_NAME="sovereignmind-installer-minimal_${VERSION}_${ARCH}.run"
@@ -280,17 +497,21 @@ main() {
   i=0
   for p in $PARTS; do
     i=$((i + 1))
-    if [ "$i" -le "$MERGED" ]; then status "Teil $i von $TOTAL: $p (schon vorhanden)"; continue; fi
-    status "Teil $i von $TOTAL: $p"
+    DL_PART="$(printf '%s' "$SIZES" | awk -v n="$p" '$1 == n { print $2; exit }')"
+    DL_PRE="Teil $i/$TOTAL"
+    if [ "$i" -le "$MERGED" ]; then status "Teil $i von $TOTAL: $p (schon vorhanden)"; DL_BASE=$((DL_BASE + DL_PART)); continue; fi
+    # auf einem Terminal zeigt die Balkenzeile den Teil; sonst eine Kopfzeile je Teil
+    if [ "$UI_TTY" = 0 ]; then status "Teil $i von $TOTAL: $p"; fi
+    DL_START=$((DL_BASE + $(size_of "$WORK/$p"))); SESS_TICKS=0; BAR_LAST=-1; BAR_LAST_TICK=0
     [ ! -L "$WORK/$p" ] || { rm -f "$WORK/$p"; }
     # Ein vollständiger Rest einer früheren Sitzung wird nicht erneut geladen; ein unvollständiger setzt curl fort (-C -).
     if [ ! -f "$WORK/$p" ] || ! sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p"; then
       had=0; [ -f "$WORK/$p" ] && had=1
-      fetch "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
+      fetch_bar "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
       if [ "$had" = 1 ] && ! sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p"; then
         # Der fortgesetzte Rest passte nicht (anderer Stand auf dem Server?): einmal komplett neu laden.
         rm -f "$WORK/$p"
-        fetch "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
+        fetch_bar "$BASE/$p" "$WORK/$p" || error "Download von $p fehlgeschlagen. Bitte erneut starten, er wird fortgesetzt."
       fi
     fi
     sum_ok "$WORK/SHA256SUMS.txt" "$p" "$WORK/$p" || { RESUMABLE=0; rm -f "$WORK/$p" "$BUNDLE" "$WORK/merged"; error "Prüfsumme von $p stimmt nicht. Teil gelöscht; bitte erneut starten."; }
@@ -298,14 +519,17 @@ main() {
     cat "$WORK/$p" >> "$BUNDLE"
     printf '%s %s\n' "$i" "$(wc -c < "$BUNDLE" | tr -d ' ')" > "$WORK/merged"
     rm -f "$WORK/$p"
+    DL_BASE=$((DL_BASE + DL_PART))
   done
   RESUMABLE=0
-  status "Alle $TOTAL Teile geprüft und zusammengefügt."
+  ok "Alle $TOTAL Teile geprüft und zusammengefügt."
+
+  step "Prüfe das Paket"
   BUNDLE_SUM="$(sha256sum "$BUNDLE" | cut -d' ' -f1)"
   want="$(sum_of "$WORK/SHA256SUMS.txt" "$RUN_NAME")"
   if [ -n "$want" ]; then
     [ "$want" = "$BUNDLE_SUM" ] || error "Prüfsumme des zusammengefügten Bundles stimmt nicht ($RUN_NAME). Bitte erneut starten."
-    status "Prüfsumme des zusammengefügten Bundles stimmt."
+    ok "Prüfsumme des zusammengefügten Bundles stimmt."
   fi
 
   # Ausgeführt wird nur eine Datei, die außer root niemand mehr ändern kann, und sie wird dort unmittelbar vorher noch einmal geprüft.
@@ -324,7 +548,7 @@ main() {
   fi
   [ "$got" = "$BUNDLE_SUM" ] || error "Das Bundle wurde nach der Prüfung verändert. Nichts wurde installiert."
 
-  status "Starte die Installation (${SUDO:-root}) ..."
+  step "Starte die Installation (${SUDO:-root})"
   rc=0
   # shellcheck disable=SC2086
   case "$TTY" in
@@ -334,7 +558,9 @@ main() {
   esac
   [ "$rc" = 0 ] || error "Das Bundle endete mit Exit-Code $rc."
 
-  status "Fertig. Status und Adresse: sovereignmind status"
+  total_s=$(($(now) - RUN_T0))
+  [ "$RUN_T0" != 0 ] || total_s=0
+  box "Fertig" "Version:   $VERSION" "Dauer:     $(fmt_dur "$total_s")" "Status und Adresse: sovereignmind status"
 }
 
 main "$@"

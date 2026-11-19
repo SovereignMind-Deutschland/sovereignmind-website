@@ -22,6 +22,7 @@
 #   -AcceptEula   ausdrueckliche Zustimmung zum Endnutzer-Lizenzvertrag (Pflicht ohne Rueckfrage-Moeglichkeit, auch bei -Unattended und /VERYSILENT); -Unattended: keine Rueckfragen
 #   -Force        auch eine neuere installierte Version ueberschreiben;  -FullBackup  Update mit Sicherung der Dokumente
 #   -DryRun       nur pruefen und anzeigen;  -Uninstall [-RemoveData]  ruft tools\uninstall.ps1 auf
+#   -Plain        schlichte Ausgabe ohne Farben, Balken-Zeichen und ueberschriebene Zeilen (auch SM_PLAIN=1 oder NO_COLOR)
 # Umgebungsvariablen:
 #   SM_VERSION, SM_SOURCE_DIR, SM_DOWNLOAD_DIR (Arbeitsordner, Standard $env:TEMP\SovereignMind-Install), SM_KEEP=1, SM_SETUP_ARGS, SM_DRY_RUN=1,
 #   SM_ELEVATE y/n (Frage "in neuem Administrator-Fenster fortfahren?" vorab beantworten), SM_CHAT_HOST, SM_ADMIN_HOST
@@ -51,7 +52,7 @@ function Install-SovereignMind {
         [string]$PgPort, [string]$QdrantPort, [string]$QdrantGrpcPort, [string]$IngestionPort, [string]$VoicePort,
         [string]$LicenseEmail, [string]$LicenseToken, [string]$AdminPassword, [string]$TenantName,
         [switch]$Strict, [string]$RecoveryKit, [string]$RecoveryPassphrase, [switch]$FullBackup,
-        [switch]$AcceptEula, [switch]$Unattended, [switch]$Force, [switch]$DryRun, [switch]$Uninstall, [switch]$RemoveData,
+        [switch]$AcceptEula, [switch]$Unattended, [switch]$Force, [switch]$DryRun, [switch]$Uninstall, [switch]$RemoveData, [switch]$Plain,
         [string]$SetupArgs
     )
 
@@ -72,11 +73,76 @@ function Install-SovereignMind {
     $secretNames = "LicenseToken", "AdminPassword", "RecoveryPassphrase"
     $global:LASTEXITCODE = 0
 
-    function Status($text) { Write-Host ">>> $text" }
     function Fail($text) { throw [System.InvalidOperationException]::new($text) }
 
+    # --- Ausgabe ---------------------------------------------------------------------------------------------------------------
+    # Nummerierte Schritte, ein Balken in einer Zeile (nur auf einem Terminal; sonst eine ganze Zeile je 10 % bzw. 30 s), Kasten fuer
+    # Wichtiges. Sonderzeichen nur als [char]-Escape: die Webkopie ist reines ASCII (irm | iex). Der Zustand liegt in $ui, damit auch
+    # der Entpack-Rueckruf (Closure) die Balkenfunktion nutzen kann.
+    $ui = @{
+        Tty = $false; Color = $false; Unicode = $false; Active = $false; OldEncoding = $null
+        Step = 0; Steps = 5; StepT0 = [DateTime]::UtcNow; RunT0 = [DateTime]::UtcNow; Last = -1; LastT = [DateTime]::UtcNow; LastPre = ""
+        Full = "#"; Empty = "-"; Ok = "ok"; Warn = "!"; Err = ""; BoxTop = "+-"; BoxSide = "|"; BoxBot = "+-"
+    }
+    $dl = @{ Pre = ""; Base = [int64]0; Total = [int64]0; Part = [int64]0; Sw = $null; Start = [int64]-1 }
+
+    function Write-Line([string]$text, [string]$color = "") {
+        if ($ui.Color -and $color) { Write-Host $text -ForegroundColor $color } else { Write-Host $text }
+    }
+    function End-BarLine { if ($ui.Active) { Write-Host ""; $ui.Active = $false } }
+    function Status($text) { End-BarLine; Write-Host "    $text" }
+    function Format-Duration([int]$secs) { if ($secs -ge 60) { "{0} min {1:00} s" -f [int][math]::Floor($secs / 60), ($secs % 60) } else { "$secs s" } }
+    function Write-Step([string]$text) {
+        End-BarLine
+        $ui.Step++
+        $ui.StepT0 = [DateTime]::UtcNow
+        Write-Host ""
+        Write-Line ("[{0}/{1}] {2}" -f $ui.Step, $ui.Steps, $text) "Cyan"
+    }
+    function Write-Ok([string]$text) {
+        End-BarLine
+        $secs = [int]([DateTime]::UtcNow - $ui.StepT0).TotalSeconds
+        $time = if ($secs -ge 2) { " (" + (Format-Duration $secs) + ")" } else { "" }
+        Write-Line ("    {0} {1}{2}" -f $ui.Ok, $text, $time) "Green"
+    }
+    function Write-Box([string]$title, [string[]]$lines) {
+        End-BarLine
+        Write-Host ""
+        Write-Line ("  {0} {1}" -f $ui.BoxTop, $title) "Yellow"
+        foreach ($l in $lines) { Write-Host ("  {0} {1}" -f $ui.BoxSide, $l) }
+        Write-Host ("  {0}" -f $ui.BoxBot)
+    }
+    # pct 0..100, -1 = unbekannt (nur Text). Terminal: eine Zeile mit `r ueberschreiben; sonst ganze Zeile je 10 %, Textwechsel oder 30 s.
+    function Write-Bar([string]$pre, [int]$pct, [string]$text) {
+        if ($pre.Length -gt 30) { $pre = $pre.Substring(0, 29) + "~" }
+        if ($pct -gt 100) { $pct = 100 }
+        if ($ui.Tty) {
+            $cols = 80
+            try { $cols = $Host.UI.RawUI.WindowSize.Width } catch { }
+            if ($cols -lt 20) { $cols = 80 }
+            $w = $cols - 5 - $pre.Length - $text.Length
+            if ($pct -lt 0 -or $w -lt 8) { $line = "  $pre $text" }
+            else {
+                if ($w -gt 40) { $w = 40 }
+                $f = [int]($w * $pct / 100)
+                $line = "  $pre " + ($ui.Full * $f) + ($ui.Empty * ($w - $f)) + " $text"
+            }
+            if ($line.Length -gt $cols - 1) { $line = $line.Substring(0, $cols - 1) }
+            Write-Host ("`r" + $line.PadRight($cols - 1)) -NoNewline
+            $ui.Active = $true
+        }
+        else {
+            $bucket = if ($pct -ge 0) { [int][math]::Floor($pct / 10) } else { -1 }
+            $due = ($pre -ne $ui.LastPre) -or ($bucket -gt $ui.Last) -or (([DateTime]::UtcNow - $ui.LastT).TotalSeconds -ge 30)
+            if ($due) {
+                Write-Host "    $pre $text"
+                $ui.Last = $bucket; $ui.LastT = [DateTime]::UtcNow; $ui.LastPre = $pre
+            }
+        }
+    }
+
     # --- Optionen: Parameter vor SM_SETUP_ARGS (alte Schreibweise /NAME=wert) vor Umgebung -------------------------------------
-    $switchNames = "Lan", "PortAuto", "SkipPython", "Strict", "FullBackup", "AcceptEula", "Unattended", "Force", "DryRun", "Uninstall", "RemoveData"
+    $switchNames = "Lan", "PortAuto", "SkipPython", "Strict", "FullBackup", "AcceptEula", "Unattended", "Force", "DryRun", "Uninstall", "RemoveData", "Plain"
     $stringNames = "Version", "Variant", "SourceDir", "InstallDir", "DataDir", "Port", "LanAddress", "LanBackend", "LanChat", "LanAdmin", "PublicHost", "AdminHost",
     "TlsMode", "DnsProvider", "Cors", "Frontend", "HwAgent", "PawnIO", "Llm", "Models", "Config", "PgPort", "QdrantPort", "QdrantGrpcPort", "IngestionPort",
     "VoicePort", "LicenseEmail", "LicenseToken", "AdminPassword", "TenantName", "RecoveryKit", "RecoveryPassphrase"
@@ -125,6 +191,25 @@ function Install-SovereignMind {
         if (-not $o.ContainsKey($pair[0]) -and $envValue) { $o[$pair[0]] = $envValue }
     }
     if ($env:SM_DRY_RUN -eq "1") { $o["DryRun"] = $true }
+    # Ausgabe: Terminal nur, wenn die Ausgabe nicht umgeleitet ist (SM_UI_TTY=0/1 nur fuer Tests). Farben und Zeichen aus: -Plain, SM_PLAIN=1, NO_COLOR.
+    try { $ui.Tty = [Environment]::UserInteractive -and -not [Console]::IsOutputRedirected } catch { }
+    if ($env:SM_UI_TTY) { $ui.Tty = ($env:SM_UI_TTY -eq "1") }
+    $plainOutput = ($o.ContainsKey("Plain") -and [bool]$o["Plain"]) -or $env:SM_PLAIN -eq "1"
+    $ui.Color = $ui.Tty -and -not $plainOutput -and -not $env:NO_COLOR
+    if ($ui.Tty -and -not $plainOutput) {
+        # Konsolen-Codepage auf UTF-8 (sonst zeigt Windows PowerShell 5.1 Umlaute aus Programmausgaben als Zeichensalat oder ?); am Ende zurueck.
+        try {
+            if ([Console]::OutputEncoding.CodePage -ne 65001) { $ui.OldEncoding = [Console]::OutputEncoding; [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false) }
+            # Unicode-Zeichen nur in Windows Terminal, PowerShell 7 oder VS Code (altes Konsolenfenster hat oft eine Rasterschrift ohne diese Zeichen)
+            if ([Console]::OutputEncoding.CodePage -eq 65001 -and ($env:WT_SESSION -or $PSVersionTable.PSEdition -eq "Core" -or $env:TERM_PROGRAM)) { $ui.Unicode = $true }
+        }
+        catch { }
+    }
+    if ($ui.Unicode) {
+        $ui.Full = [string][char]0x2588; $ui.Empty = [string][char]0x2591; $ui.Ok = [string][char]0x2713; $ui.Err = ([string][char]0x2717) + " "
+        $ui.BoxTop = ([string][char]0x250C) + [char]0x2500; $ui.BoxSide = [string][char]0x2502; $ui.BoxBot = ([string][char]0x2514) + [char]0x2500
+    }
+    $ui.RunT0 = [DateTime]::UtcNow
     function Has([string]$name) { return $o.ContainsKey($name) -and "$($o[$name])" -ne "" }
     function Flag([string]$name) { return $o.ContainsKey($name) -and (ConvertTo-Bool $o[$name]) }
     function OnOff([string]$value) { if (ConvertTo-Bool $value) { "on" } else { "off" } }
@@ -135,10 +220,67 @@ function Install-SovereignMind {
         if ($c) { $c.Source } else { $null }
     }
 
-    # Download mit Wiederaufnahme: curl.exe (ab Windows 10 1803), Rueckfall BITS
-    function Receive-File([string]$url, [string]$target) {
+    # Groesse einer Datei auf dem Server (Content-Length der letzten Antwort); 0, wenn unbekannt
+    function Get-RemoteSize([string]$url) {
         $curl = Get-Curl
-        if ($curl) {
+        if (-not $curl) { return [int64]0 }
+        $previous = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = "Continue"
+            $size = [int64]0
+            foreach ($l in @(& $curl --fail --silent --location --head $url 2>$null)) { if ("$l" -match '(?i)^content-length:\s*(\d+)') { $size = [int64]$Matches[1] } }
+            return $size
+        }
+        catch { return [int64]0 }
+        finally { $ErrorActionPreference = $previous }
+    }
+
+    function Update-Download([string]$target) {
+        $cur = [int64]0
+        if (Test-Path -LiteralPath $target) { $cur = (Get-Item -LiteralPath $target).Length }
+        $done = $dl.Base + $cur; $total = $dl.Total
+        if ($total -le 0) { $total = $dl.Part; $done = $cur }
+        if ($total -le 0) { Write-Bar $dl.Pre -1 ("{0} MiB" -f [int64]($cur / 1MB)); return }
+        if ($done -gt $total) { $done = $total }
+        $pct = [int]($done * 100 / $total)
+        $text = "{0,3} % {1}/{2} MiB" -f $pct, [int64]($done / 1MB), [int64]($total / 1MB)
+        # Geschwindigkeit und Restzeit ab 50 MiB Gesamtgroesse und zwei Sekunden Laufzeit
+        $sec = if ($dl.Sw) { $dl.Sw.Elapsed.TotalSeconds } else { 0 }
+        if ($total -ge 50MB -and $sec -ge 2 -and $done -gt $dl.Start -and $dl.Start -ge 0) {
+            $bps = ($done - $dl.Start) / $sec
+            $text += ("  {0:N1} MiB/s" -f ($bps / 1MB))
+            if ($done -lt $total -and $bps -gt 0) { $rest = [int](($total - $done) / $bps); $text += ("  noch {0}:{1:00}" -f [int][math]::Floor($rest / 60), ($rest % 60)) }
+        }
+        Write-Bar $dl.Pre $pct $text
+    }
+
+    # Download mit Wiederaufnahme: curl.exe (ab Windows 10 1803), Rueckfall BITS. Mit -Progress laeuft curl als eigener Prozess und die
+    # Dateigroesse treibt den Balken.
+    function Receive-File([string]$url, [string]$target, [switch]$Progress) {
+        $curl = Get-Curl
+        if ($curl -and $Progress) {
+            if ($dl.Start -lt 0) {
+                $existing = if (Test-Path -LiteralPath $target) { (Get-Item -LiteralPath $target).Length } else { 0 }
+                $dl.Start = $dl.Base + $existing; $dl.Sw = [Diagnostics.Stopwatch]::StartNew()
+            }
+            $errFile = "$target.err"
+            $argText = '--fail --show-error --silent --location -C - -o "{0}" "{1}"' -f $target, $url
+            $p = Start-Process -FilePath $curl -ArgumentList $argText -NoNewWindow -PassThru -RedirectStandardError $errFile
+            $null = $p.Handle   # Windows PowerShell 5.1: sonst ist ExitCode nach WaitForExit(ms) leer
+            try { while (-not $p.WaitForExit(200)) { Update-Download $target } }
+            finally { if (-not $p.HasExited) { try { $p.Kill() } catch { } } }
+            $p.WaitForExit()
+            End-BarLine
+            $exit = $p.ExitCode
+            if ($exit -ne 0) {
+                $detail = if (Test-Path -LiteralPath $errFile) { ("$(Get-Content -LiteralPath $errFile -Raw -ErrorAction SilentlyContinue)").Trim() } else { "" }
+                Remove-Item -LiteralPath $errFile -Force -ErrorAction SilentlyContinue
+                Fail "Download fehlgeschlagen (curl Exit $exit): $url $detail"
+            }
+            Remove-Item -LiteralPath $errFile -Force -ErrorAction SilentlyContinue
+            Update-Download $target
+        }
+        elseif ($curl) {
             & $curl --fail --show-error --location --silent --show-error -C - -o $target $url
             if ($LASTEXITCODE -ne 0) { Fail "Download fehlgeschlagen (curl Exit $LASTEXITCODE): $url" }
         }
@@ -208,7 +350,7 @@ function Install-SovereignMind {
         $code = $LASTEXITCODE
         $ErrorActionPreference = $previousPreference
         if ($code -ne 0) { Fail "Die Signatur von SHA256SUMS.txt ist ungueltig. Nichts wurde installiert. Bitte nicht erneut versuchen, sondern den Anbieter informieren (Download-Seite, Abschnitt Pruefsummen)." }
-        Status "Signatur von SHA256SUMS.txt geprueft (minisign)."
+        Write-Ok "Signatur von SHA256SUMS.txt geprueft (minisign)."
     }
 
     # Pfade, die weder Installations- noch Datenordner sein duerfen (Installer-Review, Fund 7): Laufwerkswurzeln, Windows, Program Files,
@@ -657,8 +799,9 @@ public static class SmArchive
                 if ($v.Count -gt 0) {
                     if ($v["heartbeat"] -ne $lastHeartbeat) { $lastHeartbeat = $v["heartbeat"]; $lastChange = Get-Date }
                     $label = if ($v["label"]) { $v["label"] } else { "KI-Modelle werden vorbereitet ..." }
-                    $line = "    {0}{1}" -f $label, $(if ($v["percent"] -and [int]$v["percent"] -ge 0) { " ($($v['percent']) %)" } else { "" })
-                    if ($line -ne $lastLine) { Write-Host $line; $lastLine = $line }
+                    $pctValue = if ($v["percent"] -and [int]$v["percent"] -ge 0) { [int]$v["percent"] } else { -1 }
+                    $line = "$label|$pctValue"
+                    if ($line -ne $lastLine) { Write-Bar $label $pctValue $(if ($pctValue -ge 0) { "{0,3} %" -f $pctValue } else { "" }); $lastLine = $line }
                     if ($v["state"] -in "done", "failed", "cancelled", "skipped") { $outcome = $v["state"]; break }
                 }
                 if ($process.HasExited) {
@@ -679,6 +822,7 @@ public static class SmArchive
                 if (-not $process.WaitForExit(20000)) { try { $process.Kill() } catch { } }
             }
         }
+        End-BarLine
         return $outcome
     }
 
@@ -753,6 +897,7 @@ public static class SmArchive
             return
         }
 
+        Write-Step "System pruefen"
         # Zielordner pruefen, bevor etwas geladen wird (Fund 7)
         $installDirExisted = Test-InstallTarget $installDir
 
@@ -805,7 +950,7 @@ public static class SmArchive
             }
             if ($version -notmatch '^[0-9A-Za-z][0-9A-Za-z._-]*$') { Fail "Ungueltige Version '$version'." }
             $tagName = "v$version"
-            Status "Version $version (Variante $variant)"
+            Write-Ok "Version $version (Variante $variant)"
             if (-not (Get-Curl) -and -not (Get-Command Start-BitsTransfer -ErrorAction SilentlyContinue)) { Fail "Weder curl.exe noch BITS vorhanden." }
         }
         $base = "$baseUrl/$tagName"
@@ -856,6 +1001,7 @@ public static class SmArchive
         $workCreated = Test-Path -LiteralPath $workMarker
         $sums = @{}
         if ($local) {
+            Write-Step "Pruefsummen pruefen (Ordner)"
             $sumsFile = Join-Path $localDir "SHA256SUMS.txt"
             if (-not (Test-Path -LiteralPath $sumsFile)) { Fail "SHA256SUMS.txt fehlt in $localDir (ohne Pruefsummen wird nichts installiert)." }
             Test-SumsSignature $sumsFile (Join-Path $localDir "SHA256SUMS.txt.minisig") ""
@@ -864,7 +1010,7 @@ public static class SmArchive
         }
         else {
             $sumsFile = Join-Path $workDir "SHA256SUMS.txt"
-            Status "Lade Pruefsummen ..."
+            Write-Step "Lade Pruefsummen ..."
             Remove-Item -LiteralPath $sumsFile -Force -ErrorAction SilentlyContinue
             Receive-File "$base/SHA256SUMS.txt" $sumsFile
             Test-SumsSignature $sumsFile "$sumsFile.minisig" "$base/SHA256SUMS.txt.minisig"
@@ -913,11 +1059,11 @@ public static class SmArchive
             Status "PowerShell laeuft als Administrator: die Installation laeuft ohne Windows-Sicherheitsabfrage durch."
         }
         elseif ($env:SM_NO_ELEVATE -ne "1" -and $env:SM_ELEVATED -ne "1") {
-            Write-Host ""
-            Write-Host "Die Installation braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) kaeme sonst erst nach dem Download."
-            Write-Host "Mit 'j' erscheint die Abfrage jetzt, und die Installation laeuft in einem neuen Fenster mit Administratorrechten weiter."
-            Write-Host "Mit 'n' geht es hier weiter; die Abfrage erscheint dann nach dem Download, bitte dann am Rechner sein."
-            Write-Host "Tipp: PowerShell gleich als Administrator oeffnen, dann gibt es keine Abfrage."
+            Write-Box "Administratorrechte noetig" @(
+                "Die Installation braucht Administratorrechte. Die Windows-Sicherheitsabfrage (UAC) kaeme sonst erst nach dem Download.",
+                "Mit 'j' erscheint die Abfrage jetzt, und die Installation laeuft in einem neuen Fenster mit Administratorrechten weiter.",
+                "Mit 'n' geht es hier weiter; die Abfrage erscheint dann nach dem Download, bitte dann am Rechner sein.",
+                "Tipp: PowerShell gleich als Administrator oeffnen, dann gibt es keine Abfrage.")
             if (Read-YesNo "Jetzt in einem neuen Administrator-Fenster fortfahren?" $false "SM_ELEVATE") {
                 $resolved = @{}
                 foreach ($e in $o.GetEnumerator()) { $resolved[$e.Key] = $e.Value }
@@ -939,25 +1085,36 @@ public static class SmArchive
 
         # 7. Download und Pruefung der Teile
         $files = @($partNames)
+        Write-Step $(if ($local) { "Pruefe die Teile im Ordner ({0} Teile)" -f $files.Count } else { "Lade Installationspaket ({0} Teile)" -f $files.Count })
+        # Gesamtgroesse aus den Groessenangaben des Servers (ein Balken ueber alle Teile); fehlt eine, gibt es einen Balken je Teil
+        $sizes = @{}; $dl.Total = [int64]0; $dl.Base = [int64]0; $dl.Start = [int64]-1; $dl.Sw = $null
+        if (-not $local) {
+            $allKnown = $true
+            foreach ($f in $files) { $sz = Get-RemoteSize "$base/$f"; $sizes[$f] = $sz; if ($sz -le 0) { $allKnown = $false }; $dl.Total += $sz }
+            if (-not $allKnown) { $dl.Total = [int64]0 }
+        }
         $i = 0
         foreach ($f in $files) {
             $i++
             $target = Join-Path $partDir $f
             Status "Teil $i von $($files.Count): $f"
+            $dl.Pre = "Teil $i/$($files.Count)"; $dl.Part = [int64]$sizes[$f]
             if (Test-Sum $sums $f $target) {
                 Status "bereits vollstaendig$(if ($local) { ' (geprueft)' } else { ' geladen' })"
+                $dl.Base += $dl.Part
                 continue
             }
             if ($local) { Fail "Pruefsumme von $f stimmt nicht (oder die Datei fehlt) in $localDir." }
             $keepOnError = $true   # halbe Downloads bleiben fuer die Wiederaufnahme liegen
-            Receive-File "$base/$f" $target
+            Receive-File "$base/$f" $target -Progress
+            $dl.Base += $dl.Part
             $keepOnError = $false
             if (-not (Test-Sum $sums $f $target)) {
                 Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
                 Fail "Pruefsumme von $f stimmt nicht. Datei geloescht; bitte erneut starten."
             }
         }
-        Status "Alle $($files.Count) Dateien geprueft."
+        Write-Ok "Alle $($files.Count) Dateien geprueft."
         $parts = @($files | ForEach-Object { Join-Path $partDir $_ })
 
         if (-not $isAdmin -and $env:SM_NO_ELEVATE -ne "1") {
@@ -976,6 +1133,7 @@ public static class SmArchive
         $keepOnError = $true   # bei Fehlern in der Einrichtung bleiben die geprueften Teile fuer einen neuen Start liegen
 
         # 8. Installationsskript des Pakets vorab herausziehen (Portpruefung, Update-Vorbereitung laufen vor dem Entpacken)
+        Write-Step "Pruefe das Paket"
         Initialize-Archive
         $preDir = Join-Path $workDir "pre"
         $preScript = Join-Path $preDir "install-native.ps1"
@@ -1067,10 +1225,19 @@ public static class SmArchive
         New-Item -ItemType Directory -Force $installDir | Out-Null
         Protect-InstallDir $installDir $installDirExisted
         [IO.File]::WriteAllText((Join-Path $installDir $installMarkerName), "SovereignMind-Installationsordner (angelegt von install.ps1). tools\uninstall.ps1 loescht diesen Ordner nur, wenn diese Datei vorhanden ist.`r`n", (New-Object Text.UTF8Encoding($false)))
+        Write-Step "Starte die Installation"
         Status "Entpacke nach $installDir ..."
+        # Rueckruf: hoechstens 5-mal pro Sekunde zeichnen; Closure, damit $ui und die Balkenfunktion beim Aufruf aus C# erreichbar sind
+        $barFunction = ${function:Write-Bar}
+        $extractState = @{ T = [DateTime]::UtcNow.AddSeconds(-1) }
         $progress = [SmProgress] { param($done, $total, $name)
-            if ($total -gt 0) { Write-Host ("    {0} von {1} MiB ({2} %)" -f [int64]($done / 1MB), [int64]($total / 1MB), [int]($done * 100 / $total)) }
-        }
+            if ($total -le 0) { return }
+            $tick = [DateTime]::UtcNow
+            if (($tick - $extractState.T).TotalMilliseconds -lt 200 -and $done -lt $total) { return }
+            $extractState.T = $tick
+            $pct = [int]($done * 100 / $total)
+            & $barFunction "Entpacken" $pct ("{0,3} % {1}/{2} MiB" -f $pct, [int64]($done / 1MB), [int64]($total / 1MB))
+        }.GetNewClosure()
         $count = [SmArchive]::Extract($parts, $installDir, $progress)
         $bytes = [SmArchive]::LastBytes
         Status "$count Dateien entpackt."
@@ -1180,8 +1347,7 @@ public static class SmArchive
             $folder = if (Has "RecoveryKit") { "$($o['RecoveryKit'])" } else { "" }
             $passphrase = if (Has "RecoveryPassphrase") { "$($o['RecoveryPassphrase'])" } else { "" }
             if (-not $folder -and (Test-Interactive)) {
-                Write-Host ""
-                Write-Host "WICHTIG: Recovery-Kit sichern. Ohne die Schluessel (Datenbank-Passwort, Zertifikat, JWT) sind Connector-Geheimnisse und Paketschluessel nicht wiederherstellbar."
+                Write-Box "WICHTIG: Recovery-Kit sichern" @("Ohne die Schluessel (Datenbank-Passwort, Zertifikat, JWT) sind Connector-Geheimnisse und Paketschluessel nicht wiederherstellbar.")
                 if (Read-YesNo "Recovery-Kit jetzt in einen Ordner exportieren (z. B. auf einen USB-Stick)?" $false) {
                     $folder = "$(Read-Host 'Zielordner')".Trim()
                     while ($folder -and $passphrase.Length -lt 12) {
@@ -1203,18 +1369,23 @@ public static class SmArchive
 
         $keepOnError = $false
         $global:LASTEXITCODE = 0
-        Status "Fertig. SovereignMind $version ist eingerichtet: http://localhost:$resolvedPort"
-        Write-Host "Deinstallation: Einstellungen > Apps > SovereignMind oder $installDir\tools\uninstall.ps1"
+        $runSecs = [int]([DateTime]::UtcNow - $ui.RunT0).TotalSeconds
+        Write-Ok "Fertig. SovereignMind $version ist eingerichtet: http://localhost:$resolvedPort"
+        Write-Box "Zusammenfassung" @("Version:   $version", "Adresse:   http://localhost:$resolvedPort", "Dauer:     $(Format-Duration $runSecs)", "Deinstallation: Einstellungen > Apps > SovereignMind oder $installDir\tools\uninstall.ps1")
     }
     catch [System.InvalidOperationException] {
-        Write-Host "FEHLER: $($_.Exception.Message)" -ForegroundColor Red
+        End-BarLine
+        Write-Line ("{0}FEHLER: {1}" -f $ui.Err, $_.Exception.Message) "Red"
         $global:LASTEXITCODE = 1
     }
     catch {
-        Write-Host "FEHLER: $($_.Exception.Message)" -ForegroundColor Red
+        End-BarLine
+        Write-Line ("{0}FEHLER: {1}" -f $ui.Err, $_.Exception.Message) "Red"
         $global:LASTEXITCODE = 1
     }
     finally {
+        End-BarLine
+        if ($ui.OldEncoding) { try { [Console]::OutputEncoding = $ui.OldEncoding } catch { } }
         if ($workCreated) {
             if ($env:SM_KEEP -eq "1") { Status "Arbeitsordner bleibt erhalten: $workDir" }
             elseif ($keepOnError) { Status "Geladene Dateien bleiben fuer einen neuen Start in $workDir." }
