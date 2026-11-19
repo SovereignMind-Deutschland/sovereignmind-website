@@ -1,13 +1,13 @@
 {
-  "version": "2026.11.16.1917",
-  "releaseTag": "v2026.11.16.1917",
-  "releaseUrl": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/tag/v2026.11.16.1917",
+  "version": "2026.11.19.1447",
+  "releaseTag": "v2026.11.19.1447",
+  "releaseUrl": "https://github.com/SovereignMind-Deutschland/sovereignmind-installer/releases/tag/v2026.11.19.1447",
   "sha256": {
-    "EULA.de.txt": "7406101b88f07e49c6df77fdb01360a42a5c3a68523c26ae069c9c7874f0690d",
-    "SovereignMind-Setup-Minimal-2026.11.16.1917.zip.001": "bc59b6bb773f0b9cdba30f5c9f14d258fb87331f230dfdcd2725d353334f03db",
-    "sovereignmind-installer-minimal_2026.11.16.1917_amd64.run": "7493d67a0167d38d4f30520dda5e5a4e7a1f9217beaf5b71d83296c4a7eb6996",
-    "sovereignmind-installer-minimal_2026.11.16.1917_amd64.run.part01": "7493d67a0167d38d4f30520dda5e5a4e7a1f9217beaf5b71d83296c4a7eb6996",
-    "sovereignmind-installer-minimal_2026.11.16.1917_x86_64.run": "1a6d4cf2c7c013c9231ee246714c46a7e8172cafe9bbc20dd0804bea2408e55f",
-    "sovereignmind-installer-minimal_2026.11.16.1917_x86_64.run.part01": "1a6d4cf2c7c013c9231ee246714c46a7e8172cafe9bbc20dd0804bea2408e55f"
+    "EULA.de.txt": "7cb92e61ba705d4f6d3e6098b119057fc293676384888b9953032f1da22dd684",
+    "SovereignMind-Setup-Minimal-2026.11.19.1447.zip.001": "4823ccc55253aec6203cb27d18051f4e923baac1a91359e1f5d418dee7615ab8",
+    "sovereignmind-installer-minimal_2026.11.19.1447_amd64.run": "04a07767e22ccdb28a133b7418ef961d36eb5c5553623d6f00c191b800ae7839",
+    "sovereignmind-installer-minimal_2026.11.19.1447_amd64.run.part01": "04a07767e22ccdb28a133b7418ef961d36eb5c5553623d6f00c191b800ae7839",
+    "sovereignmind-installer-minimal_2026.11.19.1447_x86_64.run": "4501518dead4dd22a2b2b3c49f622682c08a2ffef04e05dbc21e0f40ae9fdf4d",
+    "sovereignmind-installer-minimal_2026.11.19.1447_x86_64.run.part01": "4501518dead4dd22a2b2b3c49f622682c08a2ffef04e05dbc21e0f40ae9fdf4d"
   }
 }
