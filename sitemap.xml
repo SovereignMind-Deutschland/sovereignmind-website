@@ -5,6 +5,11 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
   </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/schnellstart.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html"/>
+  </url>
   <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html"/>
@@ -30,6 +35,11 @@
     <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/"/>
+  </url>
+  <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/schnellstart.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/en/schnellstart.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html"/>
   </url>
   <url><loc>https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html</loc>
     <xhtml:link rel="alternate" hreflang="de" href="https://sovereignmind-deutschland.github.io/sovereignmind-website/download.html"/>

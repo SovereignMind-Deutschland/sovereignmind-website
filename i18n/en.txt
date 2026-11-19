@@ -589,8 +589,8 @@
 > „SovereignMind Control“ sitzt im Infobereich der Taskleiste. Sie zeigt, ob alles läuft, startet und stoppt die Dienste und öffnet die Weboberfläche.
 < “SovereignMind Control” sits in the taskbar notification area. It shows whether everything is running, starts and stops the services and opens the web interface.
 
-> <a class="btn" href="download.html#demo">Demo ausprobieren</a> <a class="btn ghost" href="download.html">Installation ansehen</a>
-< <a class="btn" href="download.html#demo">Try the demo</a> <a class="btn ghost" href="download.html">View installation</a>
+> <a class="btn" href="download.html#demo">Demo ausprobieren</a> <a class="btn ghost" href="schnellstart.html">Schnellstart</a>
+< <a class="btn" href="download.html#demo">Try the demo</a> <a class="btn ghost" href="schnellstart.html">Quickstart</a>
 
 > <a href="mailto:{{PROVIDER_EMAIL}}">E-Mail schreiben</a> · <a href="impressum.html">Impressum</a>
 < <a href="mailto:{{PROVIDER_EMAIL}}">Send an email</a> · <a href="impressum.html">Legal notice (German)</a>
@@ -892,8 +892,8 @@
 > Dies ist keine Rechts-, Steuer- oder Einkaufsberatung.
 < This is not legal, tax or procurement advice.
 
-> Diktat (noch nicht verfügbar)
-< Dictation (not yet available)
+> Diktat
+< Dictation
 
 > Dokumente
 < Documents
@@ -1084,8 +1084,8 @@
 > SovereignMind empfiehlt 8 GB Grafikspeicher (VRAM) und 16 GB Arbeitsspeicher; der Installer prüft diese Werte nicht. Das Modell wird nach dem verfügbaren VRAM gewählt; ein Betrieb nur mit dem Prozessor ist möglich, aber langsamer. Qualität und Tempo hängen von der Hardware ab.
 < SovereignMind recommends 8 GB of graphics memory (VRAM) and 16 GB of RAM; the installer does not check these values. The model is chosen by available VRAM; running on the processor alone is possible but slower. Quality and speed depend on the hardware.
 
-> Spracheingabe per faster-whisper ist vorbereitet, aber noch nicht freigegeben. Der Diktat-Knopf erscheint im Chat erst, wenn sie verfügbar ist.
-< Voice input via faster-whisper is prepared but not yet released. The dictation button appears in the chat only once it is available.
+> Die Anwendung hat keine eigene Diktierfunktion, nimmt kein Audio auf und betreibt keine eigene Spracherkennung. Zum Diktieren nutzen Sie die Funktion Ihres Betriebssystems (Windows Win+H, macOS-Diktat, Tastatur-Mikrofon auf iOS und Android) oder eine Diktiersoftware Ihrer Wahl; der Text erscheint im Eingabefeld wie getippter Text.
+< The application has no dictation feature of its own, records no audio and runs no speech recognition. To dictate, use your operating system's feature (Windows Win+H, macOS Dictation, the keyboard microphone on iOS and Android) or a dictation software of your choice; the text appears in the input field like typed text.
 
 > Sprachmodell und Embeddings laufen auf Ihrer Hardware (llama.cpp). Das Chat-Modell wird automatisch nach verfügbarem VRAM gewählt (NVIDIA, AMD, Intel, sonst CPU).
 < The language model and embeddings run on your hardware (llama.cpp). The chat model is chosen automatically by available VRAM (NVIDIA, AMD, Intel, otherwise CPU).
@@ -1120,8 +1120,8 @@
 > Viele Nutzer an einer Installation
 < Many users on one installation
 
-> Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei. Das Diktat ist noch nicht verfügbar.
-< Read-aloud with multiple voices, processed locally. The operator enables it per company. Dictation is not yet available.
+> Vorlesen mit mehreren Stimmen, lokal verarbeitet. Der Betreiber schaltet es pro Unternehmen frei.
+< Read-aloud with multiple voices, processed locally. The operator enables it per company.
 
 > Vorverarbeitete Gesetze und Regelwerke als Pakete, die der Betreiber aus dem Katalog installiert oder als Datei importiert.
 < Preprocessed laws and regulations as packages that the operator installs from the catalog or imports as a file.
@@ -1383,3 +1383,156 @@
 
 > ✓ Stärke · ◐ teils oder mit Einschränkung · ✕ Schwäche bzw. nicht möglich. Zellen ohne Symbol sind neutral.
 < ✓ strength · ◐ partly or with limitations · ✕ weakness or not possible. Cells without a symbol are neutral.
+
+> Schnellstart
+< Quickstart
+
+> Schnellstart – SovereignMind
+< Quickstart – SovereignMind
+
+> Schritte
+< Steps
+
+> <a href="#voraussetzungen">Voraussetzungen prüfen</a>
+< <a href="#voraussetzungen">Check the requirements</a>
+
+> <a href="#installieren">Installieren</a>
+< <a href="#installieren">Install</a>
+
+> <a href="#einrichten">Demo starten und Modelle laden</a>
+< <a href="#einrichten">Start the demo and load models</a>
+
+> <a href="#dokumente">Dokumente hinzufügen</a>
+< <a href="#dokumente">Add documents</a>
+
+> <a href="#frage">Erste Frage stellen</a>
+< <a href="#frage">Ask your first question</a>
+
+> <a href="#anpassen">Anpassen und vergleichen</a>
+< <a href="#anpassen">Adjust and compare</a>
+
+> <a href="#weiter">Weiter</a>
+< <a href="#weiter">Next</a>
+
+> <span class="qs-num" aria-hidden="true">1</span>Voraussetzungen prüfen
+< <span class="qs-num" aria-hidden="true">1</span>Check the requirements
+
+> <span class="qs-num" aria-hidden="true">2</span>Installieren
+< <span class="qs-num" aria-hidden="true">2</span>Install
+
+> <span class="qs-num" aria-hidden="true">3</span>Demo starten und Modelle laden
+< <span class="qs-num" aria-hidden="true">3</span>Start the demo and load models
+
+> <span class="qs-num" aria-hidden="true">4</span>Dokumente hinzufügen
+< <span class="qs-num" aria-hidden="true">4</span>Add documents
+
+> <span class="qs-num" aria-hidden="true">5</span>Erste Frage stellen
+< <span class="qs-num" aria-hidden="true">5</span>Ask your first question
+
+> <span class="qs-num" aria-hidden="true">6</span>Anpassen und vergleichen
+< <span class="qs-num" aria-hidden="true">6</span>Adjust and compare
+
+> <span class="qs-num" aria-hidden="true">7</span>Weiter
+< <span class="qs-num" aria-hidden="true">7</span>Next
+
+> Voraussetzungen prüfen
+< Check the requirements
+
+> Installieren
+< Install
+
+> Demo starten und Modelle laden
+< Start the demo and load models
+
+> Dokumente hinzufügen
+< Add documents
+
+> Erste Frage stellen
+< Ask your first question
+
+> Anpassen und vergleichen
+< Adjust and compare
+
+> Weiter
+< Next
+
+> <a href="api.html">API-Dokumentation</a>
+< <a href="api.html">API documentation</a>
+
+> <a href="download.html">Installation, Update und Befehle im Detail</a>
+< <a href="download.html">Installation, update and commands in detail</a>
+
+> <a href="index.html#funktionen">Funktionen im Überblick</a>
+< <a href="index.html#funktionen">Features at a glance</a>
+
+> <a href="wissenspakete.html">Wissenspakete ansehen</a>
+< <a href="wissenspakete.html">Browse knowledge packages (German only)</a>
+
+> Admin: Dokumente
+< Admin: Documents
+
+> Anmeldung
+< Login
+
+> Alternativ als Setup-Datei: <a href="download.html">Download-Seite</a>.
+< Alternatively as a setup file: <a href="download.html">download page</a>.
+
+> Beim ersten Aufruf wählen Sie „Demo starten“. Als Admin laden Sie im Tab „Lokale Modelle“ die KI-Modelle, falls der Installer das nicht schon getan hat.
+< On first launch, choose “Start demo”. As admin, load the AI models in the “Local models” tab if the installer has not already done so.
+
+> Die Demo läuft 24 Stunden ohne Lizenzschlüssel, nur auf Ihrem Rechner (<code>http://localhost:5043</code>). Zugangsdaten und Grenzen: <a href="download.html#demo">Demo</a>.
+< The demo runs for 24 hours without a license key, on your own machine only (<code>http://localhost:5043</code>). Credentials and limits: <a href="download.html#demo">demo</a>.
+
+> Ein Befehl im Terminal lädt Installer und Modelle. Den Einzeiler können Sie vorab lesen.
+< One terminal command fetches the installer and models. You can read the one-liner beforehand.
+
+> Ein Rechner mit 8 GB VRAM und 16 GB RAM, Windows 10/11, Debian/Ubuntu oder RHEL/Fedora (x64). Ohne GPU läuft alles auf der CPU, deutlich langsamer.
+< A machine with 8 GB VRAM and 16 GB RAM, Windows 10/11, Debian/Ubuntu or RHEL/Fedora (x64). Without a GPU everything runs on the CPU, much slower.
+
+> Empfohlen: 8&nbsp;GB VRAM und 16&nbsp;GB RAM
+< Recommended: 8&nbsp;GB VRAM and 16&nbsp;GB RAM
+
+> Kein Python, kein Docker, kein API-Schlüssel
+< No Python, no Docker, no API key
+
+> Laden Sie Dateien im Admin-Bereich hoch und ordnen Sie sie einer Kategorie zu. Der Verarbeitungsstatus zeigt, wann ein Dokument bereit ist. Fertige Bestände wie Gesetze gibt es als Wissenspaket.
+< Upload files in the admin area and assign them to a category. The processing status shows when a document is ready. Ready-made collections such as laws are available as knowledge packages.
+
+> Linux (Debian/Ubuntu, RHEL/Fedora)
+< Linux (Debian/Ubuntu, RHEL/Fedora)
+
+> Schnittstelle, Betrieb und Anbindungen finden Sie in der Dokumentation.
+< Interface, operation and integrations are covered in the documentation.
+
+> SovereignMind einrichten und die erste Frage stellen
+< Set up SovereignMind and ask the first question
+
+> Stellen Sie im Chat eine Frage zu Ihren Dokumenten. Die Antwort nennt ihre Quellen, ein Klick öffnet die Stelle im Originaldokument.
+< Ask a question about your documents in the chat. The answer names its sources; one click opens the passage in the original document.
+
+> Von der Installation zur ersten belegten Antwort auf eigener Hardware.
+< From installation to the first sourced answer on your own hardware.
+
+> Von der Installation zur ersten belegten Antwort in sieben Schritten: SovereignMind auf eigener Hardware einrichten, Dokumente laden, fragen.
+< From installation to the first sourced answer in seven steps: set up SovereignMind on your own hardware, add documents, ask.
+
+> Von „Download“ zur ersten belegten Antwort, auf Ihrer eigenen Hardware und in unter zwei Minuten Lesezeit.
+< From “Download” to the first sourced answer, on your own hardware, in under two minutes of reading.
+
+> Windows (PowerShell, am besten als Administrator)
+< Windows (PowerShell, preferably as administrator)
+
+> Windows 10 (1809), Windows 11, Server 2019+, Debian/Ubuntu oder RHEL/Fedora (x64)
+< Windows 10 (1809), Windows 11, Server 2019+, Debian/Ubuntu or RHEL/Fedora (x64)
+
+> Wählen Sie einen Assistenten, ändern Sie Rolle und Persönlichkeit und stellen Sie dieselbe Frage erneut. So sehen Sie, wie sich die Antwort verändert.
+< Pick an assistant, change role and personality, and ask the same question again. You can see how the answer changes.
+
+> Admin: Assistenten
+< Admin: Assistants
+
+> Anmeldeseite
+< Login page
+
+> Admin-Bereich: Assistenten mit Rolle und Status
+< Admin area: assistants with role and status

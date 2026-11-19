@@ -7,6 +7,7 @@ Stand: November 2026. Grenze: SovereignMind wird derzeit nur als Demo zur Erprob
 ## Seiten
 
 - [Produkt](https://sovereignmind-deutschland.github.io/sovereignmind-website/): Funktionen, Architektur, Betrieb im Alltag
+- [Schnellstart](https://sovereignmind-deutschland.github.io/sovereignmind-website/schnellstart.html): sieben Schritte von der Installation bis zur ersten belegten Antwort
 - [Was ist ein On-Premise-KI-Assistent?](https://sovereignmind-deutschland.github.io/sovereignmind-website/on-premise-ki.html): Begriff, DSGVO und Schatten-IT, Entscheidungshilfe lokal oder Cloud (keine Rechtsberatung)
 - [Vergleich](https://sovereignmind-deutschland.github.io/sovereignmind-website/vergleich.html): lokal gegenüber Cloud-Lizenzen und selbstgebautem Cloud-Chat, Kostenbeispiel mit Annahmen, Quellen und Stand
 - [Wissenspakete](https://sovereignmind-deutschland.github.io/sovereignmind-website/wissenspakete.html): Katalog vorverarbeiteter Wissenspakete, zum Beispiel deutsche Gesetze
@@ -17,6 +18,7 @@ Stand: November 2026. Grenze: SovereignMind wird derzeit nur als Demo zur Erprob
 
 - [Product](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/): features, architecture, day-to-day operation
 - [What is an on-premises AI assistant?](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/on-premise-ki.html): concept, GDPR and shadow IT, decision aid local or cloud (not legal advice)
+- [Quickstart](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/schnellstart.html): seven steps from installation to the first sourced answer
 - [Comparison](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/vergleich.html): local versus cloud licenses and a self-built cloud chat, cost example with assumptions, sources and date
 - [Download and demo](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/download.html): installation on Windows and Linux with one command, demo limits
 - [API](https://sovereignmind-deutschland.github.io/sovereignmind-website/en/api.html): interface documentation (endpoint reference in German)

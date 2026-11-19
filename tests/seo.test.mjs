@@ -7,9 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const BASE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
-const INDEXIERBAR = { 'index.html': '', 'download.html': 'download.html', 'wissenspakete.html': 'wissenspakete.html', 'vergleich.html': 'vergleich.html', 'on-premise-ki.html': 'on-premise-ki.html', 'api.html': 'api.html' };
+const INDEXIERBAR = { 'index.html': '', 'schnellstart.html': 'schnellstart.html', 'download.html': 'download.html', 'wissenspakete.html': 'wissenspakete.html', 'vergleich.html': 'vergleich.html', 'on-premise-ki.html': 'on-premise-ki.html', 'api.html': 'api.html' };
 // Seiten mit englischer Fassung unter en/ (Plan website-stil-animationen, Phase 2)
-const EN_SEITEN = ['index.html', 'download.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
+const EN_SEITEN = ['index.html', 'schnellstart.html', 'download.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
 const NOINDEX = ['impressum.html', 'datenschutz.html', '404.html'];
 const lesen = (f) => readFileSync(join(root, f), 'utf8');
 const meta = (html, attr, name) => (html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`)) || [])[1];
@@ -63,8 +63,10 @@ test('JSON-LD ist gültig: Startseite mit Organization, WebSite, SoftwareApplica
   assert.deepEqual(typen, ['Organization', 'WebSite', 'SoftwareApplication']);
   for (const f of Object.keys(INDEXIERBAR).filter((x) => x !== 'index.html')) {
     const blöcke = jsonLd(f);
-    assert.equal(blöcke.length, 1, f);
+    // Schnellstart trägt zusätzlich ein HowTo-Schema für die Schritte
+    assert.equal(blöcke.length, f === 'schnellstart.html' ? 2 : 1, f);
     assert.equal(blöcke[0]['@type'], 'BreadcrumbList', f);
+    if (f === 'schnellstart.html') assert.equal(blöcke[1]['@type'], 'HowTo', f);
     assert.equal(blöcke[0].itemListElement[1].item, BASE + INDEXIERBAR[f], f);
   }
 });

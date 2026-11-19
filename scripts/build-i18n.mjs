@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 const root = fileURLToPath(new URL('..', import.meta.url));
 export const BASE = 'https://sovereignmind-deutschland.github.io/sovereignmind-website/';
 /** Seiten mit englischer Fassung. */
-export const EN_PAGES = ['index.html', 'download.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
+export const EN_PAGES = ['index.html', 'schnellstart.html', 'download.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
 /** Deutsche Seiten mit Umschalter (die ohne englische Fassung verweisen auf die englische Startseite). */
 export const SWITCH_PAGES = [...EN_PAGES, 'wissenspakete.html', 'impressum.html', 'datenschutz.html'];
 const TRANSLATE_ATTRS = new Set(['alt', 'title', 'aria-label', 'label', 'placeholder', 'content']);
@@ -162,7 +162,7 @@ function ldJson(t, page, map, fehlend) {
       if (typeof v === 'string') {
         if (k === 'inLanguage') o[k] = 'en';
         else if (k === 'url' || k === 'item') o[k] = v.startsWith(BASE) ? enUrl(v) : v;
-        else if (k === 'description' || (k === 'name' && !/\u0001/.test(v))) {
+        else if (k === 'description' || k === 'text' || (k === 'name' && !/\u0001/.test(v))) {
           const key = norm(v);
           if (Object.hasOwn(map, key)) o[k] = map[key];
           else if (!SAME.test(key)) fehlend.add(`${page}: ${key}`);
@@ -237,7 +237,7 @@ export function ladeMap(text) {
 
 /** sitemap.xml: deutsche Seiten, englische Seiten, je mit hreflang-Alternativen. */
 export function sitemap() {
-  const alle = ['index.html', 'download.html', 'wissenspakete.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
+  const alle = ['index.html', 'schnellstart.html', 'download.html', 'wissenspakete.html', 'vergleich.html', 'on-premise-ki.html', 'api.html'];
   const zeilen = [];
   for (const lang of ['de', 'en']) {
     for (const p of alle) {

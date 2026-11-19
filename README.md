@@ -6,6 +6,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 | --- | --- |
 | `index.html` | Produkt, Funktionen, Assistenten, Architektur, **Betrieb im Alltag** (Tray-App, Linux-Kommando `sovereignmind` mit Mock von `status`), **Demo-Video** (`assets/video/`: MP4, Titelbild, deutsche Untertitel als VTT), Screenshots, Kontakt |
 | `install.sh`, `install.ps1` | Skripte der Einzeiler (`curl -fsSL …/install.sh \| sh`, `irm …/install.ps1 \| iex`); **Kopie** aus dem Hauptprojekt, nicht von Hand ändern (siehe Pflege) |
+| `schnellstart.html` | Schnellstart in sieben Schritten (Voraussetzungen, Installieren, Demo und Modelle, Dokumente, erste Frage, Anpassen, Weiter) mit Fortschrittsanzeige, Kopier-Knöpfen und HowTo-Schema; englisch `en/schnellstart.html`; Test `tests/schnellstart.test.mjs` |
 | `download.html` | Installation für Windows und Linux: Einzeiler für die minimale Variante (aus dem GitHub-Release), **Demo** (eine Software, Wahl beim ersten Start; ohne Lizenz, 24 Stunden, nur localhost; Abschnitt `#demo`), Prüfsummen der aktuellen Version, Update, Befehlsübersicht des Linux-Kommandos |
 | `wissenspakete.html` | Katalog der Wissenspakete aus `packages/index.json` |
 | `vergleich.html` | Sachlicher Vergleich lokal/Cloud, Kostenbeispiel und Rechner aus `assets/kosten.json` (Quellen und Prüfliste: im Hauptprojekt zu klären, `Support/docs/vergleich/` gibt es dort nicht mehr) |
@@ -14,7 +15,7 @@ Statische Seite ohne Build-Schritt, ausgeliefert über GitHub Pages.
 
 ## Sprachen (Deutsch und Englisch)
 
-Deutsch ist die Quelle und bleibt unter der Wurzel-URL; die englischen Seiten liegen unter `en/` (Start, Download, Vergleich, On-Premise-KI, API-Einleitung). Wissenspaket-Katalog, Impressum, Datenschutz, 404 und Präsentation sind nur deutsch; im englischen Footer sind Rechtstexte als „(German)“ gekennzeichnet.
+Deutsch ist die Quelle und bleibt unter der Wurzel-URL; die englischen Seiten liegen unter `en/` (Start, Schnellstart, Download, Vergleich, On-Premise-KI, API-Einleitung). Wissenspaket-Katalog, Impressum, Datenschutz, 404 und Präsentation sind nur deutsch; im englischen Footer sind Rechtstexte als „(German)“ gekennzeichnet.
 
 - **`en/*.html` wird erzeugt, nicht von Hand bearbeitet:** `node scripts/build-i18n.mjs` (ohne Abhängigkeiten) erzeugt `en/` aus den deutschen Seiten und `i18n/en.txt`, pflegt den Sprachumschalter `DE | EN` (zwischen `<!--lang-switch-->`-Markern) und die `hreflang`-Links in den deutschen Seiten und schreibt `sitemap.xml`. Das Ergebnis wird eingecheckt; `pages.yml` bleibt ein reines Kopieren (kein Build beim Ausliefern, `i18n/` wird nicht veröffentlicht).
 - **Übersetzungstabelle `i18n/en.txt`:** je Eintrag eine Zeile `> deutscher Text` und eine Zeile `< englischer Text`. Der deutsche Text ist der Schlüssel (Element-Inhalt inklusive Inline-Markup, Leerraum normalisiert). Wird ein deutscher Text geändert, fehlt der Eintrag: `node scripts/build-i18n.mjs --missing` listet die Lücken, der Test schlägt an. Fehlt eine Übersetzung, bleibt der deutsche Text stehen, nie ein Schlüssel. Begriffe wie im App-Glossar (`Support/docs/i18n-glossar.md` im Hauptprojekt).
